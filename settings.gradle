@@ -15,6 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "SenasChapinasUVG"
 include ':app'
 include ':screens'
-include ':app:screens'
 include ':components'
 include ':services'
