@@ -9,13 +9,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setTheme(R.style.Theme_SenasChapinasUVG);
+
         setContentView(R.layout.activity_main);
 
         // Configurar NavController
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
-
     }
 
     @Override
