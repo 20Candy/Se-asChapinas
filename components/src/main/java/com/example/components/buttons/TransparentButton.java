@@ -15,32 +15,32 @@ import androidx.core.content.ContextCompat;
 
 import com.example.components.R;
 
-public class MainButton extends ConstraintLayout implements IButtons {
+public class TransparentButton extends ConstraintLayout implements IButtons {
 
     //Atributos del componente ---------------------------------------------------------------------
-    private Button mainButton;
+    private Button tButton;
 
     // Metodos de ContraintLayout ------------------------------------------------------------------
-    public MainButton(Context context) {
+    public TransparentButton(Context context) {
         super(context);
         initView();
     }
 
-    public MainButton(Context context, AttributeSet attrs) {
+    public TransparentButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
         declareAttr(context, attrs);
     }
 
-    public MainButton(Context context, AttributeSet attrs, int defStyle) {
+    public TransparentButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView();
         declareAttr(context, attrs);
     }
 
     private void initView() {
-        inflate(getContext(), R.layout.main_button, this);
-        mainButton = findViewById(R.id.btn_main);
+        inflate(getContext(), R.layout.transparent_button, this);
+        tButton = findViewById(R.id.btn_main);
     }
 
 
@@ -76,35 +76,35 @@ public class MainButton extends ConstraintLayout implements IButtons {
     // Metodos de IButtons -------------------------------------------------------------------------
     @Override
     public void setText(String value) {
-        mainButton.setText(value);
+        tButton.setText(value);
     }
 
     @Override
     public void setTextSize(int value) {
-        mainButton.setTextSize(value);
+        tButton.setTextSize(value);
     }
 
     @Override
     public void setEnabled(boolean value) {
         if (!value) {
-            mainButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.light_green_background));
-            mainButton.setTextColor(ContextCompat.getColor(getContext(), R.color.desable_text_green));
+            tButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.light_blue_transparent_button));
+            tButton.setTextColor(ContextCompat.getColor(getContext(), R.color.desable_text_blue));
         } else {
-            mainButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.green_background));
-            mainButton.setTextColor(ContextCompat.getColor(getContext(), R.color.background));
+            tButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.blue_transprant_button));
+            tButton.setTextColor(ContextCompat.getColor(getContext(), R.color.base_blue));
         }
-        mainButton.setEnabled(value);
-        mainButton.setClickable(value);
+        tButton.setEnabled(value);
+        tButton.setClickable(value);
     }
 
     @Override
     public void setTextColor(int color) {
-        mainButton.setTextColor(color);
+        tButton.setTextColor(color);
     }
 
     @Override
     public void setBackground(Drawable value) {
-        mainButton.setBackground(value);
+        tButton.setBackground(value);
     }
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="landing_main_button_title">Empieza ahora</string>
-
+    <string name="landing_transparent_button_title">Ya tengo una cuenta</string>
 </resources>
