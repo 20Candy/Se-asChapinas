@@ -70,6 +70,7 @@ dependencies {
 
     implementation project(':screens')
     implementation project(':services')
+    implementation project(':components')
 
 
 }

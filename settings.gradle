@@ -16,3 +16,4 @@ rootProject.name = "SenasChapinasUVG"
 include ':app'
 include ':screens'
 include ':services'
+include ':components'
