@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_main"
+        android:id="@+id/btn_transparent"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:background="@drawable/transparent_button"

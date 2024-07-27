@@ -107,5 +107,9 @@ public class MainButton extends ConstraintLayout implements IButtons {
         mainButton.setBackground(value);
     }
 
+    // Listener ------------------------------------------------------------------------------------
+    public void setOnClickListener(OnClickListener listener) {
+        mainButton.setOnClickListener(new DebounceClickListener(listener));
+    }
 
 }

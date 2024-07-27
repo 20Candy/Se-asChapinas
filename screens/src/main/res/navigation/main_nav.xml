@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_landingFragment_to_logInFragment"
             app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_landingFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
         android:id="@+id/logInFragment"
         android:name="com.example.screens.flows.login.ui.LogInFragment"
         android:label="fragment_log_in"
         tools:layout="@layout/fragment_log_in" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.screens.flows.signup.ui.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
 </navigation>

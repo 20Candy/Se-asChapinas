@@ -40,7 +40,7 @@ public class TransparentButton extends ConstraintLayout implements IButtons {
 
     private void initView() {
         inflate(getContext(), R.layout.transparent_button, this);
-        tButton = findViewById(R.id.btn_main);
+        tButton = findViewById(R.id.btn_transparent);
     }
 
 
@@ -105,6 +105,11 @@ public class TransparentButton extends ConstraintLayout implements IButtons {
     @Override
     public void setBackground(Drawable value) {
         tButton.setBackground(value);
+    }
+
+    // Listener ------------------------------------------------------------------------------------
+    public void setOnClickListener(OnClickListener listener) {
+        tButton.setOnClickListener(new DebounceClickListener(listener));
     }
 
 
