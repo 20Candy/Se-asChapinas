@@ -42,7 +42,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:label="@string/email_label"
-            app:hint="@string/email_hint"/>
+            app:hint="@string/email_hint"
+            app:enabled="false"
+            app:validate="false"/>
 
 
         <com.example.components.inputs.PasswordInput
@@ -57,7 +59,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailInput"
             app:label="@string/password_label"
-            app:hint="@string/password_hint"/>
+            app:hint="@string/password_hint"
+            app:validate="false"/>
 
         <LinearLayout
             android:layout_width="0dp"

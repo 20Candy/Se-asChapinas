@@ -50,7 +50,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void checkAllInputs() {
-        boolean allValid = !binding.emailInput.isInputValid() && !binding.passWordInput.isEmpty();
+        boolean allValid = !binding.emailInput.isEmpty() && !binding.passWordInput.isEmpty();
         binding.secondButton.setEnabled(allValid);
     }
 
