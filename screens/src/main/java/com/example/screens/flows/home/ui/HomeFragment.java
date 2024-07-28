@@ -1,21 +1,40 @@
 package com.example.screens.flows.home.ui;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import android.util.Size;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.components.buttons.DebounceClickListener;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
+
+import java.util.Arrays;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
@@ -27,6 +46,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private static final int REQUEST_CAMERA_PERMISSION = 101;
     private HomeViewModel homeViewModel;
     private SharedPreferencesManager sharedPreferencesManager;
+
+    private String cameraId;
+    private CameraDevice cameraDevice;
+    private CameraCaptureSession cameraCaptureSessions;
+    private CaptureRequest.Builder captureRequestBuilder;
+    private Size imageDimension;
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
@@ -90,11 +115,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         requestPermissions(new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.RECORD_AUDIO}, REQUEST_CAMERA_PERMISSION);
     }
 
-    private void encenderCamara() {
-        binding.llEmpty.setVisibility(View.GONE);
-        binding.btnEmpezar.setVisibility(View.GONE);
-    }
-
     private void showGreyScreen(boolean permissionsNeeded) {
         binding.llEmpty.setVisibility(View.VISIBLE);
         binding.btnEmpezar.setVisibility(View.VISIBLE);
@@ -130,6 +150,89 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 // Muestra pantalla gris nuevamente
                 showGreyScreen(true);
             }
+        }
+    }
+
+
+    // Camera --------------------------------------------------------------------------------------
+
+    private void encenderCamara() {
+        binding.llEmpty.setVisibility(View.GONE);
+        binding.btnEmpezar.setVisibility(View.GONE);
+
+        CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        try {
+            cameraId = manager.getCameraIdList()[0];
+            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
+            StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            assert map != null;
+            imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
+            // Abrir la cámara
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            manager.openCamera(cameraId, stateCallback, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
+        @Override
+        public void onOpened(CameraDevice camera) {
+            cameraDevice = camera;
+            createCameraPreview();
+        }
+
+        @Override
+        public void onDisconnected(CameraDevice camera) {
+            cameraDevice.close();
+        }
+
+        @Override
+        public void onError(CameraDevice camera, int error) {
+            cameraDevice.close();
+            cameraDevice = null;
+        }
+    };
+
+    protected void createCameraPreview() {
+        try {
+            SurfaceTexture texture = binding.camera.getSurfaceTexture();
+            assert texture != null;
+            texture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
+            Surface surface = new Surface(texture);
+            captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            captureRequestBuilder.addTarget(surface);
+            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
+                @Override
+                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    if (null == cameraDevice) {
+                        return;
+                    }
+                    cameraCaptureSessions = cameraCaptureSession;
+                    updatePreview();
+                }
+
+                @Override
+                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    Toast.makeText(getContext(), "Configuration change", Toast.LENGTH_SHORT).show();
+                }
+            }, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updatePreview() {
+        if(null == cameraDevice) {
+            return;
+        }
+        captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+        try {
+            cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
         }
     }
 }
