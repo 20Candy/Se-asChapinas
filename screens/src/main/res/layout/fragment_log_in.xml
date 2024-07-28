@@ -43,7 +43,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:label="@string/email_label"
             app:hint="@string/email_hint"
-            app:enabled="false"
             app:validate="false"/>
 
 
@@ -79,8 +78,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
+                app:enabled="false"
                 app:text="@string/login_button_title">
 
             </com.example.components.buttons.TransparentButton>
