@@ -2,4 +2,6 @@
 <resources>
     <string name="landing_main_button_title">Empieza ahora</string>
     <string name="landing_transparent_button_title">Ya tengo una cuenta</string>
+    <string name="wrong_email_alert">Correo electrónico inválido</string>
+    <string name="wrong_password_alert">Tu contraseña debe incluir al menos un número, un carácter especial y una letra mayúscula.</string>
 </resources>

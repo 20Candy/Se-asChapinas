@@ -1,5 +1,5 @@
 <resources>
     <string name="landing_title">¡Traduce, juega y aprende! </string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rules_password">Tu contraseña debe incluir al menos un número, un carácter especial y una letra mayúscula.</string>
+    
 </resources>

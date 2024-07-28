@@ -7,16 +7,5 @@
       android:pathData="M25,0L305,0A25,25 0,0 1,330 25L330,25A25,25 0,0 1,305 50L25,50A25,25 0,0 1,0 25L0,25A25,25 0,0 1,25 0z"
       android:fillColor="#00973A"
       android:fillAlpha="0.5"/>
-  <path
-      android:strokeWidth="1"
-      android:pathData="M25,0.5L305,0.5A24.5,24.5 0,0 1,329.5 25L329.5,25A24.5,24.5 0,0 1,305 49.5L25,49.5A24.5,24.5 0,0 1,0.5 25L0.5,25A24.5,24.5 0,0 1,25 0.5z"
-      android:strokeAlpha="0.5"
-      android:fillColor="#00000000"
-      android:strokeColor="#00973A"/>
-  <path
-      android:strokeWidth="1"
-      android:pathData="M25,0.5L305,0.5A24.5,24.5 0,0 1,329.5 25L329.5,25A24.5,24.5 0,0 1,305 49.5L25,49.5A24.5,24.5 0,0 1,0.5 25L0.5,25A24.5,24.5 0,0 1,25 0.5z"
-      android:strokeAlpha="0.2"
-      android:fillColor="#00000000"
-      android:strokeColor="#000000"/>
+
 </vector>

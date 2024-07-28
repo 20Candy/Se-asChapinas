@@ -7,4 +7,9 @@
         <attr name="textColor" format="integer"/>
         <attr name="background" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="input">
+        <attr name="label" format="string" />
+        <attr name="hint" format="string" />
+    </declare-styleable>
 </resources>
