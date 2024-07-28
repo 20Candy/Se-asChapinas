@@ -116,8 +116,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void showGreyScreen(boolean permissionsNeeded) {
-        binding.llEmpty.setVisibility(View.VISIBLE);
-        binding.btnEmpezar.setVisibility(View.VISIBLE);
+        binding.clEmpty.setVisibility(View.VISIBLE);
+        binding.clCamera.setVisibility(View.GONE);
         binding.tvEmtpy.setText(permissionsNeeded ? R.string.permissions_alert : R.string.camera_alert); // Cambia mensaje
         binding.btnEmpezar.setText(permissionsNeeded ? getString(R.string.button_give_permissions) : getString(R.string.button_activate_camera));
     }
@@ -157,8 +157,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     // Camera --------------------------------------------------------------------------------------
 
     private void encenderCamara() {
-        binding.llEmpty.setVisibility(View.GONE);
-        binding.btnEmpezar.setVisibility(View.GONE);
+        binding.clEmpty.setVisibility(View.GONE);
+        binding.clCamera.setVisibility(View.VISIBLE);
 
         CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
