@@ -12,6 +12,7 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,12 +29,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.components.buttons.DebounceClickListener;
+import com.example.components.buttons.RecordButton;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
@@ -47,11 +51,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private HomeViewModel homeViewModel;
     private SharedPreferencesManager sharedPreferencesManager;
 
-    private String cameraId;
     private CameraDevice cameraDevice;
     private CameraCaptureSession cameraCaptureSessions;
     private CaptureRequest.Builder captureRequestBuilder;
     private Size imageDimension;
+
+    private boolean isRecording = false;
+    private MediaRecorder mediaRecorder;
+    private String cameraId = null;
+    private boolean isUsingFrontCamera = false; // Comienza con la cámara trasera
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
@@ -76,9 +84,43 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         setupListeners();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (cameraDevice != null) {
+            cameraDevice.close();
+            cameraDevice = null;
+        }
+    }
+
+
     // Metodos privados de la clase ----------------------------------------------------------------
     private void setupListeners() {
         binding.btnEmpezar.setOnClickListener(new DebounceClickListener(this));
+
+        // Configura el listener del RecordButton
+        binding.btnRecord.setOnRecordListener(new RecordButton.OnRecordListener() {
+            @Override
+            public void onStartRecording() {
+                startRecording();
+                binding.btnFavorite.setVisibility(View.VISIBLE);
+                binding.btnCamera.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onStopRecording() {
+                stopRecording();
+            }
+        });
+
+        binding.btnFavorite.setOnClickListener(v->{
+            // TODO NEVEGAR A FAVORITOS
+        });
+
+        binding.btnCamera.setOnClickListener(v->{
+            flipCamera();
+        });
+
     }
 
     private void verifyAndHandlePermissions() {
@@ -107,12 +149,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     private boolean hasAllPermissionsGranted() {
-        return ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
+
     private void requestPermissionsIfNeeded() {
-        requestPermissions(new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.RECORD_AUDIO}, REQUEST_CAMERA_PERMISSION);
+        requestPermissions(new String[]{android.Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
     }
 
     private void showGreyScreen(boolean permissionsNeeded) {
@@ -155,6 +197,47 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     // Camera --------------------------------------------------------------------------------------
+
+    private void flipCamera() {
+        if (cameraDevice != null) {
+            cameraDevice.close();
+            cameraDevice = null;
+        }
+
+        if (cameraCaptureSessions != null) {
+            cameraCaptureSessions.close();
+            cameraCaptureSessions = null;
+        }
+
+        // Determina si usas la cámara frontal o trasera
+        isUsingFrontCamera = !isUsingFrontCamera;
+
+        // Reabre la cámara con el nuevo ID
+        openCamera(isUsingFrontCamera);
+    }
+
+    private void openCamera(boolean useFrontCamera) {
+        CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        try {
+            for (String id : manager.getCameraIdList()) {
+                CameraCharacteristics characteristics = manager.getCameraCharacteristics(id);
+                Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
+                if (facing != null) {
+                    if ((useFrontCamera && facing == CameraCharacteristics.LENS_FACING_FRONT) ||
+                            (!useFrontCamera && facing == CameraCharacteristics.LENS_FACING_BACK)) {
+                        cameraId = id;
+                        break;
+                    }
+                }
+            }
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            manager.openCamera(cameraId, stateCallback, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void encenderCamara() {
         binding.clEmpty.setVisibility(View.GONE);
@@ -235,4 +318,86 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
+
+    private void startRecording() {
+        if (cameraDevice == null || !binding.camera.isAvailable()) return;
+
+        try {
+            setUpMediaRecorder();
+            SurfaceTexture texture = binding.camera.getSurfaceTexture();
+            assert texture != null;
+            texture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
+            Surface previewSurface = new Surface(texture);
+            Surface recordSurface = mediaRecorder.getSurface();
+
+            captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+            captureRequestBuilder.addTarget(previewSurface);
+            captureRequestBuilder.addTarget(recordSurface);
+
+            cameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface),
+                    new CameraCaptureSession.StateCallback() {
+                        @Override
+                        public void onConfigured(@NonNull CameraCaptureSession session) {
+                            cameraCaptureSessions = session;
+                            updatePreview();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    isRecording = true;
+                                    mediaRecorder.start();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void stopRecording() {
+        if (isRecording) {
+            mediaRecorder.stop();
+            mediaRecorder.reset();
+            isRecording = false;
+        }
+
+        videoTraductionService();
+
+    }
+
+    private void setUpMediaRecorder() throws IOException {
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE); // Fuente de video
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); // Formato de salida
+        mediaRecorder.setOutputFile(getVideoFilePath(getContext())); // Archivo de salida
+        mediaRecorder.setVideoEncodingBitRate(10000000); // Tasa de bits de video
+        mediaRecorder.setVideoFrameRate(30); // Tasa de cuadros de video
+        mediaRecorder.setVideoSize(imageDimension.getWidth(), imageDimension.getHeight()); // Tamaño de video
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264); // Codificador de video
+        mediaRecorder.prepare(); // Preparar el MediaRecorder para la grabación
+    }
+
+    private String getVideoFilePath(Context context) {
+        final File dir = context.getExternalFilesDir(null);
+        return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
+                + System.currentTimeMillis() + ".mp4";
+    }
+
+    // Servicios -----------------------------------------------------------------------------------
+    private void videoTraductionService(){
+        // TODO IMPLEMENTAR SERVICIO Y LOADER
+
+        navigateTo(binding.getRoot(), R.id.action_homeFragment_to_videoFragment, null);
+
+    }
+
+
+
+
+
 }
