@@ -1,5 +1,11 @@
 <resources>
     <string name="landing_title">¡Traduce, juega y aprende! </string>
     <string name="rules_password">Tu contraseña debe incluir al menos un número, un carácter especial y una letra mayúscula.</string>
-    
+    <string name="email_label">Correo</string>
+    <string name="password_label">Contraseña</string>
+    <string name="email_hint">Ingresa tu correo</string>
+    <string name="password_hint">Ingresa tu contraseña</string>
+
+
+
 </resources>

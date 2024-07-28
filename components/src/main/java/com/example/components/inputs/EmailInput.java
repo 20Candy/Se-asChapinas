@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.example.components.R;
 
@@ -38,6 +39,7 @@ public class EmailInput extends ConstraintLayout implements IInputs {
         container = findViewById(R.id.ll_input);
 
         inputText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        inputText.setHintTextColor(ContextCompat.getColor(getContext(), R.color.light_blue));
 
         applyAttributes(context, attrs);
         setInputValidations();
@@ -94,11 +96,13 @@ public class EmailInput extends ConstraintLayout implements IInputs {
                     alert.setVisibility(VISIBLE);
                     alert.setText(R.string.wrong_email_alert);
                 }
+                if (validationListener != null) {
+                    validationListener.onInputChanged(isInputValid());
+                }
             }
         });
 
     }
-
 
     @Override
     public void setBackground(Drawable value) {
@@ -109,5 +113,13 @@ public class EmailInput extends ConstraintLayout implements IInputs {
     public boolean isInputValid() {
         String email = inputText.getText().toString();
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    // Listener ------------------------------------------------------------------------------------
+    private InputValidationListener validationListener;
+
+    @Override
+    public void setValidationListener(InputValidationListener listener) {
+        this.validationListener = listener;
     }
 }

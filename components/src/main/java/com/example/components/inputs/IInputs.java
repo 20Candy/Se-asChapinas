@@ -12,4 +12,10 @@ public interface IInputs {
     void setInputValidations();
     boolean isInputValid();
 
+
+    void setValidationListener(InputValidationListener listener);
+    interface InputValidationListener {
+        void onInputChanged(boolean isValid);
+    }
+
 }

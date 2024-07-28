@@ -2,18 +2,23 @@ package com.example.components.inputs;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.components.R;
 
@@ -23,6 +28,7 @@ public class PasswordInput extends ConstraintLayout implements IInputs {
     EditText inputText;
     TextView label, alert;
     LinearLayout container;
+    ImageView eye;
 
     // Metodos de ContraintLayout ------------------------------------------------------------------
     public PasswordInput(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -36,12 +42,17 @@ public class PasswordInput extends ConstraintLayout implements IInputs {
         label = findViewById(R.id.tv_label);
         alert = findViewById(R.id.tvAlert);
         container = findViewById(R.id.ll_input);
+        eye = findViewById(R.id.imgEye);
 
         // Configurando el tipo de entrada como contraseña
         inputText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_medium));
+        inputText.setHintTextColor(ContextCompat.getColor(getContext(), R.color.light_blue));
 
         applyAttributes(context, attrs);
         setInputValidations();
+        setupEyeIcon();
+
     }
 
     private void applyAttributes(Context context, AttributeSet attrs) {
@@ -73,6 +84,9 @@ public class PasswordInput extends ConstraintLayout implements IInputs {
                 } else {
                     alert.setVisibility(VISIBLE);
                     alert.setText(R.string.wrong_password_alert);
+                }
+                if (validationListener != null) {
+                    validationListener.onInputChanged(isInputValid());
                 }
             }
         });
@@ -108,4 +122,38 @@ public class PasswordInput extends ConstraintLayout implements IInputs {
         String password = inputText.getText().toString();
         return password.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{8,}$");
     }
+
+    //Metodod privados -----------------------------------------------------------------------------
+    private void setupEyeIcon() {
+        eye.setOnClickListener(new View.OnClickListener() {
+            private boolean isPasswordVisible = false;
+
+            @Override
+            public void onClick(View v) {
+                if (isPasswordVisible) {
+                    // Ocultar contraseña
+                    inputText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_medium));
+                    eye.setImageResource(R.drawable.eye_closed);
+                    inputText.setSelection(inputText.getText().length());
+                } else {
+                    // Mostrar contraseña
+                    inputText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_medium));
+                    eye.setImageResource(R.drawable.eye_open);
+                    inputText.setSelection(inputText.getText().length());
+                }
+                isPasswordVisible = !isPasswordVisible;
+            }
+        });
+    }
+
+    // Listener ------------------------------------------------------------------------------------
+    private InputValidationListener validationListener;
+
+    @Override
+    public void setValidationListener(InputValidationListener listener) {
+        this.validationListener = listener;
+    }
+
 }

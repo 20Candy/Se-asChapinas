@@ -21,10 +21,22 @@
         android:id="@+id/logInFragment"
         android:name="com.example.screens.flows.login.ui.LogInFragment"
         android:label="fragment_log_in"
-        tools:layout="@layout/fragment_log_in" />
+        tools:layout="@layout/fragment_log_in" >
+        <action
+            android:id="@+id/action_logInFragment_to_video_nav"
+            app:destination="@id/video_nav" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.example.screens.flows.signup.ui.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_video_nav"
+            app:destination="@id/video_nav" />
+    </fragment>
+    <include app:graph="@navigation/video_nav" />
 </navigation>

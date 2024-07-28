@@ -10,7 +10,7 @@
     <FrameLayout
         android:id="@+id/fl"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="65dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,7 +19,7 @@
             android:id="@+id/ll_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/blue_transprant_button"
             android:orientation="horizontal">
 
@@ -30,8 +30,8 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/nunito_medium"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
                 android:textColor="@color/base_blue"
                 android:textColorHint="@color/light_blue"
                 android:textSize="16sp" />
@@ -42,15 +42,13 @@
             android:id="@+id/tv_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="12dp"
             android:background="@drawable/white_background_label_inputs"
             android:fontFamily="@font/nunito_medium"
-            android:letterSpacing="0.15"
-            android:paddingStart="8dp"
-            android:paddingEnd="13dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             android:textColor="@color/base_blue"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
 
     </FrameLayout>
 

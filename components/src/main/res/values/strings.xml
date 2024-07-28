@@ -3,5 +3,6 @@
     <string name="landing_main_button_title">Empieza ahora</string>
     <string name="landing_transparent_button_title">Ya tengo una cuenta</string>
     <string name="wrong_email_alert">Correo electrónico inválido</string>
-    <string name="wrong_password_alert">Tu contraseña debe incluir al menos un número, un carácter especial y una letra mayúscula.</string>
+    <string name="wrong_password_alert">La contraseña debe ser de al menos 8 caracteres e incluir un número, un carácter especial y una mayúscula.</string>
+    <string name="login_button_title">Iniciar Sesión</string>
 </resources>

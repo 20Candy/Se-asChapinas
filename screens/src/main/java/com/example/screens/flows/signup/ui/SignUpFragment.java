@@ -38,11 +38,31 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     // Metodos privados de la clase ----------------------------------------------------------------
     private void startListeners(){
+        binding.mainButton.setOnClickListener(new DebounceClickListener(this));
+        binding.secondButton.setOnClickListener(new DebounceClickListener(this));
+        binding.emailInput.setValidationListener(isValid -> checkAllInputs());
+        binding.passWordInput.setValidationListener(isValid -> checkAllInputs());
     }
+
+    private void checkAllInputs() {
+        boolean allValid = binding.emailInput.isInputValid() && binding.passWordInput.isInputValid();
+        binding.mainButton.setEnabled(allValid);
+    }
+
 
     // On Click ------------------------------------------------------------------------------------
     @Override
     public void onClick(View view) {
+        if (view.getId() == com.example.components.R.id.btn_main) {
+            if (binding.mainButton.isEnabled()) {
+//                TODO LLAMAR SERVICIO
+                navigateTo(binding.getRoot(), R.id.action_signUpFragment_to_video_nav, null);
+
+            }
+
+        } else if (view.getId() == com.example.components.R.id.btn_transparent) {
+            navigateTo(binding.getRoot(), R.id.action_signUpFragment_to_logInFragment, null);
+        }
 
     }
 }
