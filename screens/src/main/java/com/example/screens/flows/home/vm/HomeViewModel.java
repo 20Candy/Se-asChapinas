@@ -14,7 +14,7 @@ public class HomeViewModel extends AndroidViewModel {
 
 
     // Variable para encender o no camara al iniciar la app
-    public boolean encenderCamara = true;
+    public boolean encenderCamara = false;
 
     public boolean getEncenderCamara() {
         return encenderCamara;
