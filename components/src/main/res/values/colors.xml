@@ -11,6 +11,7 @@
     <color name="base_yellow">#FFBF40</color>
     <color name="light_green">#8DC249</color>
     <color name="light_blue">#60618C</color>
+    <color name="dark_grey">#323232</color>
 
 
 </resources>

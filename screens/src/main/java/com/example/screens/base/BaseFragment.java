@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
@@ -71,6 +72,21 @@ public class BaseFragment extends Fragment {
 //            toast.show();
 //        }
     }
+
+    public interface OnBackPressedAction {
+        void onBackPressedAction();
+    }
+
+    protected void onBackPressed(OnBackPressedAction listener) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                listener.onBackPressedAction();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
 
 
 

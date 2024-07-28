@@ -4,24 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/dark_grey"
     tools:context=".flows.home.ui.HomeFragment"
 >
 
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btnEmpezar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/camera_empty" />
+
+        <TextView
+            android:id="@+id/tvEmtpy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/nunito_medium"
+            android:text="@string/permissions_alert"
+            android:textAlignment="center"
+            android:textColor="@color/background"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
     <com.example.components.buttons.MainButton
-        android:id="@+id/mainButton"
+        android:id="@+id/btnEmpezar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:text="@string/landing_main_button_title">
-
-    </com.example.components.buttons.MainButton>
+        app:text="@string/home_permissions"
+        app:textColor ="@color/dark_grey"
+        app:background ="@drawable/white_background_label_inputs"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

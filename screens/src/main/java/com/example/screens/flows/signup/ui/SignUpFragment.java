@@ -15,14 +15,18 @@ import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentLandingBinding;
 import com.example.screens.databinding.FragmentSignUpBinding;
+import com.example.screens.utils.SharedPreferencesManager;
 
 public class SignUpFragment extends BaseFragment implements View.OnClickListener {
 
     //Binding --------------------------------------------------------------------------------------
     FragmentSignUpBinding binding;
 
-    // Metodos de ciclo de vida --------------------------------------------------------------------
+    // Atributos de la clase -----------------------------------------------------------------------
+    SharedPreferencesManager sharedPreferencesManager;
 
+
+    // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,14 +59,24 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View view) {
         if (view.getId() == com.example.components.R.id.btn_main) {
             if (binding.mainButton.isEnabled()) {
-//                TODO LLAMAR SERVICIO
-                navigateTo(binding.getRoot(), R.id.action_signUpFragment_to_video_nav, null);
+                signUpService();
 
             }
 
         } else if (view.getId() == com.example.components.R.id.btn_transparent) {
             navigateTo(binding.getRoot(), R.id.action_signUpFragment_to_logInFragment, null);
         }
+
+    }
+
+    // Servicios -----------------------------------------------------------------------------------
+    private void signUpService(){
+        // TODO LLAMAR SERVICIO
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+        sharedPreferencesManager.setLogged(true);
+
+        navigateTo(binding.getRoot(), R.id.action_signUpFragment_to_video_nav, null);
 
     }
 }

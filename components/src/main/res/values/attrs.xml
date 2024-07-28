@@ -11,5 +11,6 @@
     <declare-styleable name="input">
         <attr name="label" format="string" />
         <attr name="hint" format="string" />
+        <attr name="validate" format="boolean" />
     </declare-styleable>
 </resources>

@@ -5,4 +5,6 @@
     <string name="wrong_email_alert">Correo electrónico inválido</string>
     <string name="wrong_password_alert">La contraseña debe ser de al menos 8 caracteres e incluir un número, un carácter especial y una mayúscula.</string>
     <string name="login_button_title">Iniciar Sesión</string>
+    <string name="home_permissions">Dar Permisos</string>
+    <string name="home_activate_camera">Activar Camara</string>
 </resources>

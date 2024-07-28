@@ -25,6 +25,8 @@ public class EmailInput extends ConstraintLayout implements IInputs {
     TextView label, alert;
     LinearLayout container;
 
+    private boolean validate = true;
+
     // Metodos de ContraintLayout ------------------------------------------------------------------
     public EmailInput(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -51,6 +53,8 @@ public class EmailInput extends ConstraintLayout implements IInputs {
         try {
             setLabel(attributes.getString(R.styleable.input_label));
             setHint(attributes.getString(R.styleable.input_hint));
+            setValidate(attributes.getBoolean(R.styleable.input_validate, true));
+
         } finally {
             attributes.recycle();
         }
@@ -90,12 +94,15 @@ public class EmailInput extends ConstraintLayout implements IInputs {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (isInputValid()) {
-                    alert.setVisibility(GONE);
-                } else {
-                    alert.setVisibility(VISIBLE);
-                    alert.setText(R.string.wrong_email_alert);
+                if(validate) {
+                    if (isInputValid()) {
+                        alert.setVisibility(GONE);
+                    } else {
+                        alert.setVisibility(VISIBLE);
+                        alert.setText(R.string.wrong_email_alert);
+                    }
                 }
+
                 if (validationListener != null) {
                     validationListener.onInputChanged(isInputValid());
                 }
@@ -121,5 +128,14 @@ public class EmailInput extends ConstraintLayout implements IInputs {
     @Override
     public void setValidationListener(InputValidationListener listener) {
         this.validationListener = listener;
+    }
+
+    // Metodos propios  ----------------------------------------------------------------------------
+    public void setValidate(Boolean value) {
+        this.validate = value;
+    }
+
+    public boolean isEmpty(){
+        return inputText.getText().toString().isEmpty();
     }
 }
