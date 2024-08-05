@@ -66,6 +66,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private String cameraId = null;
     private boolean isUsingFrontCamera = false; // Comienza con la cámara trasera
 
+    private String filepath = "";
+
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
     @Override
@@ -425,7 +427,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE); // Fuente de video
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); // Formato de salida
-        mediaRecorder.setOutputFile(getVideoFilePath(getContext())); // Archivo de salida
+
+        // Usar createTemporaryVideoFile para generar la ruta del archivo temporal
+        String tempFilePath = createTemporaryVideoFile(getContext());
+        mediaRecorder.setOutputFile(tempFilePath); // Archivo de salida
+
         mediaRecorder.setVideoEncodingBitRate(10000000); // Tasa de bits de video
         mediaRecorder.setVideoFrameRate(30); // Tasa de cuadros de video
         mediaRecorder.setVideoSize(imageDimension.getWidth(), imageDimension.getHeight()); // Tamaño de video
@@ -433,17 +439,27 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mediaRecorder.prepare(); // Preparar el MediaRecorder para la grabación
     }
 
-    private String getVideoFilePath(Context context) {
-        final File dir = context.getExternalFilesDir(null);
-        return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
-                + System.currentTimeMillis() + ".mp4";
+
+    private String createTemporaryVideoFile(Context context) throws IOException {
+        // Crea un archivo temporal en el directorio de caché
+        File tempFile = File.createTempFile(
+                "video_", // prefijo
+                ".mp4",   // sufijo
+                context.getCacheDir() // directorio
+        );
+        this.filepath = tempFile.getAbsolutePath();
+        return tempFile.getAbsolutePath();
     }
+
 
     // Servicios -----------------------------------------------------------------------------------
     private void videoTraductionService(){
         // TODO IMPLEMENTAR SERVICIO Y LOADER
 
-        navigateTo(binding.getRoot(), R.id.action_homeFragment_to_videoFragment, null);
+        Bundle bundle = new Bundle();
+        bundle.putString("video_path", this.filepath);
+
+        navigateTo(binding.getRoot(), R.id.action_homeFragment_to_videoFragment, bundle);
 
     }
 
