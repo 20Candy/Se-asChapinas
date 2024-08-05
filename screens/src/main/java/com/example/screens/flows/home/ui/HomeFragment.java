@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -30,7 +31,6 @@ import android.widget.Toast;
 
 import com.example.components.buttons.DebounceClickListener;
 import com.example.components.buttons.RecordButton;
-import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentHomeBinding;
@@ -39,7 +39,11 @@ import com.example.screens.utils.SharedPreferencesManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
@@ -96,7 +100,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     // Metodos privados de la clase ----------------------------------------------------------------
-
     private void setupListeners() {
         binding.btnEmpezar.setOnClickListener(new DebounceClickListener(this));
 
@@ -186,8 +189,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CAMERA_PERMISSION && grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Da permisos
                 encenderCamara();
             } else {
@@ -199,6 +202,47 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     // Camera --------------------------------------------------------------------------------------
+
+
+    private Size chooseOptimalSize(Size[] choices, int textureViewWidth, int textureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
+        // Coleccionar los tamaños soportados mayores al tamaño de la vista previa
+        List<Size> bigEnough = new ArrayList<>();
+        // Coleccionar los tamaños soportados menores al tamaño de la vista previa
+        List<Size> notBigEnough = new ArrayList<>();
+        int w = aspectRatio.getWidth();
+        int h = aspectRatio.getHeight();
+
+        for (Size option : choices) {
+            if (option.getWidth() <= maxWidth && option.getHeight() <= maxHeight &&
+                    option.getHeight() == option.getWidth() * h / w) {
+                if (option.getWidth() >= textureViewWidth && option.getHeight() >= textureViewHeight) {
+                    bigEnough.add(option);
+                } else {
+                    notBigEnough.add(option);
+                }
+            }
+        }
+
+        // Elegir el más pequeño de los suficientemente grandes. Si no hay ninguno suficientemente grande, elegir el más grande de los no suficientemente grandes.
+        if (bigEnough.size() > 0) {
+            return Collections.min(bigEnough, new CompareSizesByArea());
+        } else if (notBigEnough.size() > 0) {
+            return Collections.max(notBigEnough, new CompareSizesByArea());
+        } else {
+            Log.e("TAG", "Couldn't find any suitable preview size");
+            return choices[0];
+        }
+    }
+
+    static class CompareSizesByArea implements Comparator<Size> {
+        @Override
+        public int compare(Size lhs, Size rhs) {
+            // Cast to ensure the multiplications won't overflow
+            return Long.signum((long) lhs.getWidth() * lhs.getHeight() -
+                    (long) rhs.getWidth() * rhs.getHeight());
+        }
+    }
+
 
     private void flipCamera() {
         if (cameraDevice != null) {
@@ -285,11 +329,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         try {
             SurfaceTexture texture = binding.camera.getSurfaceTexture();
             assert texture != null;
+
             texture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
             Surface surface = new Surface(texture);
+
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureRequestBuilder.addTarget(surface);
-            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
+
+            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                     if (null == cameraDevice) {
@@ -309,8 +356,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+
     private void updatePreview() {
-        if(null == cameraDevice) {
+        if (null == cameraDevice) {
             return;
         }
         captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
@@ -320,6 +368,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
+
 
     private void startRecording() {
         if (cameraDevice == null || !binding.camera.isAvailable()) return;
