@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.components.buttons.DebounceClickListener;
 import com.example.components.buttons.RecordButton;
+import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentHomeBinding;
@@ -82,6 +83,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         sharedPreferencesManager = new SharedPreferencesManager(requireContext());
         verifyAndHandlePermissions();
         setupListeners();
+        navigationComponent();
     }
 
     @Override
@@ -95,6 +97,32 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     // Metodos privados de la clase ----------------------------------------------------------------
+
+    private void navigationComponent(){
+
+        binding.bottomNavMenu.setActiveTab(binding.bottomNavMenu.TAB_HOME);
+
+        binding.bottomNavMenu.setOnTabSelectedListener(new BottomNavMenu.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int tabId) {
+                // Manejar la navegación según el tabId
+                if (tabId == com.example.components.R.id.ll_home) {
+                    // Navegar al fragmento de inicio
+
+                } else if (tabId == com.example.components.R.id.ll_translate) {
+                    // Navegar al fragmento de traducción
+
+                } else if (tabId == com.example.components.R.id.ll_dictionary) {
+                    // Navegar al fragmento de diccionario
+
+                } else if (tabId == com.example.components.R.id.ll_profile) {
+                    // Navegar al fragmento de perfil
+
+                }
+            }
+        });
+
+    }
     private void setupListeners() {
         binding.btnEmpezar.setOnClickListener(new DebounceClickListener(this));
 

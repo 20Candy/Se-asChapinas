@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:weightSum="4">
+
+    <LinearLayout
+        android:id="@+id/ll_home"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/img_home"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/video_normal" />
+
+        <TextView
+            android:id="@+id/tv_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/nunito_medium"
+            android:gravity="center"
+            android:text="@string/video"
+            android:textColor="@color/light_blue"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/img_line_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/blue_line" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_translate"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/img_translate"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/translate_normal" />
+
+        <TextView
+            android:id="@+id/tv_translate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/nunito_medium"
+            android:gravity="center"
+            android:text="@string/translate"
+            android:textColor="@color/light_blue"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/img_line_translate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/blue_line" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_dictionary"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/img_dictionary"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/search_normal" />
+
+        <TextView
+            android:id="@+id/tv_dictionary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/nunito_medium"
+            android:gravity="center"
+            android:text="@string/dictionary"
+            android:textColor="@color/light_blue"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/img_line_dictionary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/blue_line" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_profile"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/img_profile"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/profile_normal" />
+
+        <TextView
+            android:id="@+id/tv_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/nunito_medium"
+            android:gravity="center"
+            android:text="@string/profile"
+            android:textColor="@color/light_blue"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/img_line_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/blue_line" />
+    </LinearLayout>
+</LinearLayout>

@@ -11,12 +11,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_empty"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavMenu"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:id="@+id/ll_empty"
@@ -61,6 +63,7 @@
             app:background="@drawable/white_background_label_inputs"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:text="@string/home_permissions"
             app:textColor="@color/dark_grey" />
@@ -70,18 +73,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_camera"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@android:color/transparent"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavMenu"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextureView
             android:id="@+id/camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -104,10 +107,10 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginBottom="40dp"
+            app:background="@drawable/record_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:background="@drawable/record_button"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btn_favorite"
@@ -130,5 +133,14 @@
             app:layout_constraintTop_toTopOf="@+id/btn_record" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.example.components.navMenu.BottomNavMenu
+        android:id="@+id/bottomNavMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

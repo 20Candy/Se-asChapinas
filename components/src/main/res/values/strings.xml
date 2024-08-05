@@ -7,4 +7,8 @@
     <string name="login_button_title">Iniciar Sesión</string>
     <string name="home_permissions">Dar Permisos</string>
     <string name="home_activate_camera">Activar Camara</string>
+    <string name="video">Video</string>
+    <string name="translate">Traductor</string>
+    <string name="dictionary">Diccionario</string>
+    <string name="profile">Perfil</string>
 </resources>
