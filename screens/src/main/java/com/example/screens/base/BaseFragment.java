@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.R;
 
 import java.util.List;
@@ -86,10 +87,6 @@ public class BaseFragment extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
-
-
-
-
 
 
 

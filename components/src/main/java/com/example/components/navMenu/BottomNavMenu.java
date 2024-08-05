@@ -21,10 +21,10 @@ public class BottomNavMenu extends ConstraintLayout {
     }
 
     // Definir constantes para los IDs de los tabs
-    public final int TAB_HOME = 1;
-    public final int TAB_TRANSLATE = 2;
-    public final int TAB_DICTIONARY = 3;
-    public final int TAB_PROFILE = 4;
+    public static final int TAB_HOME = 1;
+    public static final int TAB_TRANSLATE = 2;
+    public static final int TAB_DICTIONARY = 3;
+    public static final int TAB_PROFILE = 4;
 
     private LinearLayout llHome, llTranslate, llDictionary, llProfile;
     private ImageView imgHome, imgTranslate, imgDictionary, imgProfile, imgLineHome, imgLineTranslate, imgLineDictionary, imgLineProfile;

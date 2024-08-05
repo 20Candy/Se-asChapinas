@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dictionary_nav"
+    app:startDestination="@id/dictionaryFragment">
+
+    <fragment
+        android:id="@+id/dictionaryFragment"
+        android:name="com.example.screens.flows.dictionary.ui.DictionaryFragment"
+        android:label="fragment_dictionary"
+        tools:layout="@layout/fragment_dictionary" />
+</navigation>

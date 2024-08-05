@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import com.example.components.buttons.DebounceClickListener;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentLandingBinding;
+import com.example.screens.flows.home.vm.HomeViewModel;
+import com.example.screens.flows.landing.vm.LandingViewModel;
 
 
 public class LandingFragment extends BaseFragment implements View.OnClickListener{
@@ -21,7 +24,17 @@ public class LandingFragment extends BaseFragment implements View.OnClickListene
     //Binding --------------------------------------------------------------------------------------
     FragmentLandingBinding binding;
 
+    // Atributos de la clase -----------------------------------------------------------------------
+    private LandingViewModel landingViewModel;
+
+
     // Metodos de ciclo de vida --------------------------------------------------------------------
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        landingViewModel = new ViewModelProvider(requireActivity()).get(LandingViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +46,13 @@ public class LandingFragment extends BaseFragment implements View.OnClickListene
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         startListeners();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LandingViewModel.setBottomNavVisible(false);
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------
