@@ -455,9 +455,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     // Servicios -----------------------------------------------------------------------------------
     private void videoTraductionService(){
         // TODO IMPLEMENTAR SERVICIO Y LOADER
+        String lensegua = "Yo hoy universidad ir";
+        String espanol = "Hoy voy a la universidad";
+
 
         Bundle bundle = new Bundle();
         bundle.putString("video_path", this.filepath);
+        bundle.putString("lensegua", lensegua);
+        bundle.putString("espanol", espanol);
 
         navigateTo(binding.getRoot(), R.id.action_homeFragment_to_videoFragment, bundle);
 

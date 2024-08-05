@@ -5,21 +5,24 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
-import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.databinding.FragmentVideoBinding;
-import com.example.screens.flows.home.vm.HomeViewModel;
-import com.example.screens.flows.landing.vm.LandingViewModel;
 import com.example.screens.flows.video.vm.VideoViewModel;
-import com.example.screens.utils.SharedPreferencesManager;
+
+import java.io.File;
+import java.util.Locale;
 
 
 public class VideoFragment extends BaseFragment {
@@ -29,6 +32,12 @@ public class VideoFragment extends BaseFragment {
 
     // Atributos de la clase -----------------------------------------------------------------------
     VideoViewModel videoViewModel;
+    private boolean addFavorite = false;
+    private String lensegua = "";
+    private String espanol = "";
+
+    private TextToSpeech textToSpeech;
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
@@ -48,7 +57,10 @@ public class VideoFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
+        initTextToSpeech();
         setVideoPlayer();
+        setTraductions();
+        setListeners();
     }
 
     @Override
@@ -56,6 +68,15 @@ public class VideoFragment extends BaseFragment {
         super.onResume();
 
         VideoViewModel.setBottomNavVisible(false);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------
@@ -67,5 +88,117 @@ public class VideoFragment extends BaseFragment {
             binding.videoView.start();
         }
     }
+
+    private void setTraductions(){
+        if (getArguments() != null && getArguments().containsKey("lensegua")) {
+            this.lensegua = getArguments().getString("lensegua");
+            binding.tvLensegua.setText(this.lensegua);
+        }
+        if (getArguments() != null && getArguments().containsKey("espanol")) {
+            this.espanol = getArguments().getString("espanol");
+            binding.tvEspanol.setText(this.espanol);
+        }
+    }
+
+    private void setListeners(){
+        binding.imgClose.setOnClickListener(view -> {
+            clearBackStackTo(binding.getRoot(), R.id.homeFragment);
+            borrarVideo();
+        });
+
+        binding.imgHeart.setOnClickListener(view -> {
+            addFavorite = !addFavorite;
+
+            if(addFavorite){
+                servicioAgregarFavorito();
+                binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.full_heart));
+            }else{
+                servicioEliminarFavorito();
+                binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.heart));
+
+            }
+
+        });
+
+        binding.imgSpeaker.setOnClickListener(view -> {
+            Bundle params = new Bundle();
+            params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+            textToSpeech.speak(this.espanol, TextToSpeech.QUEUE_FLUSH, params, "UniqueID");
+        });
+
+        binding.imgShare.setOnClickListener(view -> {
+
+        });
+    }
+
+
+    private void initTextToSpeech(){
+        textToSpeech = new TextToSpeech(getContext(), status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                int result = textToSpeech.setLanguage(new Locale("es", "MX"));
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String utteranceId) {
+                            binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.speaker_full));
+                        }
+
+                        @Override
+                        public void onDone(String utteranceId) {
+                            binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.speaker));
+                        }
+
+                        @Override
+                        public void onError(String utteranceId) {
+                            Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        @Override
+                        public void onError(String utteranceId, int errorCode) {
+                            Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }
+            } else {
+                Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private void borrarVideo(){
+        if (getArguments() != null && getArguments().containsKey("video_path")) {
+            String videoPath = getArguments().getString("video_path");
+            File videoFile = new File(getContext().getCacheDir(), videoPath);
+
+            if (videoFile.exists()) {
+                if (videoFile.delete()) {
+                    Log.d("VideoFragment", "Video borrado exitosamente de la caché.");
+                } else {
+                    Log.d("VideoFragment", "Error al borrar el video de la caché.");
+                }
+            } else {
+                Log.d("VideoFragment", "Archivo no encontrado en la caché.");
+            }
+        }
+    }
+
+
+    // Servicios -----------------------------------------------------------------------------------
+
+    private void servicioAgregarFavorito(){
+        // TODO
+    }
+
+    private void servicioEliminarFavorito(){
+        // TODO
+    }
+
+
 
 }

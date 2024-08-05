@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/imgClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
@@ -70,21 +70,21 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/tvLensegua"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_light"
-                android:text="TextView"
                 android:textColor="@color/light_blue"
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tvEspanol"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_medium"
-                android:text="TextView"
                 android:textColor="@color/base_blue"
                 android:textSize="16sp" />
 
@@ -105,13 +105,15 @@
             app:layout_constraintVertical_bias="1.0">
 
             <ImageView
+                android:id="@+id/imgSpeaker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginBottom="27dp"
-                android:src="@drawable/speker" />
+                android:src="@drawable/speaker" />
 
             <ImageView
+                android:id="@+id/imgHeart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -119,6 +121,7 @@
                 android:src="@drawable/heart" />
 
             <ImageView
+                android:id="@+id/imgShare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
