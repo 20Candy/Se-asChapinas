@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
 import android.widget.Toast;
 
 import com.example.screens.R;
@@ -26,10 +27,9 @@ import com.example.screens.flows.video.vm.VideoViewModel;
 import java.io.File;
 import java.util.Locale;
 
-
 public class VideoFragment extends BaseFragment {
 
-    //Binding --------------------------------------------------------------------------------------
+    // Binding --------------------------------------------------------------------------------------
     FragmentVideoBinding binding;
 
     // Atributos de la clase -----------------------------------------------------------------------
@@ -39,7 +39,6 @@ public class VideoFragment extends BaseFragment {
     private String espanol = "";
 
     private TextToSpeech textToSpeech;
-
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
@@ -68,8 +67,16 @@ public class VideoFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
         VideoViewModel.setBottomNavVisible(false);
+        resumeVideo();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pauseVideo();
+        binding.videoView.setMediaController(null); // Ocultar el MediaController cuando el video está en pausa
+
     }
 
     @Override
@@ -82,16 +89,18 @@ public class VideoFragment extends BaseFragment {
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------
-
-    private void setVideoPlayer(){
+    private void setVideoPlayer() {
         if (getArguments() != null && getArguments().containsKey("video_path")) {
             String videoPath = getArguments().getString("video_path");
             binding.videoView.setVideoURI(Uri.parse(videoPath));
+            MediaController mediaController = new MediaController(getContext());
+            binding.videoView.setMediaController(mediaController);
+            binding.videoView.requestFocus();
             binding.videoView.start();
         }
     }
 
-    private void setTraductions(){
+    private void setTraductions() {
         if (getArguments() != null && getArguments().containsKey("lensegua")) {
             this.lensegua = getArguments().getString("lensegua");
             binding.tvLensegua.setText(this.lensegua);
@@ -102,7 +111,7 @@ public class VideoFragment extends BaseFragment {
         }
     }
 
-    private void setListeners(){
+    private void setListeners() {
         binding.imgClose.setOnClickListener(view -> {
             clearBackStackTo(binding.getRoot(), R.id.homeFragment);
             borrarVideo();
@@ -111,15 +120,13 @@ public class VideoFragment extends BaseFragment {
         binding.imgHeart.setOnClickListener(view -> {
             addFavorite = !addFavorite;
 
-            if(addFavorite){
+            if (addFavorite) {
                 servicioAgregarFavorito();
                 binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.full_heart));
-            }else{
+            } else {
                 servicioEliminarFavorito();
                 binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.heart));
-
             }
-
         });
 
         binding.imgSpeaker.setOnClickListener(view -> {
@@ -133,14 +140,12 @@ public class VideoFragment extends BaseFragment {
         });
     }
 
-
-    private void initTextToSpeech(){
+    private void initTextToSpeech() {
         textToSpeech = new TextToSpeech(getContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
                 int result = textToSpeech.setLanguage(new Locale("es", "MX"));
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                     Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
-
                 } else {
                     textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                         @Override
@@ -156,24 +161,21 @@ public class VideoFragment extends BaseFragment {
                         @Override
                         public void onError(String utteranceId) {
                             Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
-
                         }
 
                         @Override
                         public void onError(String utteranceId, int errorCode) {
                             Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
-
                         }
                     });
                 }
             } else {
                 Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
 
-    private void borrarVideo(){
+    private void borrarVideo() {
         if (getArguments() != null && getArguments().containsKey("video_path")) {
             String videoPath = getArguments().getString("video_path");
             File videoFile = new File(getContext().getCacheDir(), videoPath);
@@ -216,20 +218,24 @@ public class VideoFragment extends BaseFragment {
         }
     }
 
+    private void resumeVideo() {
+        if (binding.videoView != null && !binding.videoView.isPlaying()) {
+            binding.videoView.start();
+        }
+    }
 
-
-
+    private void pauseVideo() {
+        if (binding.videoView != null && binding.videoView.isPlaying()) {
+            binding.videoView.pause();
+        }
+    }
 
     // Servicios -----------------------------------------------------------------------------------
-
-    private void servicioAgregarFavorito(){
+    private void servicioAgregarFavorito() {
         // TODO
     }
 
-    private void servicioEliminarFavorito(){
+    private void servicioEliminarFavorito() {
         // TODO
     }
-
-
-
 }

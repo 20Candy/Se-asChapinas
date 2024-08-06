@@ -8,8 +8,7 @@
     <string name="permissions_alert">Para que “Señas Chapinas” funcione, necesitamos acceso a tu cámara. ¡Actívalo y empecemos!</string>
     <string name="camera_alert">Para que “¡Presiona el botón para empezar a grabar!</string>
     <string name="button_give_permissions">Dar Permisos</string>
-    <string name="button_activate_camera">Activar Camára</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_activate_camera">Activar Cámara</string>
+
 
 </resources>

@@ -31,6 +31,7 @@ public class RecordButton extends ConstraintLayout implements IButtons {
     private OnRecordListener onRecordListener;
     private CountDownTimer countDownTimer;
     private boolean isRecording = false;
+    private long startTime;
 
     public RecordButton(Context context) {
         super(context);
@@ -101,6 +102,7 @@ public class RecordButton extends ConstraintLayout implements IButtons {
     private void startRecording() {
         if (!isRecording) {
             isRecording = true;
+            startTime = System.currentTimeMillis();
             recording.setVisibility(VISIBLE);
             pre_record.setVisibility(INVISIBLE);
             timer.setVisibility(VISIBLE);
@@ -116,13 +118,19 @@ public class RecordButton extends ConstraintLayout implements IButtons {
 
     private void stopRecording() {
         if (isRecording) {
-            isRecording = false;
-            recording.setVisibility(GONE);
-            pre_record.setVisibility(VISIBLE);
-            stopTimer();
-            animateButton(false);
-            if (onRecordListener != null) {
-                onRecordListener.onStopRecording();
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            if (elapsedTime <= 2000) {
+                // Reiniciar el estado sin llamar a los callbacks
+                resetRecording();
+            } else {
+                isRecording = false;
+                recording.setVisibility(GONE);
+                pre_record.setVisibility(VISIBLE);
+                stopTimer();
+                animateButton(false);
+                if (onRecordListener != null) {
+                    onRecordListener.onStopRecording();
+                }
             }
         }
     }
@@ -168,6 +176,17 @@ public class RecordButton extends ConstraintLayout implements IButtons {
             countDownTimer.cancel();
         }
         timer.setText("00:00");
+        progressBar.setProgress(0);
+    }
+
+    private void resetRecording() {
+        isRecording = false;
+        recording.setVisibility(GONE);
+        pre_record.setVisibility(VISIBLE);
+        stopTimer();
+        animateButton(false);
+//        timer.setText("00:00");
+        timer.setVisibility(GONE);
         progressBar.setProgress(0);
     }
 

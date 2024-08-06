@@ -35,6 +35,7 @@ import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.flows.home.vm.HomeViewModel;
+import com.example.screens.flows.video.vm.VideoViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
 import java.io.File;
@@ -97,6 +98,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (cameraDevice != null) {
             cameraDevice.close();
             cameraDevice = null;
+        }
+    }
+
+    public void onResume() {
+        super.onResume();
+        VideoViewModel.setBottomNavVisible(true);
+        if (hasAllPermissionsGranted() && binding.clCamera.getVisibility() == View.VISIBLE) {
+            encenderCamara();
         }
     }
 
