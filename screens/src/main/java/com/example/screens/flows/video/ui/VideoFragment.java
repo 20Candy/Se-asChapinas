@@ -148,6 +148,8 @@ public class VideoFragment extends BaseFragment {
             Bundle params = new Bundle();
             params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
             textToSpeech.speak(this.espanol, TextToSpeech.QUEUE_FLUSH, params, "UniqueID");
+            binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.speaker_full));
+
         });
 
         binding.imgShare.setOnClickListener(view -> {
@@ -169,7 +171,6 @@ public class VideoFragment extends BaseFragment {
                     textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                         @Override
                         public void onStart(String utteranceId) {
-                            binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.speaker_full));
                         }
 
                         @Override
