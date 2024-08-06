@@ -55,6 +55,7 @@ public class MainButton extends ConstraintLayout implements IButtons {
         boolean enabled = array.getBoolean(R.styleable.button_enabled, true);
         int textColor = array.getInt(R.styleable.button_textColor, 0);
         Drawable background = array.getDrawable(R.styleable.button_background);
+        int backgroundColor = array.getInt(R.styleable.button_bColor, 0);
 
         if (text != null && !text.isEmpty()) {
             setText(text);
@@ -69,6 +70,10 @@ public class MainButton extends ConstraintLayout implements IButtons {
 
         if (background != null) {
             setBackground(background);
+        }
+
+        if (backgroundColor != 0) {
+            setBackgroundColor(backgroundColor);
         }
 
     }
@@ -105,6 +110,11 @@ public class MainButton extends ConstraintLayout implements IButtons {
     @Override
     public void setBackground(Drawable value) {
         mainButton.setBackground(value);
+    }
+
+    @Override
+    public void setBackgroundColor(int value) {
+        mainButton.setBackgroundColor(value);
     }
 
     // Listener ------------------------------------------------------------------------------------
