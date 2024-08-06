@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
             navController.setGraph(com.example.screens.R.navigation.main_nav);
         }
 
+        bottomNavMenu.setActiveTab(BottomNavMenu.TAB_HOME);
+
     }
 
     @Override

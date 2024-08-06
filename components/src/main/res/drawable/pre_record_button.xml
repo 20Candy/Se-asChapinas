@@ -1,0 +1,14 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/background_circle_white">
+        <shape android:shape="oval">
+            <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
+            <stroke android:width="5dp" android:color="@color/background" />
+        </shape>
+    </item>
+    <item android:id="@+id/foreground_circle_red">
+        <shape android:shape="oval">
+            <solid android:color="@color/base_red" />
+            <size android:width="150dp" android:height="150dp" />
+        </shape>
+    </item>
+</layer-list>

@@ -12,6 +12,8 @@
     <color name="light_green">#8DC249</color>
     <color name="light_blue">#60618C</color>
     <color name="dark_grey">#323232</color>
+    <color name="background_record_button">#707475</color>
+    <color name="front_record_button">#C6CACC</color>
 
 
 </resources>
