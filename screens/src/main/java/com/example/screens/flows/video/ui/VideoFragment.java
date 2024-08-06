@@ -1,11 +1,13 @@
 package com.example.screens.flows.video.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.speech.tts.TextToSpeech;
@@ -127,7 +129,7 @@ public class VideoFragment extends BaseFragment {
         });
 
         binding.imgShare.setOnClickListener(view -> {
-
+            compartirVideo();
         });
     }
 
@@ -187,6 +189,35 @@ public class VideoFragment extends BaseFragment {
             }
         }
     }
+
+    private void compartirVideo() {
+        if (getArguments() != null && getArguments().containsKey("video_path")) {
+            String videoPath = getArguments().getString("video_path");
+            File videoFile = new File(videoPath);
+            Uri videoUri = FileProvider.getUriForFile(
+                    getContext(),
+                    getContext().getPackageName() + ".fileprovider",
+                    videoFile);
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("video/*");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, videoUri);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, this.espanol);
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            // Verificamos si hay aplicaciones que puedan manejar el intento
+            if (shareIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                startActivity(Intent.createChooser(shareIntent, "Compartir video"));
+            } else {
+                Toast.makeText(getContext(), "No hay aplicaciones disponibles para compartir el video", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "No se pudo obtener la ruta del video", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
 
 
     // Servicios -----------------------------------------------------------------------------------
