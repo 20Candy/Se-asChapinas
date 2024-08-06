@@ -153,6 +153,10 @@ public class VideoFragment extends BaseFragment {
         binding.imgShare.setOnClickListener(view -> {
             compartirVideo();
         });
+
+        binding.imgReport.setOnClickListener(view ->{
+            // TODO FLUJO REPORTE
+        });
     }
 
     private void initTextToSpeech() {
