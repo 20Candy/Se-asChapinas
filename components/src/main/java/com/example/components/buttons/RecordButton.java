@@ -5,9 +5,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -19,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import com.example.components.R;
 import com.example.components.buttons.DebounceClickListener;
@@ -34,6 +30,7 @@ public class RecordButton extends ConstraintLayout implements IButtons {
     private ProgressBar progressBar;
     private OnRecordListener onRecordListener;
     private CountDownTimer countDownTimer;
+    private boolean isRecording = false;
 
     public RecordButton(Context context) {
         super(context);
@@ -76,115 +73,95 @@ public class RecordButton extends ConstraintLayout implements IButtons {
         int textColor = array.getInt(R.styleable.button_textColor, 0);
         Drawable background = array.getDrawable(R.styleable.button_background);
 
-        if (text != null && !text.isEmpty()) {
-            setText(text);
-        }
-
+        setText(text);
         setTextSize(textSize);
         setEnabled(enabled);
-
-        if (textColor != 0) {
-            setTextColor(textColor);
-        }
-
-        if (background != null) {
-            setBackground(background);
-        }
+        setTextColor(textColor);
+        setBackground(background);
+        array.recycle();
     }
 
     private void setTouchListener() {
-        recording.setVisibility(GONE);
-        pre_record.setVisibility(VISIBLE);
-        timer.setVisibility(GONE);
-        progressBar.setVisibility(GONE);
-
         pre_record.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        recording.setVisibility(VISIBLE);
-                        pre_record.setVisibility(INVISIBLE);
-                        timer.setVisibility(VISIBLE);
-                        progressBar.setVisibility(VISIBLE);
-                        progressBar.setProgress(0);
-                        startTimer();
-
-                        animateButton(true);
-                        if (onRecordListener != null) {
-                            onRecordListener.onStartRecording();
-                        }
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        recording.setVisibility(GONE);
-                        pre_record.setVisibility(VISIBLE);
-                        stopTimer();
-
-                        animateButton(false);
-                        if (onRecordListener != null) {
-                            onRecordListener.onStopRecording();
-                        }
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            v.performClick();
-                        }
-                        return true;
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    startRecording();
+                } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    stopRecording();
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        v.performClick();
+                    }
                 }
                 return false;
             }
         });
     }
 
+    private void startRecording() {
+        if (!isRecording) {
+            isRecording = true;
+            recording.setVisibility(VISIBLE);
+            pre_record.setVisibility(INVISIBLE);
+            timer.setVisibility(VISIBLE);
+            progressBar.setVisibility(VISIBLE);
+            progressBar.setProgress(0);
+            startTimer();
+            animateButton(true);
+            if (onRecordListener != null) {
+                onRecordListener.onStartRecording();
+            }
+        }
+    }
+
+    private void stopRecording() {
+        if (isRecording) {
+            isRecording = false;
+            recording.setVisibility(GONE);
+            pre_record.setVisibility(VISIBLE);
+            stopTimer();
+            animateButton(false);
+            if (onRecordListener != null) {
+                onRecordListener.onStopRecording();
+            }
+        }
+    }
+
     private void animateButton(boolean startRecording) {
-        ObjectAnimator imgBackGrowX = ObjectAnimator.ofFloat(back, "scaleX", startRecording ? 1.3f : 1f);
-        ObjectAnimator imgBackGrowY = ObjectAnimator.ofFloat(back, "scaleY", startRecording ? 1.3f : 1f);
-        ObjectAnimator imgFrontShrinkX = ObjectAnimator.ofFloat(front, "scaleX", startRecording ? 0.5f : 1f);
-        ObjectAnimator imgFrontShrinkY = ObjectAnimator.ofFloat(front, "scaleY", startRecording ? 0.5f : 1f);
-
-        imgBackGrowX.setDuration(300);
-        imgBackGrowY.setDuration(300);
-        imgFrontShrinkX.setDuration(300);
-        imgFrontShrinkY.setDuration(300);
-
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(imgBackGrowX, imgBackGrowY, imgFrontShrinkX, imgFrontShrinkY);
+        animatorSet.playTogether(
+                ObjectAnimator.ofFloat(back, "scaleX", startRecording ? 1.3f : 1f),
+                ObjectAnimator.ofFloat(back, "scaleY", startRecording ? 1.3f : 1f),
+                ObjectAnimator.ofFloat(front, "scaleX", startRecording ? 0.5f : 1f),
+                ObjectAnimator.ofFloat(front, "scaleY", startRecording ? 0.5f : 1f)
+        );
+        animatorSet.setDuration(300);
         animatorSet.start();
     }
 
     private void startTimer() {
-        countDownTimer = new CountDownTimer(15000, 50) { // Actualiza cada 50 ms
+        countDownTimer = new CountDownTimer(15000, 50) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (15000 - millisUntilFinished) / 1000;
                 timer.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
-
-                // Anima el progreso del ProgressBar
-                float progress = (15000 - millisUntilFinished) / 15000.0f * 100;
-                animateProgressBar(progress);
+                animateProgressBar((15000 - millisUntilFinished) / 15000.0f * 100);
             }
 
             @Override
             public void onFinish() {
-                timer.setText("00:00");
-                animateProgressBar(100); // 100% del progreso
-                recording.setVisibility(GONE);
-                pre_record.setVisibility(VISIBLE);
-                timer.setVisibility(GONE);
-                progressBar.setVisibility(GONE);
-                if (onRecordListener != null) {
-                    onRecordListener.onStopRecording();
-                }
+                stopRecording(); // Calls stopRecording to handle the end of the timer.
             }
-        }.start();
+        };
+        countDownTimer.start();
     }
 
     private void animateProgressBar(float toProgress) {
-        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", progressBar.getProgress(), (int) toProgress);
-        progressAnimator.setDuration(100); // Duración más corta para animaciones más suaves
-        progressAnimator.setInterpolator(new LinearInterpolator()); // Interpolador para animación suave
+        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", (int) toProgress);
+        progressAnimator.setDuration(100);
+        progressAnimator.setInterpolator(new LinearInterpolator());
         progressAnimator.start();
     }
-
 
     private void stopTimer() {
         if (countDownTimer != null) {
@@ -192,37 +169,21 @@ public class RecordButton extends ConstraintLayout implements IButtons {
         }
         timer.setText("00:00");
         progressBar.setProgress(0);
-        timer.setVisibility(GONE);
-        progressBar.setVisibility(GONE);
-    }
-
-    @Override
-    public boolean performClick() {
-        return super.performClick();
     }
 
     @Override
     public void setText(String value) {
+
     }
 
     @Override
     public void setTextSize(int value) {
+
     }
 
     @Override
-    public void setEnabled(boolean value) {
-    }
+    public void setTextColor(int value) {
 
-    @Override
-    public void setTextColor(int color) {
-    }
-
-    @Override
-    public void setBackground(Drawable value) {
-    }
-
-    public void setOnClickListener(OnClickListener listener) {
-        pre_record.setOnClickListener(new DebounceClickListener(listener));
     }
 
     public interface OnRecordListener {
