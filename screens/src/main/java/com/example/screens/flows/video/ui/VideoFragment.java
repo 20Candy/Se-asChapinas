@@ -69,6 +69,7 @@ public class VideoFragment extends BaseFragment {
         super.onResume();
         VideoViewModel.setBottomNavVisible(false);
         resumeVideo();
+
     }
 
     @Override
@@ -93,12 +94,26 @@ public class VideoFragment extends BaseFragment {
         if (getArguments() != null && getArguments().containsKey("video_path")) {
             String videoPath = getArguments().getString("video_path");
             binding.videoView.setVideoURI(Uri.parse(videoPath));
-            MediaController mediaController = new MediaController(getContext());
+
+            // Configura el video player sin MediaController
+            MediaController mediaController = new MediaController(getContext()) {
+                @Override
+                public void show() {
+                    // Sobreescribe este método para evitar que se muestren los controles
+                }
+
+                @Override
+                public void hide() {
+                    // Sobreescribe este método para evitar que se oculten los controles
+                }
+            };
+
             binding.videoView.setMediaController(mediaController);
             binding.videoView.requestFocus();
             binding.videoView.start();
         }
     }
+
 
     private void setTraductions() {
         if (getArguments() != null && getArguments().containsKey("lensegua")) {

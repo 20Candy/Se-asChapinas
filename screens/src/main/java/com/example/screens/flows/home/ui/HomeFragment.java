@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.util.Size;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -445,8 +446,30 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mediaRecorder.setVideoFrameRate(30); // Tasa de cuadros de video
         mediaRecorder.setVideoSize(imageDimension.getWidth(), imageDimension.getHeight()); // Tamaño de video
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264); // Codificador de video
+
+        // Configurar la orientación del video
+        CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        try {
+            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
+            int sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+            int deviceOrientation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
+            int rotation = (ORIENTATIONS.get(deviceOrientation) + sensorOrientation + 270) % 360;
+            mediaRecorder.setOrientationHint(rotation);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+
         mediaRecorder.prepare(); // Preparar el MediaRecorder para la grabación
     }
+
+    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+    }
+
 
 
     private String createTemporaryVideoFile(Context context) throws IOException {
