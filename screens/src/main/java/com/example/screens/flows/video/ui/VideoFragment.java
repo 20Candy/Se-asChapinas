@@ -113,8 +113,8 @@ public class VideoFragment extends BaseFragment {
 
     private void setListeners() {
         binding.imgClose.setOnClickListener(view -> {
-            clearBackStackTo(binding.getRoot(), R.id.homeFragment);
             borrarVideo();
+            clearBackStackTo(binding.getRoot(), R.id.homeFragment);
         });
 
         binding.imgHeart.setOnClickListener(view -> {
@@ -178,7 +178,7 @@ public class VideoFragment extends BaseFragment {
     private void borrarVideo() {
         if (getArguments() != null && getArguments().containsKey("video_path")) {
             String videoPath = getArguments().getString("video_path");
-            File videoFile = new File(getContext().getCacheDir(), videoPath);
+            File videoFile = new File(videoPath);
 
             if (videoFile.exists()) {
                 if (videoFile.delete()) {
