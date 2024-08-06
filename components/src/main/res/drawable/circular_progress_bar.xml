@@ -1,0 +1,26 @@
+<!-- circular_progress_bar.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape android:shape="ring"
+            android:innerRadiusRatio="2.13"
+            android:thicknessRatio="40"
+            android:useLevel="false">
+            <size
+                android:width="1dp"
+                android:height="1dp"/>
+            <solid android:color="#00000000"/>
+        </shape>
+    </item>
+    <item android:id="@android:id/secondaryProgress">
+        <shape android:shape="ring"
+            android:innerRadiusRatio="2.13"
+            android:thicknessRatio="40"
+            android:useLevel="true">
+            <size
+                android:width="1dp"
+                android:height="1dp"/>
+            <solid android:color="#ff0000"/>
+        </shape>
+    </item>
+</layer-list>
+
