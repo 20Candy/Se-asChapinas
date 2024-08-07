@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.speech.tts.TextToSpeech;
@@ -19,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.Toast;
 
+import com.example.components.bottomsheet.BottomSheet;
+import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentVideoBinding;
@@ -39,6 +42,9 @@ public class VideoFragment extends BaseFragment {
     private String espanol = "";
 
     private TextToSpeech textToSpeech;
+
+    private BottomSheet bottomSheet;
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
@@ -157,7 +163,17 @@ public class VideoFragment extends BaseFragment {
         });
 
         binding.imgReport.setOnClickListener(view ->{
-            // TODO FLUJO REPORTE
+            bottomSheet = new BottomSheet(
+                    // Ver diccionario
+                    () -> {
+                        VideoViewModel.selectTab(BottomNavMenu.TAB_DICTIONARY);
+                    },
+                    // Continuar Reporte
+                    () -> {
+
+                    }
+            );
+            bottomSheet.show(getChildFragmentManager(), "myTokenBottomSheet");
         });
     }
 

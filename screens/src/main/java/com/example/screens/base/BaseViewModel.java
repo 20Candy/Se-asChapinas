@@ -9,11 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 
 public class BaseViewModel extends AndroidViewModel {
 
-    private static final MutableLiveData<Boolean> isBottomNavVisible = new MutableLiveData<>(true);
-
     public BaseViewModel(@NonNull Application application) {
         super(application);
     }
+
+    private static final MutableLiveData<Boolean> isBottomNavVisible = new MutableLiveData<>(true);
 
     public LiveData<Boolean> getIsBottomNavVisible() {
         return isBottomNavVisible;
@@ -22,4 +22,17 @@ public class BaseViewModel extends AndroidViewModel {
     public static void setBottomNavVisible(boolean isVisible) {
         isBottomNavVisible.setValue(isVisible);
     }
+
+
+    private static final MutableLiveData<Integer> selectedTab = new MutableLiveData<>();
+
+    public MutableLiveData<Integer> getSelectedTab() {
+        return selectedTab;
+    }
+
+    public static void selectTab(int tabId) {
+        selectedTab.setValue(tabId);
+    }
+
+
 }

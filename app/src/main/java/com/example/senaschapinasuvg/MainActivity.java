@@ -13,7 +13,7 @@ import com.example.screens.utils.SharedPreferencesManager;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferencesManager sharedPreferencesManager;
-    private BottomNavMenu bottomNavMenu;
+    public BottomNavMenu bottomNavMenu;
     private BaseViewModel baseViewModel;
 
     @Override
@@ -33,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
         baseViewModel.getIsBottomNavVisible().observe(this, isVisible -> {
             if (bottomNavMenu != null) {
                 bottomNavMenu.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        baseViewModel.getSelectedTab().observe(this, newTab -> {
+            if (newTab != null) {
+                bottomNavMenu.setActiveTab(newTab);
             }
         });
 
@@ -59,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
         // Verificar sesión activa
         if (sharedPreferencesManager.isLogged()) {
             navController.setGraph(com.example.screens.R.navigation.video_nav);
+            bottomNavMenu.setActiveTab(BottomNavMenu.TAB_HOME);
         } else {
             navController.setGraph(com.example.screens.R.navigation.main_nav);
         }
 
-        bottomNavMenu.setActiveTab(BottomNavMenu.TAB_HOME);
 
     }
 

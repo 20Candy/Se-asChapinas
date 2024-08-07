@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.components.buttons.DebounceClickListener;
 import com.example.components.buttons.RecordButton;
+import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentHomeBinding;
@@ -104,7 +105,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     public void onResume() {
         super.onResume();
-        VideoViewModel.setBottomNavVisible(true);
+        HomeViewModel.setBottomNavVisible(true);
+        HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
         if (hasAllPermissionsGranted() && binding.clCamera.getVisibility() == View.VISIBLE) {
             encenderCamara();
         }
