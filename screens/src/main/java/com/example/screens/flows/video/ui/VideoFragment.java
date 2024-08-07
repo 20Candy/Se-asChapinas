@@ -45,6 +45,8 @@ public class VideoFragment extends BaseFragment {
 
     private BottomSheet bottomSheet;
 
+    private String videoPath = "";
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
@@ -98,7 +100,7 @@ public class VideoFragment extends BaseFragment {
     // Metodos privados de la clase ----------------------------------------------------------------
     private void setVideoPlayer() {
         if (getArguments() != null && getArguments().containsKey("video_path")) {
-            String videoPath = getArguments().getString("video_path");
+            videoPath = getArguments().getString("video_path");
             binding.videoView.setVideoURI(Uri.parse(videoPath));
 
             // Configura el video player sin MediaController
@@ -166,7 +168,9 @@ public class VideoFragment extends BaseFragment {
             bottomSheet = new BottomSheet(
                     // Continuar Reporte
                     () -> {
-                        navigateTo(binding.getRoot(), R.id.action_videoFragment_to_reportFragment, null);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("video_path", videoPath);
+                        navigateTo(binding.getRoot(), R.id.action_videoFragment_to_reportFragment, bundle);
                         },
                     // Ver diccionario
                     () -> {
@@ -212,46 +216,42 @@ public class VideoFragment extends BaseFragment {
     }
 
     private void borrarVideo() {
-        if (getArguments() != null && getArguments().containsKey("video_path")) {
-            String videoPath = getArguments().getString("video_path");
-            File videoFile = new File(videoPath);
 
-            if (videoFile.exists()) {
-                if (videoFile.delete()) {
-                    Log.d("VideoFragment", "Video borrado exitosamente de la caché.");
-                } else {
-                    Log.d("VideoFragment", "Error al borrar el video de la caché.");
-                }
+        File videoFile = new File(videoPath);
+
+        if (videoFile.exists()) {
+            if (videoFile.delete()) {
+                Log.d("VideoFragment", "Video borrado exitosamente de la caché.");
             } else {
-                Log.d("VideoFragment", "Archivo no encontrado en la caché.");
+                Log.d("VideoFragment", "Error al borrar el video de la caché.");
             }
+        } else {
+            Log.d("VideoFragment", "Archivo no encontrado en la caché.");
         }
+
     }
 
     private void compartirVideo() {
-        if (getArguments() != null && getArguments().containsKey("video_path")) {
-            String videoPath = getArguments().getString("video_path");
-            File videoFile = new File(videoPath);
-            Uri videoUri = FileProvider.getUriForFile(
-                    getContext(),
-                    getContext().getPackageName() + ".fileprovider",
-                    videoFile);
 
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("video/*");
-            shareIntent.putExtra(Intent.EXTRA_STREAM, videoUri);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, this.espanol);
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        File videoFile = new File(videoPath);
+        Uri videoUri = FileProvider.getUriForFile(
+                getContext(),
+                getContext().getPackageName() + ".fileprovider",
+                videoFile);
 
-            // Verificamos si hay aplicaciones que puedan manejar el intento
-            if (shareIntent.resolveActivity(getContext().getPackageManager()) != null) {
-                startActivity(Intent.createChooser(shareIntent, "Compartir video"));
-            } else {
-                Toast.makeText(getContext(), "No hay aplicaciones disponibles para compartir el video", Toast.LENGTH_SHORT).show();
-            }
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("video/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, videoUri);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, this.espanol);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        // Verificamos si hay aplicaciones que puedan manejar el intento
+        if (shareIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivity(Intent.createChooser(shareIntent, "Compartir video"));
         } else {
-            Toast.makeText(getContext(), "No se pudo obtener la ruta del video", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No hay aplicaciones disponibles para compartir el video", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private void resumeVideo() {
