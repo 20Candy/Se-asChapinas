@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bar_bottomsheet" />
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_corners_bottomshet"
+    >
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="40dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0">
+        android:paddingTop="16dp"
+        android:paddingStart="21dp"
+        android:paddingEnd="21dp"
+        android:paddingBottom="40dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/bar_bottomsheet" />
 
         <TextView
             android:id="@+id/textView2"
@@ -37,59 +31,46 @@
             android:gravity="center"
             android:text="@string/report_title"
             android:textColor="@color/base_red"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:layout_marginTop="24dp"/>
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:fontFamily="@font/nunito_medium"
             android:gravity="center"
             android:text="@string/repot_body"
             android:textColor="@color/base_blue"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
             android:orientation="horizontal"
+            android:layout_marginTop="42dp"
             android:weightSum="2">
 
             <com.example.components.buttons.MainButton
                 android:id="@+id/mainButton"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="9dp"
                 android:layout_weight="1"
+                android:layout_marginEnd="9dp"
                 app:background="@drawable/blue_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_lensegua"
                 app:text="@string/report_button1"
-                app:textColor="@color/background">
-
-            </com.example.components.buttons.MainButton>
+                app:textColor="@color/background"/>
 
             <com.example.components.buttons.TransparentButton
                 android:id="@+id/secondButton"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
                 android:layout_weight="1"
+                android:layout_marginStart="9dp"
                 app:background="@drawable/small_red_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mainButton"
                 app:text="@string/report_button2"
-                app:textColor="@color/base_red"
-
-                />
-
-
+                app:textColor="@color/base_red" />
         </LinearLayout>
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

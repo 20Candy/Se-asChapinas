@@ -18,6 +18,7 @@ import com.example.screens.databinding.FragmentDictionaryBinding;
 import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.flows.dictionary.vm.DictionaryViewModel;
 import com.example.screens.flows.home.vm.HomeViewModel;
+import com.example.screens.flows.video.vm.VideoViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
 
@@ -50,6 +51,12 @@ public class DictionaryFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
+    }
+
+    public void onResume() {
+        super.onResume();
+        VideoViewModel.setBottomNavVisible(true);
+
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------
