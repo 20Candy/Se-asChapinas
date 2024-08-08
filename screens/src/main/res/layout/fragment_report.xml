@@ -6,61 +6,32 @@
     tools:context=".flows.report.ui.ReportFragment"
     android:background="@color/background">
 
-    <VideoView
-        android:id="@+id/videoView"
+    <ImageView
+        android:id="@+id/imagePreview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="21dp"
         app:layout_constraintBottom_toTopOf="@+id/thumbnailsView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/thumbnailsView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/videoView"
+        android:layout_height="82dp"
+        android:layout_below="@id/imagePreview"
         android:layout_marginBottom="21dp"
         android:orientation="horizontal"
         android:scrollbars="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="42dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvReport"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.example.components.buttons.MainButton
-            android:id="@+id/mainButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="9dp"
-            android:layout_weight="1"
-            app:background="@drawable/blue_background"
-            app:text="@string/report_button1"
-            app:textColor="@color/background" />
-
-        <com.example.components.buttons.TransparentButton
-            android:id="@+id/secondButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="9dp"
-            android:layout_weight="1"
-            app:background="@drawable/small_red_background"
-            app:text="@string/report_button2"
-            app:textColor="@color/base_red" />
-    </LinearLayout>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
         android:id="@+id/imgClose2"
@@ -71,4 +42,40 @@
         android:src="@drawable/close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/tvReport"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="21dp"
+        android:background="@drawable/input_text_rectangle"
+        android:gravity="top"
+        android:hint="@string/hint_report_input"
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:padding="10dp"
+        android:textColorHint="#B2B3C6"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/secondButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.example.components.buttons.TransparentButton
+        android:id="@+id/secondButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="21dp"
+        android:layout_weight="1"
+        app:background="@drawable/transparente_red_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:text="@string/report_button2"
+        app:textColor="@color/base_red" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,8 @@ public class TransparentButton extends ConstraintLayout implements IButtons {
 
     //Atributos del componente ---------------------------------------------------------------------
     private Button tButton;
+    private Drawable backgroundEnable, backgroundDisable;
+    private int colorEnable, colorDisable;
 
     // Metodos de ContraintLayout ------------------------------------------------------------------
     public TransparentButton(Context context) {
@@ -86,16 +88,23 @@ public class TransparentButton extends ConstraintLayout implements IButtons {
 
     @Override
     public void setEnabled(boolean value) {
-        if (!value) {
-            tButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.light_blue_transparent_button));
-            tButton.setTextColor(ContextCompat.getColor(getContext(), R.color.desable_text_blue));
-        } else {
-            tButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.blue_transprant_button));
-            tButton.setTextColor(ContextCompat.getColor(getContext(), R.color.base_blue));
+        Drawable background = value ? backgroundEnable : backgroundDisable;
+        int textColor = value ? colorEnable : colorDisable;
+
+        if (background == null) { // Si no se ha definido un fondo personalizado, utiliza el predeterminado.
+            background = ContextCompat.getDrawable(getContext(), value ? R.drawable.blue_transprant_button : R.drawable.light_blue_transparent_button);
         }
+
+        if (textColor == 0) { // Si no se ha definido un color de texto personalizado, utiliza el predeterminado.
+            textColor = ContextCompat.getColor(getContext(), value ? R.color.base_blue : R.color.desable_text_blue);
+        }
+
+        tButton.setBackground(background);
+        tButton.setTextColor(textColor);
         tButton.setEnabled(value);
         tButton.setClickable(value);
     }
+
 
     @Override
     public void setTextColor(int color) {
@@ -105,6 +114,22 @@ public class TransparentButton extends ConstraintLayout implements IButtons {
     @Override
     public void setBackground(Drawable value) {
         tButton.setBackground(value);
+    }
+
+    public void setTextColorEnable(int color) {
+        this.colorEnable = color;
+    }
+
+    public void setBackgroundEnable(Drawable value) {
+        this.backgroundEnable = value;
+    }
+
+    public void setTextColorDisable(int color) {
+        this.colorDisable = color;
+    }
+
+    public void setBackgroundDisable(Drawable value) {
+        this.backgroundDisable = value;
     }
 
     // Listener ------------------------------------------------------------------------------------

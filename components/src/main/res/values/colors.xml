@@ -14,6 +14,7 @@
     <color name="dark_grey">#323232</color>
     <color name="background_record_button">#707475</color>
     <color name="front_record_button">#C6CACC</color>
+    <color name="disable_red">#EC8C91</color>
 
 
 </resources>
