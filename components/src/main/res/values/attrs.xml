@@ -6,6 +6,7 @@
         <attr name="enabled" format="boolean" />
         <attr name="textColor" format="integer"/>
         <attr name="background" format="reference" />
+        <attr name="image" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="input">

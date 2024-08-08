@@ -164,23 +164,21 @@ public class VideoFragment extends BaseFragment {
             compartirVideo();
         });
 
-        binding.imgReport.setOnClickListener(view ->{
+        binding.imgReport.setOnClickListener(view -> {
             bottomSheet = new BottomSheet(
-                    // Cancel
+                    // Cancel action
+                    () -> VideoViewModel.selectTab(BottomNavMenu.TAB_DICTIONARY),
+                    // Continue action
                     () -> {
-                        VideoViewModel.selectTab(BottomNavMenu.TAB_DICTIONARY);
-                    },
-                    // Continue
-                    () -> {
-
                         Bundle bundle = new Bundle();
                         bundle.putString("video_path", videoPath);
                         navigateTo(binding.getRoot(), R.id.action_videoFragment_to_reportFragment, bundle);
-
-                    }
+                    },
+                    ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.search_white)
             );
             bottomSheet.show(getChildFragmentManager(), "myTokenBottomSheet");
         });
+
     }
 
     private void initTextToSpeech() {

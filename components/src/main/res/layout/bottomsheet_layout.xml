@@ -60,7 +60,8 @@
                 android:layout_marginEnd="9dp"
                 app:background="@drawable/blue_background"
                 app:text="@string/report_button1"
-                app:textColor="@color/background"/>
+                app:textColor="@color/background"
+                />
 
             <com.example.components.buttons.TransparentButton
                 android:id="@+id/secondButton"

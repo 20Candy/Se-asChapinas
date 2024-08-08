@@ -13,7 +13,7 @@
     <string name="profile">Perfil</string>
     <string name="report_title">Reportar Traducción</string>
     <string name="repot_body">Antes de enviar el reporte, por favor verifica que las señas utilizadas estén disponibles en <b>nuestro diccionario</b>.</string>
-    <string name="report_button1">Ver Diccionario</string>
+    <string name="report_button1">Diccionario</string>
     <string name="report_button2">Reportar</string>
     <string name="hint_report_input">Escríbenos que está mal con tu traducción....</string>
 </resources>

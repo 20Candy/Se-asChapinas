@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +57,8 @@ public class MainButton extends ConstraintLayout implements IButtons {
         boolean enabled = array.getBoolean(R.styleable.button_enabled, true);
         int textColor = array.getInt(R.styleable.button_textColor, 0);
         Drawable background = array.getDrawable(R.styleable.button_background);
+        Drawable image = array.getDrawable(R.styleable.button_image);
+
 
         if (text != null && !text.isEmpty()) {
             setText(text);
@@ -69,6 +73,10 @@ public class MainButton extends ConstraintLayout implements IButtons {
 
         if (background != null) {
             setBackground(background);
+        }
+
+        if(image != null){
+            setButtonImage(image);
         }
 
     }
@@ -110,6 +118,27 @@ public class MainButton extends ConstraintLayout implements IButtons {
     @Override
     public void setBackgroundColor(int value) {
         mainButton.setBackgroundColor(value);
+    }
+
+    public void setButtonImage(Drawable drawable) {
+        if (drawable != null) {
+            // Define los márgenes como quieras, aquí se establece solo el margen izquierdo
+            int left = 8; // 8px de margen izquierdo
+            Drawable[] layers = {drawable};
+            LayerDrawable layerDrawable = new LayerDrawable(layers);
+
+            // Convertir 8px a dp para mantener la consistencia en diferentes densidades de pantalla
+            float density = getContext().getResources().getDisplayMetrics().density;
+            int leftInset = (int) (left * density);
+
+            // Crear un nuevo drawable con margen (Insets)
+            InsetDrawable insetDrawable = new InsetDrawable(layerDrawable, leftInset, 0, 0, 0);
+
+            // Establece el drawable con el margen aplicado
+            mainButton.setCompoundDrawablesWithIntrinsicBounds(insetDrawable, null, null, null);
+        } else {
+            mainButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        }
     }
 
     // Listener ------------------------------------------------------------------------------------

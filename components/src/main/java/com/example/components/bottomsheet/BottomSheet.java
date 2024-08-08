@@ -2,6 +2,7 @@ package com.example.components.bottomsheet;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +25,18 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private OnCancelClickListener mCancelListener;
 
     private String mtitle, mcontent, mbutton1, mbutton2;
+    private Drawable mimage;
     private boolean isContinuePressed = false;
 
     public BottomSheet(OnCancelClickListener cancelListener, OnContinueClickListener continueListener) {
         mCancelListener = cancelListener;
         mContinueListener = continueListener;
+    }
+
+    public BottomSheet(OnCancelClickListener cancelListener, OnContinueClickListener continueListener, Drawable image) {
+        mCancelListener = cancelListener;
+        mContinueListener = continueListener;
+        mimage = image;
     }
 
     public BottomSheet(OnCancelClickListener cancelListener, OnContinueClickListener continueListener, String title, String content, String button1, String button2) {
@@ -38,8 +46,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
         mcontent = content;
         mbutton1 = button1;
         mbutton2 = button2;
-    }
 
+    }
 
 
     // Interfaces para los listeners
@@ -81,6 +89,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
         }
         if (mbutton2 != null) {
             button2View.setText(mbutton2);
+        }
+        if (mimage != null) {
+            button1View.setButtonImage(mimage);
         }
 
         // Configurar el boton transparente para continuar
