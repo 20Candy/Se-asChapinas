@@ -166,15 +166,17 @@ public class VideoFragment extends BaseFragment {
 
         binding.imgReport.setOnClickListener(view ->{
             bottomSheet = new BottomSheet(
-                    // Continuar Reporte
+                    // Cancel
                     () -> {
+                        VideoViewModel.selectTab(BottomNavMenu.TAB_DICTIONARY);
+                    },
+                    // Continue
+                    () -> {
+
                         Bundle bundle = new Bundle();
                         bundle.putString("video_path", videoPath);
                         navigateTo(binding.getRoot(), R.id.action_videoFragment_to_reportFragment, bundle);
-                        },
-                    // Ver diccionario
-                    () -> {
-                        VideoViewModel.selectTab(BottomNavMenu.TAB_DICTIONARY);
+
                     }
             );
             bottomSheet.show(getChildFragmentManager(), "myTokenBottomSheet");

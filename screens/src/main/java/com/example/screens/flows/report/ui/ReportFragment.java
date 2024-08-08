@@ -18,6 +18,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.components.bottomsheet.BottomSheet;
+import com.example.components.buttons.DebounceClickListener;
+import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentReportBinding;
@@ -42,6 +45,8 @@ public class ReportFragment extends BaseFragment {
     private String videoPath = "";
     private ArrayList<Bitmap> thumbnailImages = new ArrayList<>();
     private Bitmap selectedThumbnailBitmap;
+
+    private BottomSheet bottomSheet;
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
@@ -134,11 +139,13 @@ public class ReportFragment extends BaseFragment {
 
 
     private void setListeners() {
+
+        //Image close
         binding.imgClose2.setOnClickListener(v -> {
             clearBackStackTo(binding.getRoot(), R.id.videoFragment);
         });
 
-        // Observar cambios en el EditText
+        // Edittext
         binding.tvReport.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -153,6 +160,27 @@ public class ReportFragment extends BaseFragment {
                 checkAndToggleButtonState();  // Cada vez que cambie el texto, verifica el estado del botón
             }
         });
+
+        // boton
+        binding.secondButton.setOnClickListener(new DebounceClickListener( v->{
+
+            bottomSheet = new BottomSheet(
+                    // Cancel
+                    () -> {
+                        clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+                    },
+                    // Continue
+                    () -> {
+                        servicioReporte();
+                    },
+                    ContextCompat.getString(getContext(), com.example.screens.R.string.bottomsheet_title),
+                    ContextCompat.getString(getContext(), com.example.screens.R.string.bottomsheet_content),
+                    ContextCompat.getString(getContext(), com.example.screens.R.string.bottomsheet_button1),
+                    ContextCompat.getString(getContext(), com.example.screens.R.string.bottomsheet_button2)
+
+            );
+            bottomSheet.show(getChildFragmentManager(), "myTokenBottomSheet");
+        }));
     }
 
     private void setButtonResources(){
@@ -173,5 +201,9 @@ public class ReportFragment extends BaseFragment {
 
 
     // Servicios -----------------------------------------------------------------------------------
+    private void servicioReporte(){
+        // TODO LLAMAR SERVICIO Y MANDAR ALERTA
+        clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+    }
 
 }

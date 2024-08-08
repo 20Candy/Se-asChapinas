@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
     private OnContinueClickListener mContinueListener;
     private OnCancelClickListener mCancelListener;
+
+    private String mtitle, mcontent, mbutton1, mbutton2;
     private boolean isContinuePressed = false;
 
     public BottomSheet(OnCancelClickListener cancelListener, OnContinueClickListener continueListener) {
@@ -28,14 +31,16 @@ public class BottomSheet extends BottomSheetDialogFragment {
         mContinueListener = continueListener;
     }
 
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (mCancelListener != null && !isContinuePressed) {
-            mCancelListener.mCancelListener();
-        }
-        isContinuePressed = false;
+    public BottomSheet(OnCancelClickListener cancelListener, OnContinueClickListener continueListener, String title, String content, String button1, String button2) {
+        mCancelListener = cancelListener;
+        mContinueListener = continueListener;
+        mtitle = title;
+        mcontent = content;
+        mbutton1 = button1;
+        mbutton2 = button2;
     }
+
+
 
     // Interfaces para los listeners
     public interface OnContinueClickListener {
@@ -55,21 +60,39 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottomsheet_layout, container, false);
 
-        // Configurar el botón Relleno
-        MainButton continueButton = view.findViewById(R.id.mainButton);
-        continueButton.setOnClickListener(v -> {
+        TextView titleView = view.findViewById(R.id.tvTtitle);
+        TextView contentView = view.findViewById(R.id.tvContent);
+        MainButton button1View = view.findViewById(R.id.mainButton);
+        TransparentButton button2View = view.findViewById(R.id.secondButton);
+
+        // Configurar título, contenido y textos de botones si no son nulos
+        if (mtitle != null) {
+            titleView.setText(mtitle);
+        }
+        if (mcontent != null) {
+            contentView.setText(mcontent);
+        }
+        if (mbutton1 != null) {
+            button1View.setText(mbutton1);
+        }
+        if (mbutton2 != null) {
+            button2View.setText(mbutton2);
+        }
+
+        // Configurar el boton transparente para continuar
+        button2View.setOnClickListener(v -> {
             if (mContinueListener != null) {
                 mContinueListener.onContinueClick();
             }
             dismiss(); // Cerrar el BottomSheet después de la acción
         });
 
-        // Configurar el botón Transparente
-        TransparentButton cancelButton = view.findViewById(R.id.secondButton);
-        cancelButton.setOnClickListener(v -> {
+        // Configurar el botón relleno para cerrar
+        button1View.setOnClickListener(v -> {
             isContinuePressed = true;
             if (mCancelListener != null) {
                 mCancelListener.mCancelListener();
@@ -79,4 +102,5 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
         return view;
     }
+
 }
