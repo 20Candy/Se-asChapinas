@@ -3,7 +3,10 @@ package com.example.components.buttons;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
+
+import com.example.components.spinner.CustomProgressBarDialog;
 
 
 public class DebounceClickListener implements View.OnClickListener {
@@ -16,7 +19,7 @@ public class DebounceClickListener implements View.OnClickListener {
 
     private final Handler handler;
     private boolean isEnabled = true;
-//    private CustomProgressBarDialog progressBarDialog;
+    private CustomProgressBarDialog progressBarDialog;
 
     public DebounceClickListener(View.OnClickListener clickListener) {
         this.clickRunnable = new Runnable() {
@@ -50,23 +53,23 @@ public class DebounceClickListener implements View.OnClickListener {
             @Override
             public void run() {
                 isEnabled = true;
-//                if (progressBarDialog != null && progressBarDialog.isShowing()) {
-//                    progressBarDialog.dismiss();
-//                }
+                if (progressBarDialog != null && progressBarDialog.isShowing()) {
+                    progressBarDialog.dismiss();
+                }
             }
         }, DEBOUNCE_TIME);
     }
 
     protected void showCustomDialogProgress() {
-//        if (progressBarDialog == null || !progressBarDialog.isShowing()) {
-//            progressBarDialog = new CustomProgressBarDialog(context);
-//            try {
-//                progressBarDialog.setCancelable(false);
-//                progressBarDialog.show();
-//            } catch (Exception e) {
-//                Log.e("Error", "showCustomDialogProgress: ", e);
-//            }
-//        }
+        if (progressBarDialog == null || !progressBarDialog.isShowing()) {
+            progressBarDialog = new CustomProgressBarDialog(context);
+            try {
+                progressBarDialog.setCancelable(false);
+                progressBarDialog.show();
+            } catch (Exception e) {
+                Log.e("Error", "showCustomDialogProgress: ", e);
+            }
+        }
     }
 
     private void disableListeners() {

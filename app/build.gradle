@@ -72,5 +72,7 @@ dependencies {
     implementation project(':services')
     implementation project(':components')
 
+    implementation 'com.airbnb.android:lottie:6.5.0'
+
 
 }

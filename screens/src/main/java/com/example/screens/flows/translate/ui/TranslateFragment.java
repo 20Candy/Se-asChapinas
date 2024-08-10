@@ -143,16 +143,26 @@ public class TranslateFragment extends BaseFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Filtrar caracteres no deseados
+                String filteredText = s.toString().replaceAll("[^a-zA-Z0-9]", "");
+
+                // Si el texto filtrado es diferente al texto original, actualiza el EditText
+                if (!filteredText.equals(s.toString())) {
+                    binding.edLensegua.setText(filteredText);
+                    binding.edLensegua.setSelection(filteredText.length()); // Mueve el cursor al final
+                }
+
                 // Verificar el estado del botón
-                verificarBoton(binding.edLensegua.length() <= 0);
+                verificarBoton(filteredText.length() <= 0);
 
                 // Actualizar tvLimit
-                int remainingChars = maxChar - s.length();
+                int remainingChars = maxChar - filteredText.length();
                 binding.tvLimit.setText(String.valueOf(remainingChars));
 
                 // Si se excede el límite, corta el texto
-                if (s.length() > maxChar) {
-                    binding.edLensegua.setText(s.subSequence(0, maxChar));
+                if (filteredText.length() > maxChar) {
+                    String truncatedText = filteredText.substring(0, maxChar);
+                    binding.edLensegua.setText(truncatedText);
                     binding.edLensegua.setSelection(maxChar); // Mueve el cursor al final
                 }
             }
@@ -161,6 +171,7 @@ public class TranslateFragment extends BaseFragment {
             public void afterTextChanged(Editable s) {
             }
         });
+
 
     }
 
