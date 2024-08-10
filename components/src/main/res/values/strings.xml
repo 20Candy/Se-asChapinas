@@ -16,4 +16,9 @@
     <string name="report_button1">Diccionario</string>
     <string name="report_button2">Reportar</string>
     <string name="hint_report_input">Escríbenos que está mal con tu traducción....</string>
+    <string name="favorite">Favoritos</string>
+    <string name="translate_title">Lensegua</string>
+    <string name="translate_hint">Escribe el texto que deseas traducir...</string>
+    <string name="translate_title2">Español</string>
+    <string name="translate_button">Traducir</string>
 </resources>

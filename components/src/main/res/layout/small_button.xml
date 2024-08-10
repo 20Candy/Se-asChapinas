@@ -6,17 +6,18 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_transparent"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:background="@drawable/transparent_green_button"
+        android:id="@+id/btn_main"
+        android:layout_width="115dp"
+        android:layout_height="36dp"
+        android:background="@drawable/white_background"
         android:fontFamily="@font/nunito_semibold"
         android:gravity="center_vertical|center"
         android:textAllCaps="false"
-        android:textColor="@color/base_green"
+        android:textColor="@color/base_blue"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

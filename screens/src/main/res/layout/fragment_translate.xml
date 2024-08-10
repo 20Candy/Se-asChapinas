@@ -1,8 +1,183 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".flows.translate.ui.TranslateFragment"
-    android:background="@color/background"/>
+    android:background="@color/background"
+    tools:context=".flows.translate.ui.TranslateFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clLensegua"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/base_blue"
+        android:elevation="5dp"
+        android:paddingStart="20dp"
+        android:paddingTop="35dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="35dp"
+        app:layout_constraintBottom_toTopOf="@+id/clEspanol"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1">
+
+        <TextView
+            android:id="@+id/tvTtitleLensegua"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_light"
+            android:gravity="left"
+            android:text="@string/translate_title"
+            android:textColor="@color/background"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edLensegua"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="35dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nunito_semibold"
+            android:gravity="top"
+            android:hint="@string/translate_hint"
+            android:inputType="textMultiLine"
+            android:textColor="@color/background"
+            android:textColorHint="#B2B3C6"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/smallButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTtitleLensegua"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tvLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_light"
+            android:text="150"
+            android:textColor="@color/background"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/smallButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/smallButton"
+            app:layout_constraintTop_toTopOf="@+id/smallButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <com.example.components.buttons.SmallButton
+            android:id="@+id/smallButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:image="@drawable/small_heart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:text="@string/favorite" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clEspanol"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingStart="20dp"
+        android:paddingTop="35dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clLensegua"
+        app:layout_constraintHeight_default="spread"
+        app:layout_constraintVertical_weight="1">
+
+        <TextView
+            android:id="@+id/tvTitleEspanol"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_light"
+            android:gravity="left"
+            android:text="@string/translate_title2"
+            android:textColor="@color/base_blue"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTraduccionEspanol"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="35dp"
+            android:fontFamily="@font/nunito_semibold"
+            android:gravity="left"
+            android:textColor="@color/base_blue"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/llOptions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleEspanol"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <LinearLayout
+            android:id="@+id/llOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/smallTransparentButton2"
+            app:layout_constraintEnd_toStartOf="@+id/smallTransparentButton2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/smallTransparentButton2">
+
+            <ImageView
+                android:id="@+id/imgCopy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1"
+                android:src="@drawable/copy" />
+
+            <ImageView
+                android:id="@+id/imgSpeaker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1"
+                android:src="@drawable/speaker" />
+
+            <ImageView
+                android:id="@+id/imgHeart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/heart" />
+        </LinearLayout>
+
+        <com.example.components.buttons.SmallTransparentButton
+            android:id="@+id/smallTransparentButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:enabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTraduccionEspanol"
+            app:layout_constraintVertical_bias="1.0"
+            app:text="Traducir" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,13 +7,15 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_transparent"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:background="@drawable/transparent_green_button"
         android:fontFamily="@font/nunito_semibold"
         android:gravity="center_vertical|center"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:textAllCaps="false"
-        android:textColor="@color/base_green"
+        android:textColor="@color/background"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
