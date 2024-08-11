@@ -5,4 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".flows.dictionary.ui.DictionaryFragment"
-    android:background="@color/background"/>
+    android:background="@color/background">
+
+    <com.example.components.cardDictionary.CardDictionary
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
