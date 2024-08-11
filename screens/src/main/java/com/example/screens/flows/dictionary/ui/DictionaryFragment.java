@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,9 @@ import com.example.screens.flows.dictionary.vm.DictionaryViewModel;
 import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.flows.video.vm.VideoViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DictionaryFragment extends BaseFragment {
@@ -51,6 +55,7 @@ public class DictionaryFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
+        setupRecyclerView();
     }
 
     public void onResume() {
@@ -60,7 +65,22 @@ public class DictionaryFragment extends BaseFragment {
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------
+    private void setupRecyclerView() {
+        List<CardData> cardDataList = createCardData();
 
+        DictionaryCardAdapter adapter = new DictionaryCardAdapter(getActivity(), cardDataList);
+        binding.rvCards.setAdapter(adapter);
+        binding.rvCards.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+
+    private List<CardData> createCardData() {
+        List<CardData> cardDataList = new ArrayList<>();
+        cardDataList.add(new CardData("Title 1", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("Title 2", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("Title 3", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        return cardDataList;
+    }
 
 
 }
