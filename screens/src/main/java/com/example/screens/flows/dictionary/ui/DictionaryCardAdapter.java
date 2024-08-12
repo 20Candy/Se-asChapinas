@@ -75,7 +75,6 @@ public class DictionaryCardAdapter extends RecyclerView.Adapter<DictionaryCardAd
 
     @Override
     public CharSequence getSectionText(int position) {
-        // Asume que la primera letra del título representa la sección.
         return cardDataList.get(position).getTitle().substring(0, 1);
     }
 

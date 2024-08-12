@@ -24,7 +24,8 @@
         app:showBubble="true"
         app:showTrack="true"
         app:trackColor="@color/scrollbar_background"
-        app:bubbleSize="small" />
+        app:bubbleSize="small"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
