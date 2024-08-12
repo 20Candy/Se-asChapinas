@@ -73,6 +73,6 @@ dependencies {
     implementation project(':components')
 
     implementation 'com.airbnb.android:lottie:6.5.0'
-
+    implementation "io.github.l4digital:fastscroll:2.1.0"
 
 }

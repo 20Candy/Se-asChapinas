@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -12,15 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.components.navMenu.BottomNavMenu;
-import com.example.screens.R;
+import com.example.components.cardDictionary.CardData;
+import com.example.components.cardDictionary.CardDictionary;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentDictionaryBinding;
-import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.flows.dictionary.vm.DictionaryViewModel;
-import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.flows.video.vm.VideoViewModel;
-import com.example.screens.utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +29,8 @@ public class DictionaryFragment extends BaseFragment {
 
     // Atributos de la clase -----------------------------------------------------------------------
     private DictionaryViewModel dictionaryViewModel;
+
+    DictionaryCardAdapter adapter;
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -56,6 +54,7 @@ public class DictionaryFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
         setupRecyclerView();
+        setListeners();
     }
 
     public void onResume() {
@@ -68,18 +67,55 @@ public class DictionaryFragment extends BaseFragment {
     private void setupRecyclerView() {
         List<CardData> cardDataList = createCardData();
 
-        DictionaryCardAdapter adapter = new DictionaryCardAdapter(getActivity(), cardDataList);
-        binding.rvCards.setAdapter(adapter);
         binding.rvCards.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapter = new DictionaryCardAdapter(getActivity(), cardDataList);
+        binding.rvCards.setAdapter(adapter);
     }
 
 
     private List<CardData> createCardData() {
         List<CardData> cardDataList = new ArrayList<>();
-        cardDataList.add(new CardData("Title 1", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("Title 2", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("Title 3", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("A", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("Ab", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("B", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("C", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("D", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("E", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("F", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("G", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("H", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("I", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("J", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("K", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        cardDataList.add(new CardData("L", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
         return cardDataList;
+    }
+
+    private void setListeners(){
+
+        adapter.setOnHeartClickListener(new DictionaryCardAdapter.OnHeartClickListener() {
+            @Override
+            public void onHeartClicked(boolean heartFull, CardData cardData) {
+                // Agregar a favoritos
+                if (heartFull) {
+                    servicioAgregarFavorito();
+                // Borrar de favoritos
+                } else {
+                    servicioEliminarFavorito();
+                }
+            }
+        });
+
+    }
+
+    // Servicios -----------------------------------------------------------------------------------
+    private void servicioAgregarFavorito() {
+        // TODO
+    }
+
+    private void servicioEliminarFavorito() {
+        // TODO
     }
 
 

@@ -35,11 +35,12 @@ public class CardDictionary extends ConstraintLayout {
     private boolean isFront = true;
     private boolean heartFull = false;
 
+    private CardData cardData;  // Objeto CardData asociado a esta tarjeta
+
     // Métodos de ConstraintLayout -----------------------------------------------------------------
     public CardDictionary(@NonNull Context context) {
         super(context);
         initView();
-
     }
 
     public CardDictionary(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -80,7 +81,7 @@ public class CardDictionary extends ConstraintLayout {
         setupListeners();
     }
 
-    // Getters y Setters ---------------------------------------------------------------------------
+    // Métodos para configurar el contenido del CardDictionary --------------------------------------
 
     public void setImgLensegua(Drawable drawable){
         imgLensegua.setImageDrawable(drawable);
@@ -99,21 +100,7 @@ public class CardDictionary extends ConstraintLayout {
         View.OnClickListener heartClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Cast the view to ImageView
-                ImageView heartView = (ImageView) view;
-
-                // Toggle heart status and update the drawable accordingly
-                heartFull = !heartFull; // Toggle the state
-                if (heartFull) {
-                    heartView.setImageDrawable(getResources().getDrawable(R.drawable.full_heart));
-                } else {
-                    heartView.setImageDrawable(getResources().getDrawable(R.drawable.heart));
-                }
-
-                // Notify any external listeners
-                if (CardDictionary.this.heartClickListener != null) {
-                    CardDictionary.this.heartClickListener.onHeartClicked();
-                }
+                toggleHeartState();
             }
         };
 
@@ -129,6 +116,29 @@ public class CardDictionary extends ConstraintLayout {
 
         imgTurn.setOnClickListener(turnClickListener);
         imgTurnBack.setOnClickListener(turnClickListener);
+    }
+
+    private void toggleHeartState() {
+        // Cambia el estado del corazón
+        heartFull = !heartFull;
+
+        // Actualiza ambos corazones
+        updateHeartImages();
+
+        // Notifica a cualquier listener externo si es necesario
+        if (this.heartClickListener != null && cardData != null) {
+            this.heartClickListener.onHeartClicked(heartFull, cardData);
+        }
+    }
+
+    private void updateHeartImages() {
+        if (heartFull) {
+            imgHeart.setImageDrawable(getResources().getDrawable(R.drawable.full_heart));
+            imgHeartBack.setImageDrawable(getResources().getDrawable(R.drawable.full_heart));
+        } else {
+            imgHeart.setImageDrawable(getResources().getDrawable(R.drawable.heart));
+            imgHeartBack.setImageDrawable(getResources().getDrawable(R.drawable.heart));
+        }
     }
 
     private void toggleCard() {
@@ -181,13 +191,17 @@ public class CardDictionary extends ConstraintLayout {
 
     // Interface para eventos de clic en el corazón ------------------------------------------------
     public interface HeartClickListener {
-        void onHeartClicked();
+        void onHeartClicked(boolean heartFull, CardData cardData);
     }
 
     private HeartClickListener heartClickListener;
 
     public void setHeartClickListener(HeartClickListener listener) {
         this.heartClickListener = listener;
+    }
+
+    public TextView getTvLetter() {
+        return findViewById(R.id.tvLetter);
     }
 
 }

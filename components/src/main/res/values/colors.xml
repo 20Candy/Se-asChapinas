@@ -17,5 +17,6 @@
     <color name="disable_red">#EC8C91</color>
     <color name="ligth_grey">#EFEFF0</color>
     <color name="light_grey2">#D8D8D9</color>
+    <color name="scrollbar_background">#D8D8D9</color>
 
 </resources>

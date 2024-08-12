@@ -1,11 +1,11 @@
-package com.example.screens.flows.dictionary.ui;
+package com.example.components.cardDictionary;
 
-class CardData {
+public class CardData {
     String title;
     int imgLenseguaResId;
     int imgCardResId;
 
-    CardData(String title, int imgLenseguaResId, int imgCardResId) {
+    public CardData(String title, int imgLenseguaResId, int imgCardResId) {
         this.title = title;
         this.imgLenseguaResId = imgLenseguaResId;
         this.imgCardResId = imgCardResId;

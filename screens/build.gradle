@@ -41,4 +41,7 @@ dependencies {
 
     implementation project(':services')
     implementation project(':components')
+
+    implementation "io.github.l4digital:fastscroll:2.1.0"
+
 }
