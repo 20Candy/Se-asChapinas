@@ -1,18 +1,28 @@
 package com.example.screens.flows.dictionary.ui;
 
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.components.cardDictionary.CardData;
 import com.example.components.cardDictionary.CardDictionary;
+import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentDictionaryBinding;
 import com.example.screens.flows.dictionary.vm.DictionaryViewModel;
@@ -108,6 +118,7 @@ public class DictionaryFragment extends BaseFragment {
         });
 
     }
+
 
     // Servicios -----------------------------------------------------------------------------------
     private void servicioAgregarFavorito() {

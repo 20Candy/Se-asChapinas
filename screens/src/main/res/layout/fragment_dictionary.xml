@@ -8,24 +8,44 @@
     android:background="@color/background"
     tools:context=".flows.dictionary.ui.DictionaryFragment">
 
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/blue_transprant_button"
+        android:closeIcon="@drawable/clean_search"
+        android:iconifiedByDefault="false"
+        android:queryHint="Buscar palabra"
+        android:searchIcon="@drawable/search_searchbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
     <com.l4digital.fastscroll.FastScrollRecyclerView
         android:id="@+id/rvCards"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         app:bubbleColor="@color/base_blue"
+        app:bubbleSize="small"
         app:bubbleTextColor="@color/background"
         app:handleColor="@color/base_blue"
         app:hideScrollbar="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
         app:showBubble="true"
         app:showTrack="true"
-        app:trackColor="@color/scrollbar_background"
-        app:bubbleSize="small"
-        />
+        app:trackColor="@color/scrollbar_background" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

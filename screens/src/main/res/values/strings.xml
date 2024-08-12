@@ -13,6 +13,7 @@
     <string name="bottomsheet_content">El video será enviado para evaluación. ¿Estás de acuerdo?</string>
     <string name="bottomsheet_button1">Cancelar</string>
     <string name="bottomsheet_button2">Continuar</string>
+    <string name="search">Buscar palabra</string>
 
 
 
