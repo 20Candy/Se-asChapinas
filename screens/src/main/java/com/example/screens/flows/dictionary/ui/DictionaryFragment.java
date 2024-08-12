@@ -30,6 +30,8 @@ import com.example.screens.flows.video.vm.VideoViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class DictionaryFragment extends BaseFragment {
@@ -41,6 +43,8 @@ public class DictionaryFragment extends BaseFragment {
     private DictionaryViewModel dictionaryViewModel;
 
     DictionaryCardAdapter adapter;
+
+    List<CardData> cardDataList = new ArrayList<>();
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -63,7 +67,7 @@ public class DictionaryFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
-        setupRecyclerView();
+        setupRecyclerView(createCardData());
         setListeners();
     }
 
@@ -74,18 +78,15 @@ public class DictionaryFragment extends BaseFragment {
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------
-    private void setupRecyclerView() {
-        List<CardData> cardDataList = createCardData();
+    private void setupRecyclerView(List<CardData> list) {
 
         binding.rvCards.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        adapter = new DictionaryCardAdapter(getActivity(), cardDataList);
+        adapter = new DictionaryCardAdapter(getActivity(), list);
         binding.rvCards.setAdapter(adapter);
     }
 
 
     private List<CardData> createCardData() {
-        List<CardData> cardDataList = new ArrayList<>();
         cardDataList.add(new CardData("A", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
         cardDataList.add(new CardData("Ab", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
         cardDataList.add(new CardData("B", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
@@ -99,6 +100,10 @@ public class DictionaryFragment extends BaseFragment {
         cardDataList.add(new CardData("J", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
         cardDataList.add(new CardData("K", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
         cardDataList.add(new CardData("L", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        return cardDataList;
+    }
+
+    private List<CardData> getCardLista(){
         return cardDataList;
     }
 
@@ -116,6 +121,53 @@ public class DictionaryFragment extends BaseFragment {
                 }
             }
         });
+
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtrarLista(newText);
+                return false;
+            }
+        });
+
+
+    }
+
+    private void filtrarLista(String busqueda) {
+        List<CardData> listaFiltrada = new ArrayList<>();
+        List<CardData> listaOriginal = getCardLista();
+
+        if (busqueda != null && !busqueda.isEmpty()) {
+            listaFiltrada = listaOriginal.stream()
+                    .filter(card -> card.getTitle() != null && card.getTitle().toLowerCase().contains(busqueda.toLowerCase()))
+                    .collect(Collectors.toList());
+            showEmptyState(listaFiltrada.isEmpty());
+
+            setupRecyclerView(listaFiltrada);
+
+
+        } else {
+            // Si la búsqueda es nula o vacía
+            showEmptyState(false);
+            setupRecyclerView(listaOriginal);
+
+        }
+
+    }
+
+    private void showEmptyState(Boolean show){
+        if(show){
+            binding.clEmpty.setVisibility(View.VISIBLE);
+            binding.rvCards.setVisibility(View.GONE);
+        }else{
+            binding.clEmpty.setVisibility(View.GONE);
+            binding.rvCards.setVisibility(View.VISIBLE);
+        }
 
     }
 
