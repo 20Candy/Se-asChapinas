@@ -9,5 +9,22 @@
         android:id="@+id/profileFragment"
         android:name="com.example.screens.flows.profile.ui.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_challengeFragment"
+            app:destination="@id/challengeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.screens.flows.settings.ui.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/challengeFragment"
+        android:name="com.example.screens.flows.challenge.ui.ChallengeFragment"
+        android:label="fragment_challenge"
+        tools:layout="@layout/fragment_challenge" />
 </navigation>

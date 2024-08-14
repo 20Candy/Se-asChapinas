@@ -15,6 +15,14 @@
     <string name="bottomsheet_button2">Continuar</string>
     <string name="search">Buscar palabra</string>
     <string name="empty_search">Palabra no disponible \n ¡Seguimos creciendo!</string>
+    <string name="cambiar_contra">Cambiar contraseña</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="eliminar_cuenta">Eliminar Cuenta</string>
+    <string name="cuenta">Cuenta</string>
+    <string name="aplicacion">Aplicación</string>
+    <string name="sobre_app">Sobre la app</string>
+    <string name="reto">Reto diario</string>
+    <string name="activar_cam">Activar cámara al iniciar</string>
 
 
 
