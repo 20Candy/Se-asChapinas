@@ -1,14 +1,17 @@
-package com.example.components.cardDictionary;
+package com.example.components.dictionary;
 
 public class CardData {
     String title;
     int imgLenseguaResId;
     int imgCardResId;
 
-    public CardData(String title, int imgLenseguaResId, int imgCardResId) {
+    String categoria;
+
+    public CardData(String title, int imgLenseguaResId, int imgCardResId, String categoria) {
         this.title = title;
         this.imgLenseguaResId = imgLenseguaResId;
         this.imgCardResId = imgCardResId;
+        this.categoria = categoria;
     }
 
     public String getTitle() {
@@ -33,6 +36,14 @@ public class CardData {
 
     public void setImgCardResId(int imgCardResId) {
         this.imgCardResId = imgCardResId;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }
 

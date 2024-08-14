@@ -1,4 +1,4 @@
-package com.example.components.cardDictionary;
+package com.example.components.dictionary;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;

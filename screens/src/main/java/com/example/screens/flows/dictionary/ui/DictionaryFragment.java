@@ -1,36 +1,26 @@
 package com.example.screens.flows.dictionary.ui;
 
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
-import com.example.components.cardDictionary.CardData;
-import com.example.components.cardDictionary.CardDictionary;
-import com.example.screens.R;
+import com.example.components.dictionary.CardData;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentDictionaryBinding;
 import com.example.screens.flows.dictionary.vm.DictionaryViewModel;
 import com.example.screens.flows.video.vm.VideoViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -43,6 +33,8 @@ public class DictionaryFragment extends BaseFragment {
     private DictionaryViewModel dictionaryViewModel;
 
     DictionaryCardAdapter adapter;
+    CategoriesAdapter categoriesAdapter;
+
 
     List<CardData> cardDataList = new ArrayList<>();
 
@@ -68,6 +60,7 @@ public class DictionaryFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
         setupRecyclerView(createCardData());
+        setupRecyclerViewCategories(createCategories());
         setListeners();
     }
 
@@ -85,23 +78,43 @@ public class DictionaryFragment extends BaseFragment {
         binding.rvCards.setAdapter(adapter);
     }
 
+    private void setupRecyclerViewCategories(List<String> list) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        binding.rvCategories.setLayoutManager(layoutManager);
 
-    private List<CardData> createCardData() {
-        cardDataList.add(new CardData("A", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("Ab", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("B", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("C", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("D", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("E", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("F", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("G", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("H", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("I", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("J", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("K", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
-        cardDataList.add(new CardData("L", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua));
+        categoriesAdapter = new CategoriesAdapter(getActivity(), list, (isFavorite, category) -> {
+            if (isFavorite) {
+                servicioFavoritosDiccionario();
+            } else {
+                filtrarLista(category, "categoria");
+            }
+        });
+        binding.rvCategories.setAdapter(categoriesAdapter);
+    }
+
+
+
+   private List<CardData> createCardData() {
+        cardDataList.add(new CardData("A", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Ab", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("B", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("C", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("D", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("E", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("F", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("G", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("H", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("I", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("J", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("K", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("L", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
         return cardDataList;
     }
+
+    private List<String> createCategories() {
+        return new ArrayList<>(Arrays.asList("Favoritos", "Acciones", "Lugares", "Estados", "Tiempo", "Pronombres", "Preguntas"));
+    }
+
 
     private List<CardData> getCardLista(){
         return cardDataList;
@@ -122,6 +135,7 @@ public class DictionaryFragment extends BaseFragment {
             }
         });
 
+
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -130,7 +144,7 @@ public class DictionaryFragment extends BaseFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filtrarLista(newText);
+                filtrarLista(newText, "titulo");
                 return false;
             }
         });
@@ -138,27 +152,30 @@ public class DictionaryFragment extends BaseFragment {
 
     }
 
-    private void filtrarLista(String busqueda) {
+    private void filtrarLista(String filtro, String tipo) {
         List<CardData> listaFiltrada = new ArrayList<>();
         List<CardData> listaOriginal = getCardLista();
 
-        if (busqueda != null && !busqueda.isEmpty()) {
+        if (filtro != null && !filtro.isEmpty()) {
             listaFiltrada = listaOriginal.stream()
-                    .filter(card -> card.getTitle() != null && card.getTitle().toLowerCase().contains(busqueda.toLowerCase()))
+                    .filter(card -> {
+                        if ("titulo".equalsIgnoreCase(tipo)) {
+                            return card.getTitle() != null && card.getTitle().toLowerCase().contains(filtro.toLowerCase());
+                        } else if ("categoria".equalsIgnoreCase(tipo)) {
+                            return card.getCategoria() != null && card.getCategoria().toLowerCase().contains(filtro.toLowerCase());
+                        }
+                        return false; // Tipo no reconocido
+                    })
                     .collect(Collectors.toList());
             showEmptyState(listaFiltrada.isEmpty());
-
             setupRecyclerView(listaFiltrada);
-
-
         } else {
-            // Si la búsqueda es nula o vacía
+            // Si el filtro es nulo o vacío, mostrar la lista original
             showEmptyState(false);
             setupRecyclerView(listaOriginal);
-
         }
-
     }
+
 
     private void showEmptyState(Boolean show){
         if(show){
@@ -178,6 +195,10 @@ public class DictionaryFragment extends BaseFragment {
     }
 
     private void servicioEliminarFavorito() {
+        // TODO
+    }
+
+    private void servicioFavoritosDiccionario(){
         // TODO
     }
 
