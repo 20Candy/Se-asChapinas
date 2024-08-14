@@ -95,20 +95,42 @@ public class DictionaryFragment extends BaseFragment {
 
 
    private List<CardData> createCardData() {
-        cardDataList.add(new CardData("A", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("Ab", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("B", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("C", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("D", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("E", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("F", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("G", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("H", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("I", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("J", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("K", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        cardDataList.add(new CardData("L", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
-        return cardDataList;
+        cardDataList.add(new CardData("Agua", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Ayer", com.example.components.R.drawable.ayer_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Ayuda", com.example.components.R.drawable.ayuda_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Baño", com.example.components.R.drawable.bano_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Beber", com.example.components.R.drawable.beber_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Cansado", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Casa", com.example.components.R.drawable.casa_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Colegio", com.example.components.R.drawable.colegio_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Comer", com.example.components.R.drawable.comer_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Comida", com.example.components.R.drawable.comida_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Cómo", com.example.components.R.drawable.como_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Cúando", com.example.components.R.drawable.cuando_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Cuánto", com.example.components.R.drawable.cuanto_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+        cardDataList.add(new CardData("Dónde", com.example.components.R.drawable.donde_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Hacer", com.example.components.R.drawable.hacer_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Hambre", com.example.components.R.drawable.hambre_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Hospital", com.example.components.R.drawable.hospital_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Hoy", com.example.components.R.drawable.hoy_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Ir", com.example.components.R.drawable.ir_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Mañana", com.example.components.R.drawable.manana_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Necesitar", com.example.components.R.drawable.necesitar_ensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Policia", com.example.components.R.drawable.policia_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Qué", com.example.components.R.drawable.que_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Quién", com.example.components.R.drawable.quien_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Querer", com.example.components.R.drawable.querer_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Sed", com.example.components.R.drawable.sed_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Tener", com.example.components.R.drawable.tener_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Trabajo", com.example.components.R.drawable.trabajo_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Tu", com.example.components.R.drawable.tu_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Universidad", com.example.components.R.drawable.universidad_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("Yo", com.example.components.R.drawable.yo_lensegya, com.example.components.R.drawable.agua, "Acciones"));
+       cardDataList.add(new CardData("?", com.example.components.R.drawable.agua_lensegua, com.example.components.R.drawable.agua, "Acciones"));
+
+
+
+       return cardDataList;
     }
 
     private List<String> createCategories() {
