@@ -135,6 +135,7 @@ public class ChallengeCards extends ConstraintLayout {
                 card.setAlpha(1.0f);
             } else {
                 // Las tarjetas incorrectas se vuelven opacas
+                card.setElevation(0);  // Establecer la elevación a 0
                 card.setAlpha(0.5f);
             }
         }
@@ -144,6 +145,7 @@ public class ChallengeCards extends ConstraintLayout {
             callback.onCorrectAnswer();
         }
     }
+
 
 
 
