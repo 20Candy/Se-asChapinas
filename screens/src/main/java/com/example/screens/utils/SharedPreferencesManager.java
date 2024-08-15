@@ -10,6 +10,7 @@ public class SharedPreferencesManager {
     private static final String FIRST_LOGIN = "firstLogin";
     private static final String SHOW_CHALLENGE = "showChallenge";
     private static final String OPEN_CAMERA = "openCamera";
+    private static final String CHALLENGE_DATE = "challengeDate";
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -54,6 +55,16 @@ public class SharedPreferencesManager {
 
     public void setOpenCamera(boolean isOpen) {
         editor.putBoolean(OPEN_CAMERA, isOpen);
+        editor.apply();
+    }
+
+
+    public String getLastChallengeShowDate() {
+        return prefs.getString(CHALLENGE_DATE, "");
+    }
+
+    public void setLastChallengeShowDate(String date) {
+        editor.putString(CHALLENGE_DATE, date);
         editor.apply();
     }
 }

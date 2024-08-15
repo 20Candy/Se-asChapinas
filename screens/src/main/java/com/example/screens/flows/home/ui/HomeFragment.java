@@ -12,6 +12,7 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.icu.text.SimpleDateFormat;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -46,7 +47,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
@@ -90,8 +93,25 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
         sharedPreferencesManager = new SharedPreferencesManager(requireContext());
-        verifyAndHandlePermissions();
-        setupListeners();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+        String todayDate = dateFormat.format(new Date());
+
+        String lastShownDate = sharedPreferencesManager.getLastChallengeShowDate();
+
+        if (!todayDate.equals(lastShownDate)) {
+            if (sharedPreferencesManager.isChallengeShow()) {
+                navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, null);
+
+                // Actualizar la fecha y marcar que el challenge ya fue mostrado
+                sharedPreferencesManager.setLastChallengeShowDate(todayDate);
+            }
+
+        }else{
+            verifyAndHandlePermissions();
+            setupListeners();
+        }
+
     }
 
     @Override

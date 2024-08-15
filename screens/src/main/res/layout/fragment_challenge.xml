@@ -4,11 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".flows.challenge.ui.ChallengeFragment"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".flows.challenge.ui.ChallengeFragment">
 
     <ImageView
-        android:id="@+id/imageView11"
+        android:id="@+id/imgGif"
+        android:layout_width="wrap_content"
+        android:layout_height="405dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:alpha="1"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20"
+        app:srcCompat="@drawable/confim" />
+
+    <ImageView
+        android:id="@+id/imgBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -21,11 +35,11 @@
         android:id="@+id/imageView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/fire_challenge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+        app:layout_constraintTop_toBottomOf="@+id/imgBack" />
 
     <TextView
         android:id="@+id/tvScore"
@@ -50,7 +64,7 @@
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/nunito_medium"
         android:gravity="center"
-        android:text="TextView"
+        android:text="@string/challenge_title"
         android:textColor="@color/base_blue"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,10 +76,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="24dp"
         android:gravity="center"
-        android:text="TextView"
+        android:text="@string/challenge_subtitle"
         android:textColor="@color/base_blue"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,15 +105,43 @@
     <com.example.components.challenge.ChallengeCards
         android:id="@+id/cards"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvWord">
+        app:layout_constraintTop_toBottomOf="@+id/tvWord"
+        app:layout_constraintVertical_bias="0.0">
 
     </com.example.components.challenge.ChallengeCards>
+
+    <TextView
+        android:id="@+id/tvOmitir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_medium"
+        android:text="@string/challenge_omitir"
+        android:textColor="@color/base_blue"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cards"
+        app:layout_constraintVertical_bias="0.509" />
+
+    <com.example.components.buttons.TransparentButton
+        android:id="@+id/secondButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cards"
+        app:text="@string/challenge_close" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

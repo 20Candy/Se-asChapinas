@@ -27,5 +27,9 @@
     <string name="about_content">Señas Chapinas facilita la comunicación en LENSEGUA al convertir lengua de señas a texto mediante tecnologías de visión por computadora y aprendizaje profundo. Esta herramienta está diseñada para mejorar las interacciones cotidianas y la calidad de vida de la comunidad sorda, enfocándose en vocabulario esencial y situaciones de emergencia.</string>
     <string name="about_content2">Extendemos nuestro más sincero agradecimiento a las siguientes asociaciones y personas por su invaluable colaboración:</string>
     <string name="about_content3"> Alumnas practicantes de ASEDES:\nEvelyn Cacao\nAny Max\nRuth Amézquita</string>
+    <string name="challenge_title">¡Completa tu Reto Diario!</string>
+    <string name="challenge_subtitle">¿Cuál es la seña correcta?</string>
+    <string name="challenge_omitir"><u>Omitir</u></string>
+    <string name="challenge_close">Cerrar</string>
 
 </resources>

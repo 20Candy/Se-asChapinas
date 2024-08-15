@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_videoFragment"
             app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_challengeFragment2"
+            app:destination="@id/challengeFragment2" />
     </fragment>
     <fragment
         android:id="@+id/videoFragment"
@@ -27,4 +30,9 @@
         android:id="@+id/reportFragment"
         android:name="com.example.screens.flows.report.ui.ReportFragment"
         android:label="ReportFragment" />
+    <fragment
+        android:id="@+id/challengeFragment2"
+        android:name="com.example.screens.flows.challenge.ui.ChallengeFragment"
+        android:label="fragment_challenge"
+        tools:layout="@layout/fragment_challenge" />
 </navigation>
