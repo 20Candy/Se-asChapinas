@@ -45,7 +45,7 @@
 
         <LinearLayout
             android:id="@+id/llcontra"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginTop="14dp"
@@ -59,12 +59,12 @@
                 android:layout_height="17dp"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:src="@drawable/edit_s" />
 
             <TextView
                 android:id="@+id/tvEdit"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_medium"
@@ -85,8 +85,8 @@
 
         <LinearLayout
             android:id="@+id/llcerrar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:orientation="horizontal">
@@ -97,7 +97,7 @@
                 android:layout_height="17dp"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:src="@drawable/close_s" />
 
             <TextView
@@ -123,7 +123,7 @@
 
         <LinearLayout
             android:id="@+id/lleliminar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
@@ -136,7 +136,7 @@
                 android:layout_height="17dp"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:src="@drawable/trash_s" />
 
             <TextView
@@ -180,7 +180,7 @@
 
         <LinearLayout
             android:id="@+id/llsobre"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginTop="14dp"
@@ -194,7 +194,7 @@
                 android:layout_height="17dp"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:src="@drawable/question_s" />
 
             <TextView
@@ -207,6 +207,7 @@
                 android:text="@string/sobre_app"
                 android:textColor="@color/base_blue"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
         <ImageView
@@ -221,7 +222,7 @@
         <LinearLayout
             android:id="@+id/llreto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:orientation="horizontal"
@@ -243,12 +244,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/reto"
                 android:textColor="@color/base_blue"
-                android:textSize="16sp" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:textSize="16sp"
+                android:layout_weight="1"/>
 
             <Switch
                 android:id="@+id/switchReto"
@@ -294,12 +291,9 @@
                 android:gravity="left"
                 android:text="@string/activar_cam"
                 android:textColor="@color/base_blue"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_weight="1"/>
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Switch
                 android:id="@+id/switchCamara"

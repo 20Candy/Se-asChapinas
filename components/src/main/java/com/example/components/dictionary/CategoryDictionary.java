@@ -1,4 +1,4 @@
-package com.example.components.inputs.dictionary;
+package com.example.components.dictionary;
 
 import android.content.Context;
 import android.util.AttributeSet;
