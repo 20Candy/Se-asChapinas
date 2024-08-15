@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
-import com.example.components.dictionary.CardData;
+import com.example.components.inputs.dictionary.CardData;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentDictionaryBinding;
 import com.example.screens.flows.dictionary.vm.DictionaryViewModel;

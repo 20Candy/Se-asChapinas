@@ -21,10 +21,26 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.screens.flows.settings.ui.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutApp"
+            app:destination="@id/aboutApp" />
+    </fragment>
     <fragment
         android:id="@+id/challengeFragment"
         android:name="com.example.screens.flows.challenge.ui.ChallengeFragment"
         android:label="fragment_challenge"
         tools:layout="@layout/fragment_challenge" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.screens.flows.changePassword.ui.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/aboutApp"
+        android:name="com.example.screens.flows.settings.ui.AboutApp"
+        android:label="AboutApp" />
 </navigation>

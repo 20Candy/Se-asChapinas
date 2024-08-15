@@ -2,65 +2,121 @@ package com.example.screens.flows.settings.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.components.buttons.DebounceClickListener;
 import com.example.screens.R;
+import com.example.screens.base.BaseFragment;
+import com.example.screens.databinding.FragmentSettingsBinding;
+import com.example.screens.databinding.FragmentVideoBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SettingsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class SettingsFragment extends BaseFragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // Binding --------------------------------------------------------------------------------------
 
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
+    FragmentSettingsBinding binding;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    // Atributos de la clase -----------------------------------------------------------------------
 
+
+
+    // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setListeners();
+
     }
+
+    // Metodos privados de la clase ----------------------------------------------------------------
+    private void setListeners(){
+        binding.imgBack.setOnClickListener(new DebounceClickListener(v->{
+            onBackPressed(() -> {
+                navigateTo(binding.getRoot(), R.id.profile_nav, null);
+            });
+
+        }));
+
+        binding.llcontra.setOnClickListener(new DebounceClickListener(v->{
+            navigateTo(binding.getRoot(), R.id.action_settingsFragment_to_changePasswordFragment, null);
+
+        }));
+
+
+        binding.llcerrar.setOnClickListener(new DebounceClickListener(v->{
+            showCustomDialogMessage(
+                    "¿Estás seguro que quieres cerrar sesión?",
+                    "Estas cerrando sesión",
+                    "Confirmar",
+                    "Cerrar",
+                    () -> {
+                        // Cofirmar
+                        navigateTo(binding.getRoot(), R.id.main_nav, null);
+
+                    }
+            );
+
+        }));
+
+        binding.lleliminar.setOnClickListener(new DebounceClickListener(v->{
+            showCustomDialogMessage(
+                    "¿Estás seguro que quieres eliminar tu cuenta?",
+                    "Tus videos y traducciones seran eliminados permanentemente",
+                    "Confirmar",
+                    "Cerrar",
+                    () -> {
+                        // Cofirmar
+                        servicioEliminarCuenta();
+
+                    }
+            );
+
+        }));
+
+        binding.llsobre.setOnClickListener(new DebounceClickListener(v->{
+            navigateTo(binding.getRoot(), R.id.action_settingsFragment_to_aboutApp, null);
+
+        }));
+
+        binding.llreto.setOnClickListener(new DebounceClickListener(v->{
+            binding.switchReto.setChecked(!binding.switchReto.isChecked());
+
+        }));
+
+        binding.llcamara.setOnClickListener(new DebounceClickListener(v->{
+            binding.switchCamara.setChecked(!binding.switchCamara.isChecked());
+
+        }));
+
+
+    }
+
+    // Servicio ------------------------------------------------------------------------------------
+    private void servicioEliminarCuenta(){
+
+        // TODO
+        // ON SUCESS
+        navigateTo(binding.getRoot(), R.id.main_nav, null);
+
+    }
+
 }

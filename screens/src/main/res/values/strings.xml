@@ -23,7 +23,8 @@
     <string name="sobre_app">Sobre la app</string>
     <string name="reto">Reto diario</string>
     <string name="activar_cam">Activar cámara al iniciar</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

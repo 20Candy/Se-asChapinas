@@ -1,4 +1,4 @@
-package com.example.components.dictionary;
+package com.example.components.inputs.dictionary;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;

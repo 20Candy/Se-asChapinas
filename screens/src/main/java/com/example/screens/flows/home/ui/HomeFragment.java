@@ -362,7 +362,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    Toast.makeText(getContext(), "Configuration change", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error al configurar cámara", Toast.LENGTH_SHORT).show();
                 }
             }, null);
         } catch (CameraAccessException e) {

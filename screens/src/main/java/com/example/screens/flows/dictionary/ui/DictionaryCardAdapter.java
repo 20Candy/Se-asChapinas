@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.components.dictionary.CardData;
-import com.example.components.dictionary.CardDictionary;
+import com.example.components.inputs.dictionary.CardData;
+import com.example.components.inputs.dictionary.CardDictionary;
 import com.l4digital.fastscroll.FastScroller;
 
 import java.util.List;
