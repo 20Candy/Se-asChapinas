@@ -74,7 +74,7 @@ public class SettingsFragment extends BaseFragment {
                     "¿Estás seguro que quieres cerrar sesión?",
                     "Estas cerrando sesión",
                     "Confirmar",
-                    "Cerrar",
+                    "Cancelar",
                     () -> {
                         // Cofirmar
                         goToLandingFragment(binding.getRoot());
@@ -89,7 +89,7 @@ public class SettingsFragment extends BaseFragment {
                     "Tus videos y traducciones seran eliminados permanentemente",
                     "¿Estás seguro que quieres eliminar tu cuenta?",
                     "Confirmar",
-                    "Cerrar",
+                    "Cancelar",
                     () -> {
                         // Cofirmar
                         servicioEliminarCuenta();
