@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentSettingsBinding;
 import com.example.screens.databinding.FragmentVideoBinding;
+import com.example.screens.utils.SharedPreferencesManager;
 
 
 public class SettingsFragment extends BaseFragment {
@@ -24,7 +28,6 @@ public class SettingsFragment extends BaseFragment {
     FragmentSettingsBinding binding;
 
     // Atributos de la clase -----------------------------------------------------------------------
-
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -44,7 +47,6 @@ public class SettingsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setListeners();
-
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------
@@ -70,7 +72,7 @@ public class SettingsFragment extends BaseFragment {
                     "Cerrar",
                     () -> {
                         // Cofirmar
-                        navigateTo(binding.getRoot(), R.id.main_nav, null);
+                        goToLandingFragment(binding.getRoot());
 
                     }
             );
@@ -79,8 +81,8 @@ public class SettingsFragment extends BaseFragment {
 
         binding.lleliminar.setOnClickListener(new DebounceClickListener(v->{
             showCustomDialogMessage(
-                    "¿Estás seguro que quieres eliminar tu cuenta?",
                     "Tus videos y traducciones seran eliminados permanentemente",
+                    "¿Estás seguro que quieres eliminar tu cuenta?",
                     "Confirmar",
                     "Cerrar",
                     () -> {
@@ -115,7 +117,7 @@ public class SettingsFragment extends BaseFragment {
 
         // TODO
         // ON SUCESS
-        navigateTo(binding.getRoot(), R.id.main_nav, null);
+        goToLandingFragment(binding.getRoot());
 
     }
 

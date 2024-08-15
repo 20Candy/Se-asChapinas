@@ -10,11 +10,14 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.components.dialog.CustomDialogFragment;
 import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.R;
+import com.example.screens.utils.SharedPreferencesManager;
 
 import java.util.List;
 
@@ -56,6 +59,17 @@ public class BaseFragment extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
+
+    public void goToLandingFragment(View view) {
+        SharedPreferencesManager sharedPreferencesManager;
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+        sharedPreferencesManager.setLogged(false);
+
+        NavController navController = Navigation.findNavController(view);
+        navController.setGraph(R.navigation.main_nav);
+
+    }
+
 
 
 
