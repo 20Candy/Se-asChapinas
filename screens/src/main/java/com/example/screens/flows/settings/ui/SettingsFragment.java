@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -18,6 +19,7 @@ import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentSettingsBinding;
 import com.example.screens.databinding.FragmentVideoBinding;
+import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
 
@@ -28,6 +30,7 @@ public class SettingsFragment extends BaseFragment {
     FragmentSettingsBinding binding;
 
     // Atributos de la clase -----------------------------------------------------------------------
+    private SharedPreferencesManager sharedPreferencesManager;
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -46,6 +49,8 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+        setInitValues();
         setListeners();
     }
 
@@ -101,16 +106,24 @@ public class SettingsFragment extends BaseFragment {
 
         binding.llreto.setOnClickListener(new DebounceClickListener(v->{
             binding.switchReto.setChecked(!binding.switchReto.isChecked());
+            sharedPreferencesManager.setChallengeShow(binding.switchReto.isChecked());
 
         }));
 
         binding.llcamara.setOnClickListener(new DebounceClickListener(v->{
             binding.switchCamara.setChecked(!binding.switchCamara.isChecked());
+            sharedPreferencesManager.setOpenCamera(binding.switchCamara.isChecked());
 
         }));
 
-
     }
+
+    private void setInitValues(){
+        binding.switchReto.setChecked(sharedPreferencesManager.isChallengeShow());
+        binding.switchCamara.setChecked(sharedPreferencesManager.isOpenCamera());
+    }
+
+
 
     // Servicio ------------------------------------------------------------------------------------
     private void servicioEliminarCuenta(){

@@ -14,15 +14,8 @@ public class HomeViewModel extends BaseViewModel {
     }
 
 
-    // Variable para encender o no camara al iniciar la app
-    public boolean encenderCamara = false;
 
-    public boolean getEncenderCamara() {
-        return encenderCamara;
-    }
 
-    public void setEncenderCamara(boolean encenderCamara) {
-        this.encenderCamara = encenderCamara;
-    }
+
 
 }

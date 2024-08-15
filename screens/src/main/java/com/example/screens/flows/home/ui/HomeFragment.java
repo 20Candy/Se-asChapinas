@@ -151,7 +151,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         // No es primer login
         } else {
             //Usuario permite encender camara al abrir la app
-            if (homeViewModel.getEncenderCamara()) {
+            if (sharedPreferencesManager.isOpenCamera()) {
                 // Tiene permisos abrir camara
                 if (hasAllPermissionsGranted()) {
                     encenderCamara();

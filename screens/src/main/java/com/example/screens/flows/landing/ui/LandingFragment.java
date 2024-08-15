@@ -44,6 +44,7 @@ public class LandingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        onBackPressed(() -> {});
         super.onViewCreated(view, savedInstanceState);
         startListeners();
     }
