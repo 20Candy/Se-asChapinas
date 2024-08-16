@@ -138,4 +138,11 @@ public class EmailInput extends ConstraintLayout implements IInputs {
     public boolean isEmpty(){
         return inputText.getText().toString().isEmpty();
     }
+
+    public void disableInput() {
+        inputText.setEnabled(false);
+        inputText.setFocusable(false);
+        inputText.setFocusableInTouchMode(false);
+        inputText.setClickable(false);
+    }
 }

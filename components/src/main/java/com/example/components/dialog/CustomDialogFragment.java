@@ -23,6 +23,8 @@ public class CustomDialogFragment extends DialogFragment {
 
     private TextView mTextViewTitle, mTextViewContent, mTextViewConfirm, mTextViewCancel;
 
+    private int mColor = -1;
+
     private ConstraintLayout main;
 
     // Constructor que ahora sólo necesita el confirmListener
@@ -32,6 +34,16 @@ public class CustomDialogFragment extends DialogFragment {
         mConfirmText = confirmText;
         mCancelText = cancelText;
         this.confirmListener = confirmListener;
+    }
+
+    public CustomDialogFragment(String title, String content, String confirmText, String cancelText, OnConfirmListener confirmListener, int color) {
+        mTitle = title;
+        mContent = content;
+        mConfirmText = confirmText;
+        mCancelText = cancelText;
+        this.confirmListener = confirmListener;
+        mColor = color;
+
     }
 
     @Override
@@ -73,6 +85,10 @@ public class CustomDialogFragment extends DialogFragment {
 
         }
 
+        if(mColor!= -1){
+            mTextViewTitle.setTextColor(mColor);
+        }
+
         // Configurar ambos botones para cerrar el diálogo
         mTextViewConfirm.setOnClickListener(v -> {
             if (confirmListener != null) {
@@ -96,7 +112,4 @@ public class CustomDialogFragment extends DialogFragment {
         void onConfirm();
     }
 
-    public void setTitleTextColor(int color){
-        mTextViewTitle.setTextColor(color);
-    }
 }

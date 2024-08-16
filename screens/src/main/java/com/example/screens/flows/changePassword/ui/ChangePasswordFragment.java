@@ -97,5 +97,8 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         //SUCESS
         String correo = "ejemplo@gmail.com";
         binding.emailInput.setText(correo);
+        binding.emailInput.disableInput();
+
+
     }
 }

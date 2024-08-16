@@ -51,9 +51,9 @@ public class BaseFragment extends Fragment {
                 message,
                 actionOkText,
                 actionCancelText,
-                confirmListener
+                confirmListener,
+                color
         );
-        dialog.setTitleTextColor(color);
         dialog.show(getChildFragmentManager(), "MyCustomDialog");
     }
 
