@@ -65,8 +65,13 @@ public class CustomDialogFragment extends DialogFragment {
         mTextViewTitle.setText(mTitle);
         mTextViewContent.setText(mContent);
         mTextViewConfirm.setText(mConfirmText);
-        mTextViewCancel.setText(mCancelText);
 
+        if(mCancelText.equals("")){
+            mTextViewCancel.setVisibility(View.GONE);
+        }else{
+            mTextViewCancel.setText(mCancelText);
+
+        }
 
         // Configurar ambos botones para cerrar el diálogo
         mTextViewConfirm.setOnClickListener(v -> {
@@ -89,5 +94,9 @@ public class CustomDialogFragment extends DialogFragment {
 
     public interface OnConfirmListener {
         void onConfirm();
+    }
+
+    public void setTitleTextColor(int color){
+        mTextViewTitle.setTextColor(color);
     }
 }

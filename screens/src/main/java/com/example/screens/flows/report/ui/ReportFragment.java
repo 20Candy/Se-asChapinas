@@ -25,6 +25,7 @@ import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentReportBinding;
 import com.example.screens.databinding.FragmentVideoBinding;
+import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.flows.video.vm.VideoViewModel;
 
 import android.media.MediaMetadataRetriever;
@@ -203,7 +204,21 @@ public class ReportFragment extends BaseFragment {
     // Servicios -----------------------------------------------------------------------------------
     private void servicioReporte(){
         // TODO LLAMAR SERVICIO Y MANDAR ALERTA
-        clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+        // On sucess
+        showCustomDialogMessage(
+                "Tu reporte ha sido enviado exitosamente",
+                "¡Tu reporte nos ayuda a mejorar!",
+                "Cerrar",
+                "",
+                () -> {
+                    // Cofirmar
+                    clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+
+
+                },
+                ContextCompat.getColor(getContext(), com.example.components.R.color.base_blue)
+        );
+
     }
 
 }

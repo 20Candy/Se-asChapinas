@@ -45,6 +45,18 @@ public class BaseFragment extends Fragment {
         dialog.show(getChildFragmentManager(), "MyCustomDialog");
     }
 
+    protected void showCustomDialogMessage(String message, String title, String actionOkText, String actionCancelText, CustomDialogFragment.OnConfirmListener confirmListener, int color) {
+        CustomDialogFragment dialog = new CustomDialogFragment(
+                title,
+                message,
+                actionOkText,
+                actionCancelText,
+                confirmListener
+        );
+        dialog.setTitleTextColor(color);
+        dialog.show(getChildFragmentManager(), "MyCustomDialog");
+    }
+
 
     public interface OnBackPressedAction {
         void onBackPressedAction();

@@ -56,10 +56,9 @@ public class SettingsFragment extends BaseFragment {
 
     // Metodos privados de la clase ----------------------------------------------------------------
     private void setListeners(){
-        binding.imgBack.setOnClickListener(new DebounceClickListener(v->{
-            onBackPressed(() -> {
-                navigateTo(binding.getRoot(), R.id.profile_nav, null);
-            });
+        binding.imgBack.setOnClickListener(new DebounceClickListener(v-> {
+
+            NavHostFragment.findNavController(this).popBackStack();
 
         }));
 

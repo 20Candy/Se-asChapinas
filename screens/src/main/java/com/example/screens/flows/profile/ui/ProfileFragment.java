@@ -1,5 +1,6 @@
 package com.example.screens.flows.profile.ui;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.components.SettingsNavBar.SettingsNavBar;
 import com.example.components.buttons.DebounceClickListener;
@@ -22,6 +24,9 @@ import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.flows.profile.vm.ProfileViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
+import java.util.Date;
+import java.util.Locale;
+
 
 public class ProfileFragment extends BaseFragment {
 
@@ -30,6 +35,8 @@ public class ProfileFragment extends BaseFragment {
 
     // Atributos de la clase -----------------------------------------------------------------------
     private ProfileViewModel profileViewModel;
+    private SharedPreferencesManager sharedPreferencesManager;
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
@@ -80,7 +87,19 @@ public class ProfileFragment extends BaseFragment {
         }));
 
         binding.llScore.setOnClickListener(new DebounceClickListener(view -> {
-            navigateTo(binding.getRoot(), R.id.action_profileFragment_to_challengeFragment, null);
+            sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+            String todayDate = dateFormat.format(new Date());
+
+            String lastShownDate = sharedPreferencesManager.getLastChallengeShowDate();
+            if (!todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow() ) {
+                navigateTo(binding.getRoot(), R.id.action_profileFragment_to_challengeFragment, null);
+
+            }else{
+                Toast.makeText(getContext(), "Ya has completado tu reto diario", Toast.LENGTH_SHORT).show();
+
+            }
 
         }));
 
