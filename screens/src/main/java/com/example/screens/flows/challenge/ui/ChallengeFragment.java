@@ -15,11 +15,14 @@ import android.view.ViewGroup;
 import com.example.components.buttons.DebounceClickListener;
 import com.example.components.challenge.ChallengeCards;
 import com.example.components.dictionary.CardData;
+import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentChallengeBinding;
 import com.example.screens.databinding.FragmentHomeBinding;
+import com.example.screens.flows.challenge.vm.ChallengeViewModel;
 import com.example.screens.flows.dictionary.vm.DictionaryViewModel;
+import com.example.screens.flows.profile.vm.ProfileViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
 import java.math.BigInteger;
@@ -58,8 +61,15 @@ public class ChallengeFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setCardsData();
+        serviceChallengeScore();
         setListeners();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ChallengeViewModel.setBottomNavVisible(false);
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------
@@ -87,11 +97,11 @@ public class ChallengeFragment extends BaseFragment {
         });
 
         binding.imgBack.setOnClickListener(new DebounceClickListener( v->{
-            NavHostFragment.findNavController(this).popBackStack();
+            closeChallenge();
         }));
 
         binding.tvOmitir.setOnClickListener(new DebounceClickListener( v->{
-            NavHostFragment.findNavController(this).popBackStack();
+            closeChallenge();
         }));
 
         binding.secondButton.setOnClickListener(new DebounceClickListener( v->{
@@ -141,9 +151,30 @@ public class ChallengeFragment extends BaseFragment {
     }
 
     // Servicios -----------------------------------------------------------------------------------
-    private void serviceChallengeComplete(){
-        NavHostFragment.findNavController(this).popBackStack();
+    private void serviceChallengeScore(){
+        //TODO
 
+        //ON SUCESS
+        binding.tvScore.setText("10");
+        setCardsData();
+
+    }
+
+    private void serviceChallengeComplete(){
+        //TODO
+
+        //ON SUCESS
+        closeChallenge();
+
+    }
+
+    private void closeChallenge(){
+        if(getArguments()!=null && getArguments().getBoolean("fromHome") ){
+            NavHostFragment.findNavController(this).navigate(R.id.homeFragment);
+        }else{
+            NavHostFragment.findNavController(this).popBackStack();
+
+        }
     }
 
 }

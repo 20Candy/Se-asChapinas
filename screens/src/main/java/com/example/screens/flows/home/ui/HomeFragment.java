@@ -99,13 +99,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         String lastShownDate = sharedPreferencesManager.getLastChallengeShowDate();
 
-        if (!todayDate.equals(lastShownDate)) {
-            if (sharedPreferencesManager.isChallengeShow()) {
-                navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, null);
-
-                // Actualizar la fecha y marcar que el challenge ya fue mostrado
-                sharedPreferencesManager.setLastChallengeShowDate(todayDate);
-            }
+        if (!todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow() ) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("fromHome", true);
+            navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, bundle);
+            // Actualizar la fecha y marcar que el challenge ya fue mostrado
+            sharedPreferencesManager.setLastChallengeShowDate(todayDate);
 
         }else{
             verifyAndHandlePermissions();
@@ -123,6 +122,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         HomeViewModel.setBottomNavVisible(true);
@@ -131,6 +131,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             encenderCamara();
         }
     }
+
 
 
     // Metodos privados de la clase ----------------------------------------------------------------
@@ -362,7 +363,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     protected void createCameraPreview() {
         try {
             SurfaceTexture texture = binding.camera.getSurfaceTexture();
-            assert texture != null;
+            if (texture == null) {
+                Log.e("HomeFragment", "SurfaceTexture es nulo, no se puede crear la vista previa de la cámara");
+                return;
+            }
 
             texture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
             Surface surface = new Surface(texture);
