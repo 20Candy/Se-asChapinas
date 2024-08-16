@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,7 @@ public class VideoFavoriteAdapter extends RecyclerView.Adapter<VideoFavoriteAdap
         ObjVideoFav currentVideo = videoFavorites.get(position);
         holder.tvText.setText(currentVideo.getTraduccionEspanol());
        // TODO PONER IMAGEN DE VIDEO
+        holder.imageView.setImageDrawable(context.getResources().getDrawable(com.example.components.R.drawable.light_blue_line));
     }
 
     @Override
@@ -53,10 +55,12 @@ public class VideoFavoriteAdapter extends RecyclerView.Adapter<VideoFavoriteAdap
 
     static class VideoFavoriteViewHolder extends RecyclerView.ViewHolder {
         TextView tvText;
+        ImageView imageView;
 
         VideoFavoriteViewHolder(View itemView, final OnVideoFavoriteClickListener listener) {
             super(itemView);
             tvText = itemView.findViewById(R.id.tvText);
+            imageView = itemView.findViewById(R.id.imgVideo);
 
             itemView.setOnClickListener(new DebounceClickListener( v -> {
 

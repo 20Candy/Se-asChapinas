@@ -38,6 +38,7 @@ import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.flows.home.vm.HomeViewModel;
+import com.example.screens.flows.profile.ui.ProfileFragment;
 import com.example.screens.flows.video.vm.VideoViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
@@ -106,6 +107,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             // Actualizar la fecha y marcar que el challenge ya fue mostrado
             sharedPreferencesManager.setLastChallengeShowDate(todayDate);
 
+        } else if (homeViewModel.getSelectedVideo().getValue() != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("video_path", ""); // TODO VIDEO
+            bundle.putString("lensegua", homeViewModel.getSelectedVideo().getValue().getTraduccionLensegua());
+            bundle.putString("espanol", homeViewModel.getSelectedVideo().getValue().getTraduccionEspanol());
+            bundle.putBoolean("favorito", true);
+
+            navigateTo(binding.getRoot(), R.id.action_homeFragment_to_videoFragment, bundle);
+            homeViewModel.selectVideo(null);
+
         }else{
             verifyAndHandlePermissions();
             setupListeners();
@@ -154,7 +165,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         });
 
         binding.btnFavorite.setOnClickListener(v->{
-            // TODO NEVEGAR A FAVORITOS
+            HomeViewModel.selectTab(BottomNavMenu.TAB_PROFILE);
         });
 
         binding.btnCamera.setOnClickListener(v->{

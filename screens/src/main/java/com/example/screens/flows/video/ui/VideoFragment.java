@@ -132,6 +132,11 @@ public class VideoFragment extends BaseFragment {
             this.espanol = getArguments().getString("espanol");
             binding.tvEspanol.setText(this.espanol);
         }
+        if (getArguments() != null && getArguments().containsKey("favorito")) {
+            addFavorite = true;
+            binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.full_heart));
+
+        }
     }
 
     private void setListeners() {

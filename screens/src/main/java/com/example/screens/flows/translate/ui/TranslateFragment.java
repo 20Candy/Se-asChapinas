@@ -21,11 +21,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.components.buttons.DebounceClickListener;
+import com.example.components.navMenu.BottomNavMenu;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentTranslateBinding;
+import com.example.screens.flows.profile.vm.ProfileViewModel;
 import com.example.screens.flows.translate.vm.TranslateViewModel;
 
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class TranslateFragment extends BaseFragment {
@@ -35,6 +38,7 @@ public class TranslateFragment extends BaseFragment {
 
     // Atributos de la clase -----------------------------------------------------------------------
     private TranslateViewModel translateViewModel;
+    private ProfileViewModel profileViewModel;
     private TextToSpeech textToSpeech;
     private boolean addFavorite = false;
 
@@ -47,6 +51,7 @@ public class TranslateFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         translateViewModel = new ViewModelProvider(requireActivity()).get(TranslateViewModel.class);
+        profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     }
 
     @Override
@@ -63,6 +68,17 @@ public class TranslateFragment extends BaseFragment {
         onBackPressed(() -> {});
         initTextToSpeech();
         setupListeners();
+
+        if(translateViewModel.getSelectedTrans().getValue()!=null){
+            binding.tvTraduccionEspanol.setText(Objects.requireNonNull(translateViewModel.getSelectedTrans().getValue()).getTraduccionEspanol());
+            binding.edLensegua.setText(Objects.requireNonNull(translateViewModel.getSelectedTrans().getValue()).getTraduccionLensegua());
+            binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.full_heart));
+            addFavorite = true;
+
+            setEstadoTraducido(true);
+
+            translateViewModel.selectTrans(null);
+        }
     }
 
     @Override
@@ -79,7 +95,8 @@ public class TranslateFragment extends BaseFragment {
 
         // Favorite button
         binding.smallButton.setOnClickListener( new DebounceClickListener( v ->{
-            // TODO NEVEGAR A FAVORITOS
+            profileViewModel.setShowVideoFavorite(false);
+            ProfileViewModel.selectTab(BottomNavMenu.TAB_PROFILE);
 
         }));
 
@@ -129,7 +146,7 @@ public class TranslateFragment extends BaseFragment {
 
             // Nueva traduccion
             }else{
-                setEstadoTraducido(false, "");
+                setEstadoTraducido(false);
             }
 
 
@@ -144,7 +161,7 @@ public class TranslateFragment extends BaseFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // Filtrar caracteres no deseados
-                String filteredText = s.toString().replaceAll("[^a-zA-Z0-9]", "");
+                String filteredText = s.toString().replaceAll("[^a-zA-Z0-9 ]", "");
 
                 // Si el texto filtrado es diferente al texto original, actualiza el EditText
                 if (!filteredText.equals(s.toString())) {
@@ -214,7 +231,7 @@ public class TranslateFragment extends BaseFragment {
 
     }
 
-    private void setEstadoTraducido(Boolean traducido, String traduccion){
+    private void setEstadoTraducido(Boolean traducido){
         // Traduccion hecha
 
         if(traducido){
@@ -224,7 +241,6 @@ public class TranslateFragment extends BaseFragment {
             binding.llOptions.setVisibility(View.VISIBLE);
             binding.tvTitleEspanol.setVisibility(View.VISIBLE);
             binding.tvTraduccionEspanol.setVisibility(View.VISIBLE);
-            binding.tvTraduccionEspanol.setText(traduccion);
             binding.edLensegua.setEnabled(false);
 
         // Nueva traduccion
@@ -239,6 +255,8 @@ public class TranslateFragment extends BaseFragment {
             binding.tvTraduccionEspanol.setText("");
             binding.edLensegua.setText("");
             binding.edLensegua.setEnabled(true);
+            binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.heart));
+            addFavorite = false;
 
 
         }
@@ -276,7 +294,8 @@ public class TranslateFragment extends BaseFragment {
         // TODO
         // ON SUCESS
         String traduccion = "Hoy voy a la universidad";
-        setEstadoTraducido(true, traduccion);
+        binding.tvTraduccionEspanol.setText(traduccion);
+        setEstadoTraducido(true);
     }
 
 }

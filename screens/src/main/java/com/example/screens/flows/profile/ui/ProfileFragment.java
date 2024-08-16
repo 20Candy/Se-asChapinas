@@ -24,6 +24,7 @@ import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.databinding.FragmentProfileBinding;
 import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.flows.profile.vm.ProfileViewModel;
+import com.example.screens.flows.translate.vm.TranslateViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class ProfileFragment extends BaseFragment {
 
     // Atributos de la clase -----------------------------------------------------------------------
     private ProfileViewModel profileViewModel;
+    private HomeViewModel homeViewModel;
+    private TranslateViewModel translateViewModel;
     private SharedPreferencesManager sharedPreferencesManager;
 
     private VideoFavoriteAdapter videoFavoriteAdapter;
@@ -49,6 +52,8 @@ public class ProfileFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        translateViewModel = new ViewModelProvider(requireActivity()).get(TranslateViewModel.class);
 
     }
 
@@ -130,10 +135,11 @@ public class ProfileFragment extends BaseFragment {
 
     private void setVideoAdapter(ArrayList<ObjVideoFav> videoFavorites){
         videoFavoriteAdapter = new VideoFavoriteAdapter(getContext(), videoFavorites, video -> {
-            // TODO NAVEGAR A PANTALLA DE VIDEO
+            homeViewModel.selectVideo(video);
+            ProfileViewModel.selectTab(BottomNavMenu.TAB_HOME);
         });
-        binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.rvFavoritos.getContext(),
                 LinearLayoutManager.VERTICAL);
         binding.rvFavoritos.addItemDecoration(dividerItemDecoration);
@@ -143,13 +149,25 @@ public class ProfileFragment extends BaseFragment {
 
     private void setTranslateAdapter(ArrayList<ObjTraFav> traduccionesFav){
         translateFavoriteAdapter = new TranslateFavoriteAdapter(getContext(), traduccionesFav, traduccion -> {
-            // TODO NAVEGAR A PANTALLA DE TRADUCCION
-        });
-        binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
+            translateViewModel.selectTrans(traduccion);
+            ProfileViewModel.selectTab(BottomNavMenu.TAB_TRANSLATE);
 
+        });
+
+        binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.rvFavoritos.getContext(),
                 LinearLayoutManager.VERTICAL);
         binding.rvFavoritos.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void inicializarAdapter(){
+        if(profileViewModel.getShowVideoFavorite()){
+            binding.rvFavoritos.setAdapter(videoFavoriteAdapter);
+        }else{
+            binding.rvFavoritos.setAdapter(translateFavoriteAdapter);
+            binding.navBar.setActiveTab(com.example.components.R.id.imgTranslate);
+            profileViewModel.setShowVideoFavorite(true);
+        }
     }
 
 
@@ -203,9 +221,9 @@ public class ProfileFragment extends BaseFragment {
         traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
 
         setTranslateAdapter(traduccionesFavoritas);
-        binding.rvFavoritos.setAdapter(videoFavoriteAdapter);
 
 
+        inicializarAdapter();
 
     }
 }
