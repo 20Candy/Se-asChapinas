@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.example.screens.flows.home.vm.HomeViewModel;
 import com.example.screens.flows.profile.vm.ProfileViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,6 +39,9 @@ public class ProfileFragment extends BaseFragment {
     // Atributos de la clase -----------------------------------------------------------------------
     private ProfileViewModel profileViewModel;
     private SharedPreferencesManager sharedPreferencesManager;
+
+    private VideoFavoriteAdapter videoFavoriteAdapter;
+    private TranslateFavoriteAdapter translateFavoriteAdapter;
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -59,6 +65,7 @@ public class ProfileFragment extends BaseFragment {
         onBackPressed(() -> {});
         setListeners();
         servicioPerfil();
+
     }
 
     @Override
@@ -74,9 +81,12 @@ public class ProfileFragment extends BaseFragment {
             switch (tabId) {
                 // Tab video
                 case SettingsNavBar.VIDEO:
+                    binding.rvFavoritos.setAdapter(videoFavoriteAdapter);
                     break;
                 // Tab translate
                 case SettingsNavBar.TRANSLATE:
+                    binding.rvFavoritos.setAdapter(translateFavoriteAdapter);
+
                     break;
             }
         });
@@ -118,6 +128,32 @@ public class ProfileFragment extends BaseFragment {
 
     }
 
+    private void setVideoAdapter(ArrayList<ObjVideoFav> videoFavorites){
+        videoFavoriteAdapter = new VideoFavoriteAdapter(getContext(), videoFavorites, video -> {
+            // TODO NAVEGAR A PANTALLA DE VIDEO
+        });
+        binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.rvFavoritos.getContext(),
+                LinearLayoutManager.VERTICAL);
+        binding.rvFavoritos.addItemDecoration(dividerItemDecoration);
+    }
+
+
+
+    private void setTranslateAdapter(ArrayList<ObjTraFav> traduccionesFav){
+        translateFavoriteAdapter = new TranslateFavoriteAdapter(getContext(), traduccionesFav, traduccion -> {
+            // TODO NAVEGAR A PANTALLA DE TRADUCCION
+        });
+        binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.rvFavoritos.getContext(),
+                LinearLayoutManager.VERTICAL);
+        binding.rvFavoritos.addItemDecoration(dividerItemDecoration);
+    }
+
+
+
     // Servicios -----------------------------------------------------------------------------------
 
     private void servicioPerfil(){
@@ -129,5 +165,47 @@ public class ProfileFragment extends BaseFragment {
         String imagen = "azul";
 
         setViewData(nombre, racha, imagen);
+
+        servicioVideosFavoritos();
+
+    }
+
+    private void servicioVideosFavoritos(){
+
+        // TODO SERVICIO
+        // ON SUCESS
+
+        // TODO VIDEO OBTENER PRIMERA IMAGEN
+
+        ArrayList<ObjVideoFav> videoFavorites = new ArrayList<>();
+        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
+        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
+        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
+        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
+        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
+
+
+        setVideoAdapter(videoFavorites);
+
+        servicioTraduccionesFavoritas();
+    }
+
+
+    private void servicioTraduccionesFavoritas(){
+        // TODO SERVICIO
+        // ON SUCESS
+
+        ArrayList<ObjTraFav> traduccionesFavoritas = new ArrayList<>();
+        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
+        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
+        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
+        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
+        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
+
+        setTranslateAdapter(traduccionesFavoritas);
+        binding.rvFavoritos.setAdapter(videoFavoriteAdapter);
+
+
+
     }
 }
