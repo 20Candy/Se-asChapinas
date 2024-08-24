@@ -50,19 +50,11 @@ import com.example.screens.R;
 import com.example.screens.base.BaseFragment;
 import com.example.screens.databinding.FragmentHomeBinding;
 import com.example.screens.flows.home.vm.HomeViewModel;
-import com.example.screens.flows.profile.ui.ProfileFragment;
-import com.example.screens.flows.video.vm.VideoViewModel;
 import com.example.screens.utils.SharedPreferencesManager;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -150,6 +142,32 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
         if (hasAllPermissionsGranted() && binding.clCamera.getVisibility() == View.VISIBLE) {
             encenderCamara();
+        }
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        apagarCamara(); // Libera los recursos de la cámara cuando el fragmento se pausa
+    }
+
+    private void apagarCamara() {
+        if (videoCapture != null) {
+            ProcessCameraProvider cameraProvider = getCameraProvider();
+            if (cameraProvider != null) {
+                cameraProvider.unbindAll(); // Desvincula todos los recursos de la cámara
+            }
+            videoCapture = null;
+        }
+    }
+
+    private ProcessCameraProvider getCameraProvider() {
+        try {
+            return ProcessCameraProvider.getInstance(getContext()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -276,7 +294,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         ? CameraSelector.DEFAULT_FRONT_CAMERA
                         : CameraSelector.DEFAULT_BACK_CAMERA;
 
-                // Ensure videoCapture is only initialized once
+                // Asegúrate de crear un nuevo VideoCapture cada vez
+                Recorder recorder = new Recorder.Builder()
+                        .setQualitySelector(QualitySelector.from(Quality.FHD))
+                        .build();
+
+                videoCapture = VideoCapture.withOutput(recorder);
+
                 cameraProvider.unbindAll();
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, videoCapture);
 
@@ -285,6 +309,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         }, ContextCompat.getMainExecutor(getContext()));
     }
+
 
     private void startRecording() {
         if (videoCapture == null) {
@@ -300,6 +325,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         recording = pendingRecording.start(ContextCompat.getMainExecutor(getContext()), videoRecordEvent -> {
             if (videoRecordEvent instanceof VideoRecordEvent.Finalize) {
+                // Verificar si hubo errores durante la grabación
+                if (((VideoRecordEvent.Finalize) videoRecordEvent).getError() != VideoRecordEvent.Finalize.ERROR_NONE) {
+                    Log.e("VideoFragment", "Error en la grabación del video: " + ((VideoRecordEvent.Finalize) videoRecordEvent).getError());
+                } else {
+                    // Confirmación de que el archivo está guardado y listo
+                    hideCustomDialogProgress();
+                    videoTraductionService();
+
+                }
             }
         });
     }
@@ -307,11 +341,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private void stopRecording() {
         if (recording != null) {
+            showCustomDialogProgress(requireContext());
             recording.stop();
             recording = null; // Reset the recording object
         }
 
-        videoTraductionService();
+
     }
 
     private void flipCamera() {

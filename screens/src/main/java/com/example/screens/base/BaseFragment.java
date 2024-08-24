@@ -1,7 +1,9 @@
 package com.example.screens.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.components.dialog.CustomDialogFragment;
 import com.example.components.navMenu.BottomNavMenu;
+import com.example.components.spinner.CustomProgressBarDialog;
 import com.example.screens.R;
 import com.example.screens.utils.SharedPreferencesManager;
 
@@ -23,8 +26,11 @@ import java.util.List;
 
 public class BaseFragment extends Fragment {
 
+    private CustomProgressBarDialog progressBarDialog;
+
+
     protected void navigateTo(View view, int destiny_id, Bundle bundle) {
-//        hideCustomDialogProgress();
+        hideCustomDialogProgress();
         Navigation.findNavController(view).navigate(destiny_id, bundle);
     }
 
@@ -81,6 +87,28 @@ public class BaseFragment extends Fragment {
         navController.setGraph(R.navigation.main_nav);
 
     }
+
+
+    protected void showCustomDialogProgress(Context context) {
+        progressBarDialog = new CustomProgressBarDialog(requireActivity());
+        if (context != null && !progressBarDialog.isShowing()) {
+            try {
+                progressBarDialog.setCancelable(false);
+                progressBarDialog.show();
+            } catch (Exception e) {
+                Log.e("Error", "showCustomDialogProgress: ", e);
+            }
+        }
+    }
+
+    protected void hideCustomDialogProgress() {
+
+        if (progressBarDialog != null && progressBarDialog.isShowing()) {
+            progressBarDialog.dismiss();
+
+        }
+    }
+
 
 
 

@@ -1,6 +1,7 @@
 package com.example.screens.flows.video.ui;
 
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -65,7 +66,6 @@ public class VideoFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onBackPressed(() -> {});
         initTextToSpeech();
         setVideoPlayer();
         setTraductions();
@@ -85,21 +85,30 @@ public class VideoFragment extends BaseFragment {
         super.onPause();
         pauseVideo();
         binding.videoView.setMediaController(null); // Ocultar el MediaController cuando el video está en pausa
-
+        releaseVideoView();
     }
+
+
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
-        super.onDestroy();
+
+        releaseVideoView();
+
     }
+
 
     // Metodos privados de la clase ----------------------------------------------------------------
     private void setVideoPlayer() {
         if (getArguments() != null && getArguments().containsKey("video_path")) {
+            binding.videoView.getHolder().setFormat(PixelFormat.UNKNOWN); // Resetear la superficie
+
+
             videoPath = getArguments().getString("video_path");
             binding.videoView.setVideoURI(Uri.parse(videoPath));
 
@@ -136,6 +145,16 @@ public class VideoFragment extends BaseFragment {
             addFavorite = true;
             binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.example.components.R.drawable.full_heart));
 
+        }
+    }
+
+    private void releaseVideoView() {
+        if (binding.videoView != null) {
+            binding.videoView.stopPlayback();
+            binding.videoView.setMediaController(null);
+            binding.videoView.setOnPreparedListener(null);
+            binding.videoView.setOnCompletionListener(null);
+            binding.videoView.setOnErrorListener(null);
         }
     }
 
