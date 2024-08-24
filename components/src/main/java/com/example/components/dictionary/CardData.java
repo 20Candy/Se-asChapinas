@@ -2,12 +2,12 @@ package com.example.components.dictionary;
 
 public class CardData {
     String title;
-    int imgLenseguaResId;
-    int imgCardResId;
+    String imgLenseguaResId;
+    String imgCardResId;
 
     String categoria;
 
-    public CardData(String title, int imgLenseguaResId, int imgCardResId, String categoria) {
+    public CardData(String title, String imgLenseguaResId, String imgCardResId, String categoria) {
         this.title = title;
         this.imgLenseguaResId = imgLenseguaResId;
         this.imgCardResId = imgCardResId;
@@ -22,19 +22,19 @@ public class CardData {
         this.title = title;
     }
 
-    public int getImgLenseguaResId() {
+    public String getImgLenseguaResId() {
         return imgLenseguaResId;
     }
 
-    public void setImgLenseguaResId(int imgLenseguaResId) {
+    public void setImgLenseguaResId(String imgLenseguaResId) {
         this.imgLenseguaResId = imgLenseguaResId;
     }
 
-    public int getImgCardResId() {
+    public String getImgCardResId() {
         return imgCardResId;
     }
 
-    public void setImgCardResId(int imgCardResId) {
+    public void setImgCardResId(String imgCardResId) {
         this.imgCardResId = imgCardResId;
     }
 

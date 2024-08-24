@@ -44,8 +44,17 @@ public class DictionaryCardAdapter extends RecyclerView.Adapter<DictionaryCardAd
     public void onBindViewHolder(@NonNull DictionaryViewHolder holder, int position) {
         CardData data = cardDataList.get(position);
         holder.cardDictionary.setTvTitle(data.getTitle());
-        holder.cardDictionary.setImgLensegua(ResourcesCompat.getDrawable(context.getResources(), data.getImgLenseguaResId(), null));
-        holder.cardDictionary.setImgCard(ResourcesCompat.getDrawable(context.getResources(), data.getImgCardResId(), null));
+
+
+        // Convertir el nombre del recurso en un ID
+        int imgLenseguaResId = context.getResources().getIdentifier(data.getImgLenseguaResId(), "drawable", context.getPackageName());
+        int imgCardResId = context.getResources().getIdentifier(data.getImgCardResId(), "drawable", context.getPackageName());
+
+        // Comprobar si los recursos fueron encontrados
+        if (imgLenseguaResId != 0 && imgCardResId != 0) {
+            holder.cardDictionary.setImgLensegua(ResourcesCompat.getDrawable(context.getResources(), imgLenseguaResId, null));
+            holder.cardDictionary.setImgCard(ResourcesCompat.getDrawable(context.getResources(), imgCardResId, null));
+        }
 
         // Mostrar letra si es la primera en la sección
         if (position == 0 || !cardDataList.get(position - 1).getTitle().substring(0, 1).equals(data.getTitle().substring(0, 1))) {

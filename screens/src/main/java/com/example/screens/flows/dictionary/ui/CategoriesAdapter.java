@@ -43,17 +43,27 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         boolean isFavorite = "Favoritos".equals(category);
         holder.categoryView.findViewById(com.example.components.R.id.heart).setVisibility(isFavorite ? View.VISIBLE : View.GONE);
 
+        // Cambiar el estado visual dependiendo si está seleccionado o no
         holder.categoryView.setSelected(selectedPosition == position);
 
         holder.categoryView.setOnClickListener(v -> {
-            int previousSelectedPosition = selectedPosition;
-            selectedPosition = holder.getAdapterPosition();
+            // Si la categoría seleccionada es la misma, deseleccionarla
+            if (selectedPosition == holder.getAdapterPosition()) {
+                // Deseleccionar la categoría
+                selectedPosition = RecyclerView.NO_POSITION;
+                notifyItemChanged(holder.getAdapterPosition());
+                listener.onCardClicked(isFavorite, ""); // Aquí puedes pasar una categoría vacía o manejarlo de otra forma para quitar el filtro
+            } else {
+                // Seleccionar una nueva categoría
+                int previousSelectedPosition = selectedPosition;
+                selectedPosition = holder.getAdapterPosition();
 
-            // Notificar cambios en los elementos seleccionados y deseleccionados
-            notifyItemChanged(previousSelectedPosition);
-            notifyItemChanged(selectedPosition);
+                // Notificar cambios en los elementos seleccionados y deseleccionados
+                notifyItemChanged(previousSelectedPosition);
+                notifyItemChanged(selectedPosition);
 
-            listener.onCardClicked(isFavorite, category);
+                listener.onCardClicked(isFavorite, category);
+            }
         });
     }
 

@@ -110,7 +110,7 @@ public class ChallengeFragment extends BaseFragment {
     }
 
     private void setCardsData() {
-        List<CardData> cardDataList = dictionaryViewModel.createCardData();
+        List<CardData> cardDataList = dictionaryViewModel.createCardData(requireContext());
         Random random = new Random();
 
         // Selecciona aleatoriamente una tarjeta correcta
@@ -134,18 +134,28 @@ public class ChallengeFragment extends BaseFragment {
         // Configura las imágenes en la vista
         List<Integer> resources = new ArrayList<>();
         for (CardData card : options) {
-            resources.add(card.getImgLenseguaResId()); // Asegúrate que CardData tiene un método getImageResId()
+            // Convierte el nombre del recurso en un ID
+            int resId = requireContext().getResources().getIdentifier(card.getImgLenseguaResId(), "drawable", requireContext().getPackageName());
+            if (resId != 0) {
+                resources.add(resId);
+            }
         }
 
+        // Establece los recursos en tu componente de vista personalizado
         binding.cards.setImageResources(resources);
 
         // Establece la imagen correcta en la vista para comparar en el juego
-        binding.cards.setCorrectImageRes(correctCard.getImgLenseguaResId());
+        int correctResId = requireContext().getResources().getIdentifier(correctCard.getImgLenseguaResId(), "drawable", requireContext().getPackageName());
+        if (correctResId != 0) {
+            binding.cards.setCorrectImageRes(correctResId);
+        }
 
         // Establece la palabra correcta en el TextView
-        binding.tvWord.setText('"' + correctCard.getTitle() +'"');
+        binding.tvWord.setText('"' + correctCard.getTitle() + '"');
 
+        // Inicia el juego
         binding.cards.startGame();
+
 
         // TODO OBTENER CHALLENGE SCORE
     }

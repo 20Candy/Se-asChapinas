@@ -35,6 +35,9 @@ public class DictionaryFragment extends BaseFragment {
     DictionaryCardAdapter adapter;
     CategoriesAdapter categoriesAdapter;
 
+    private String selectedCategory = null;
+
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
@@ -56,7 +59,7 @@ public class DictionaryFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
-        setupRecyclerView(dictionaryViewModel.createCardData());
+        setupRecyclerView(dictionaryViewModel.createCardData(requireContext()));
         setupRecyclerViewCategories(createCategories());
         setListeners();
     }
@@ -83,20 +86,24 @@ public class DictionaryFragment extends BaseFragment {
             if (isFavorite) {
                 servicioFavoritosDiccionario();
             } else {
-                filtrarLista(category, "categoria");
+                // Si la categoría ya está seleccionada, quitar el filtro
+                if (category.equals(selectedCategory)) {
+                    selectedCategory = null; // Resetear la categoría seleccionada
+                    setupRecyclerView(dictionaryViewModel.createCardData(requireContext())); // Mostrar toda la lista
+                } else {
+                    selectedCategory = category; // Establecer la nueva categoría seleccionada
+                    filtrarLista(category, "categoria"); // Aplicar el filtro de categoría
+                }
             }
         });
+
         binding.rvCategories.setAdapter(categoriesAdapter);
     }
 
 
-
-
     private List<String> createCategories() {
-        return new ArrayList<>(Arrays.asList("Favoritos", "Acciones", "Lugares", "Estados", "Tiempo", "Pronombres", "Preguntas"));
+        return new ArrayList<>(Arrays.asList("Favoritos", "Acciones", "Lugares", "Estados", "Tiempo", "Personas", "Preguntas", "Objetos"));
     }
-
-
 
 
     private void setListeners(){
@@ -133,7 +140,7 @@ public class DictionaryFragment extends BaseFragment {
 
     private void filtrarLista(String filtro, String tipo) {
         List<CardData> listaFiltrada = new ArrayList<>();
-        List<CardData> listaOriginal = dictionaryViewModel.createCardData();
+        List<CardData> listaOriginal = dictionaryViewModel.createCardData(requireContext());
 
         if (filtro != null && !filtro.isEmpty()) {
             listaFiltrada = listaOriginal.stream()
@@ -143,21 +150,26 @@ public class DictionaryFragment extends BaseFragment {
                         } else if ("categoria".equalsIgnoreCase(tipo)) {
                             return card.getCategoria() != null && card.getCategoria().toLowerCase().contains(filtro.toLowerCase());
                         }
-                        return false; // Tipo no reconocido
+                        // Devuelve false si el tipo no coincide con "titulo" o "categoria"
+                        return false;
                     })
                     .collect(Collectors.toList());
-            showEmptyState(listaFiltrada.isEmpty());
+
+            // Mostrar estado vacío si la lista filtrada está vacía
+            showEmptyState(listaFiltrada.isEmpty(), "Palabra no disponible\n ¡Seguimos creciendo!");
             setupRecyclerView(listaFiltrada);
         } else {
             // Si el filtro es nulo o vacío, mostrar la lista original
-            showEmptyState(false);
+            showEmptyState(false, "");
             setupRecyclerView(listaOriginal);
         }
     }
 
 
-    private void showEmptyState(Boolean show){
+
+    private void showEmptyState(Boolean show, String text){
         if(show){
+            binding.tvEmpty.setText(text);
             binding.clEmpty.setVisibility(View.VISIBLE);
             binding.rvCards.setVisibility(View.GONE);
         }else{
@@ -179,7 +191,10 @@ public class DictionaryFragment extends BaseFragment {
 
     private void servicioFavoritosDiccionario(){
         // TODO
+        showEmptyState(true, "Aquí aparecerán tus palabras favoritas");
+
     }
+
 
 
 }

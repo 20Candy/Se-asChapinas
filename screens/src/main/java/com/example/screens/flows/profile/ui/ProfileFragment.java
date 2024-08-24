@@ -108,7 +108,7 @@ public class ProfileFragment extends BaseFragment {
             String todayDate = dateFormat.format(new Date());
 
             String lastShownDate = sharedPreferencesManager.getLastChallengeShowDate();
-            if (!todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow() ) {
+            if (todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow() ) { // TODO QUITAR, EJEMPLO PARA DEMO
                 navigateTo(binding.getRoot(), R.id.action_profileFragment_to_challengeFragment, null);
 
             }else{

@@ -1,0 +1,196 @@
+{
+  "cardDataList": [
+    {
+      "title": "Agua",
+      "imgLenseguaResId": "agua_lensegua",
+      "imgCardResId": "agua",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Ayer",
+      "imgLenseguaResId": "ayer_lensegua",
+      "imgCardResId": "ayer",
+      "categoria": "tiempo"
+    },
+    {
+      "title": "Ayuda",
+      "imgLenseguaResId": "ayuda_lensegua",
+      "imgCardResId": "ayuda",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Baño",
+      "imgLenseguaResId": "bano_lensegua",
+      "imgCardResId": "bano",
+      "categoria": "lugares"
+    },
+    {
+      "title": "Beber",
+      "imgLenseguaResId": "beber_lensegua",
+      "imgCardResId": "beber",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Cansado",
+      "imgLenseguaResId": "cansado_lensegua",
+      "imgCardResId": "cansado",
+      "categoria": "estados"
+    },
+    {
+      "title": "Casa",
+      "imgLenseguaResId": "casa_lensegua",
+      "imgCardResId": "casa",
+      "categoria": "lugares"
+    },
+    {
+      "title": "Colegio",
+      "imgLenseguaResId": "colegio_lensegua",
+      "imgCardResId": "colegio",
+      "categoria": "lugares"
+    },
+    {
+      "title": "Comer",
+      "imgLenseguaResId": "comer_lensegua",
+      "imgCardResId": "comer",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Comida",
+      "imgLenseguaResId": "comida_lensegua",
+      "imgCardResId": "comida",
+      "categoria": "objetos"
+    },
+    {
+      "title": "Cómo",
+      "imgLenseguaResId": "como_lensegua",
+      "imgCardResId": "como",
+      "categoria": "preguntas"
+    },
+    {
+      "title": "Cúando",
+      "imgLenseguaResId": "cuando_lensegua",
+      "imgCardResId": "cuando",
+      "categoria": "preguntas"
+    },
+    {
+      "title": "Cuánto",
+      "imgLenseguaResId": "cuanto_lensegua",
+      "imgCardResId": "cuanto",
+      "categoria": "preguntas"
+    },
+    {
+      "title": "Dónde",
+      "imgLenseguaResId": "donde_lensegua",
+      "imgCardResId": "donde",
+      "categoria": "preguntas"
+    },
+    {
+      "title": "Hacer",
+      "imgLenseguaResId": "hacer_lensegua",
+      "imgCardResId": "hacer",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Hambre",
+      "imgLenseguaResId": "hambre_lensegua",
+      "imgCardResId": "hambre",
+      "categoria": "estados"
+    },
+    {
+      "title": "Hospital",
+      "imgLenseguaResId": "hospital_lensegua",
+      "imgCardResId": "hospital",
+      "categoria": "lugares"
+    },
+    {
+      "title": "Hoy",
+      "imgLenseguaResId": "hoy_lensegua",
+      "imgCardResId": "hoy",
+      "categoria": "tiempo"
+    },
+    {
+      "title": "Ir",
+      "imgLenseguaResId": "ir_lensegua",
+      "imgCardResId": "ir",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Mañana",
+      "imgLenseguaResId": "manana_lensegua",
+      "imgCardResId": "manana",
+      "categoria": "tiempo"
+    },
+    {
+      "title": "Necesitar",
+      "imgLenseguaResId": "necesitar_lensegua",
+      "imgCardResId": "necesitar",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Policia",
+      "imgLenseguaResId": "policia_lensegua",
+      "imgCardResId": "policia",
+      "categoria": "personas"
+    },
+    {
+      "title": "Qué",
+      "imgLenseguaResId": "que_lensegua",
+      "imgCardResId": "que",
+      "categoria": "preguntas"
+    },
+    {
+      "title": "Quién",
+      "imgLenseguaResId": "quien_lensegua",
+      "imgCardResId": "quien",
+      "categoria": "preguntas"
+    },
+    {
+      "title": "Querer",
+      "imgLenseguaResId": "querer_lensegua",
+      "imgCardResId": "querer",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Sed",
+      "imgLenseguaResId": "sed_lensegua",
+      "imgCardResId": "sed",
+      "categoria": "estados"
+    },
+    {
+      "title": "Tener",
+      "imgLenseguaResId": "tener_lensegua",
+      "imgCardResId": "tener",
+      "categoria": "acciones"
+    },
+    {
+      "title": "Trabajo",
+      "imgLenseguaResId": "trabajo_lensegua",
+      "imgCardResId": "trabajo",
+      "categoria": "lugares"
+    },
+    {
+      "title": "Tu",
+      "imgLenseguaResId": "tu_lensegua",
+      "imgCardResId": "tu",
+      "categoria": "personas"
+    },
+    {
+      "title": "Universidad",
+      "imgLenseguaResId": "universidad_lensegua",
+      "imgCardResId": "universidad",
+      "categoria": "lugares"
+    },
+    {
+      "title": "Yo",
+      "imgLenseguaResId": "yo_lensegya",
+      "imgCardResId": "yo",
+      "categoria": "personas"
+    },
+    {
+      "title": "?",
+      "imgLenseguaResId": "pregunta_lensegua",
+      "imgCardResId": "pregunta",
+      "categoria": "preguntas"
+    }
+  ]
+}
