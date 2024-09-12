@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_grey"
-    tools:context=".flows.home.ui.HomeFragment">
+    tools:context="com.screens.flows.home.ui.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_empty"
@@ -51,7 +51,7 @@
 
         </LinearLayout>
 
-        <com.example.components.buttons.MainButton
+        <com.components.buttons.MainButton
             android:id="@+id/btnEmpezar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <com.example.components.buttons.RecordButton
+        <com.components.buttons.RecordButton
             android:id="@+id/btn_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

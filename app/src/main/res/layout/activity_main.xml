@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="com.senaschapinasuvg.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:navGraph="@navigation/main_nav" />
 
-        <com.example.components.navMenu.BottomNavMenu
+        <com.components.navMenu.BottomNavMenu
             android:id="@+id/bottom_nav_menu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/landingFragment"
-        android:name="com.example.screens.flows.landing.ui.LandingFragment"
+        android:name="com.screens.flows.landing.ui.LandingFragment"
         android:label="fragment_landing"
         tools:layout="@layout/fragment_landing" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/logInFragment"
-        android:name="com.example.screens.flows.login.ui.LogInFragment"
+        android:name="com.screens.flows.login.ui.LogInFragment"
         android:label="fragment_log_in"
         tools:layout="@layout/fragment_log_in" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.screens.flows.signup.ui.SignUpFragment"
+        android:name="com.screens.flows.signup.ui.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action

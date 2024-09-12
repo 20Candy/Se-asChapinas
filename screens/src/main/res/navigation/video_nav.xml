@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.screens.flows.home.ui.HomeFragment"
+        android:name="com.screens.flows.home.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/videoFragment"
-        android:name="com.example.screens.flows.video.ui.VideoFragment"
+        android:name="com.screens.flows.video.ui.VideoFragment"
         android:label="fragment_video"
         tools:layout="@layout/fragment_video" >
         <action
@@ -28,11 +28,11 @@
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.example.screens.flows.report.ui.ReportFragment"
+        android:name="com.screens.flows.report.ui.ReportFragment"
         android:label="ReportFragment" />
     <fragment
         android:id="@+id/challengeFragment2"
-        android:name="com.example.screens.flows.challenge.ui.ChallengeFragment"
+        android:name="com.screens.flows.challenge.ui.ChallengeFragment"
         android:label="fragment_challenge"
         tools:layout="@layout/fragment_challenge" />
 </navigation>

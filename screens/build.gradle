@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.screens'
+    namespace 'com.screens'
     compileSdk 34
 
     defaultConfig {
@@ -53,5 +53,7 @@ dependencies {
 
     implementation 'com.google.android.exoplayer:exoplayer:2.19.0'
     implementation 'com.google.code.gson:gson:2.9.0'
+
+    implementation 'androidx.security:security-crypto:1.1.0-alpha03'
 
 }

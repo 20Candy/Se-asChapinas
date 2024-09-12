@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_blue"
-    tools:context=".flows.landing.ui.LandingFragment">
+    tools:context="com.screens.flows.landing.ui.LandingFragment">
 
 
     <ImageView
@@ -67,7 +67,7 @@
             android:src="@drawable/aprende_lensegua" />
     </LinearLayout>
 
-    <com.example.components.buttons.MainButton
+    <com.components.buttons.MainButton
         android:id="@+id/mainButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,9 +80,9 @@
         app:layout_constraintTop_toBottomOf="@+id/ll_lensegua"
         app:text="@string/landing_main_button_title">
 
-    </com.example.components.buttons.MainButton>
+    </com.components.buttons.MainButton>
 
-    <com.example.components.buttons.TransparentButton
+    <com.components.buttons.TransparentButton
         android:id="@+id/secondButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
         app:text="@string/landing_transparent_button_title"
         app:textColor="@color/background">
 
-    </com.example.components.buttons.TransparentButton>
+    </com.components.buttons.TransparentButton>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

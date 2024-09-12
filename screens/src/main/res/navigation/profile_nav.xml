@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.screens.flows.profile.ui.ProfileFragment"
+        android:name="com.screens.flows.profile.ui.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.screens.flows.settings.ui.SettingsFragment"
+        android:name="com.screens.flows.settings.ui.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -31,16 +31,16 @@
     </fragment>
     <fragment
         android:id="@+id/challengeFragment"
-        android:name="com.example.screens.flows.challenge.ui.ChallengeFragment"
+        android:name="com.screens.flows.challenge.ui.ChallengeFragment"
         android:label="fragment_challenge"
         tools:layout="@layout/fragment_challenge" />
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.example.screens.flows.changePassword.ui.ChangePasswordFragment"
+        android:name="com.screens.flows.changePassword.ui.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/aboutApp"
-        android:name="com.example.screens.flows.settings.ui.AboutApp"
+        android:name="com.screens.flows.settings.ui.AboutApp"
         android:label="AboutApp" />
 </navigation>

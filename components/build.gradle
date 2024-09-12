@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.components'
+    namespace 'com.components'
     compileSdk 33
 
     defaultConfig {

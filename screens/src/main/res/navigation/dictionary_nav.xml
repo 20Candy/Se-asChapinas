@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dictionaryFragment"
-        android:name="com.example.screens.flows.dictionary.ui.DictionaryFragment"
+        android:name="com.screens.flows.dictionary.ui.DictionaryFragment"
         android:label="fragment_dictionary"
         tools:layout="@layout/fragment_dictionary" />
 </navigation>

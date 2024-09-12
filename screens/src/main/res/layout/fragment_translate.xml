@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".flows.translate.ui.TranslateFragment">
+    tools:context="com.screens.flows.translate.ui.TranslateFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clLensegua"
@@ -73,7 +73,7 @@
             app:layout_constraintTop_toTopOf="@+id/smallButton"
             app:layout_constraintVertical_bias="1.0" />
 
-        <com.example.components.buttons.SmallButton
+        <com.components.buttons.SmallButton
             android:id="@+id/smallButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
                 android:src="@drawable/heart" />
         </LinearLayout>
 
-        <com.example.components.buttons.SmallTransparentButton
+        <com.components.buttons.SmallTransparentButton
             android:id="@+id/smallTransparentButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

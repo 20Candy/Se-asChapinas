@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".flows.challenge.ui.ChallengeFragment">
+    tools:context="com.screens.flows.challenge.ui.ChallengeFragment">
 
     <ImageView
         android:id="@+id/imgGif"
@@ -102,7 +102,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSubtitle" />
 
-    <com.example.components.challenge.ChallengeCards
+    <com.components.challenge.ChallengeCards
         android:id="@+id/cards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvWord"
         app:layout_constraintVertical_bias="0.0">
 
-    </com.example.components.challenge.ChallengeCards>
+    </com.components.challenge.ChallengeCards>
 
     <TextView
         android:id="@+id/tvOmitir"
@@ -132,7 +132,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cards"
         app:layout_constraintVertical_bias="0.509" />
 
-    <com.example.components.buttons.TransparentButton
+    <com.components.buttons.TransparentButton
         android:id="@+id/secondButton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"

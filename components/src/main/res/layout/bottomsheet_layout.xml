@@ -52,7 +52,7 @@
             android:layout_marginTop="42dp"
             android:weightSum="2">
 
-            <com.example.components.buttons.MainButton
+            <com.components.buttons.MainButton
                 android:id="@+id/mainButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 app:textColor="@color/background"
                 />
 
-            <com.example.components.buttons.TransparentButton
+            <com.components.buttons.TransparentButton
                 android:id="@+id/secondButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

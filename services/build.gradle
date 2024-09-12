@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.services'
+    namespace 'com.services'
     compileSdk 34
 
     defaultConfig {
