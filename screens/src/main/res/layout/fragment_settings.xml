@@ -251,9 +251,11 @@
                 android:id="@+id/switchReto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:thumb="@drawable/switch_thumb"
+                android:track="@drawable/switch_track"
                 android:clickable="false"
-
                 />
+
         </LinearLayout>
 
         <ImageView
@@ -299,8 +301,11 @@
                 android:id="@+id/switchCamara"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:thumb="@drawable/switch_thumb"
+                android:track="@drawable/switch_track"
                 android:clickable="false"
-/>
+            />
+
 
         </LinearLayout>
 

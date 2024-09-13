@@ -11,8 +11,8 @@
     <string name="button_activate_camera">Activar Cámara</string>
     <string name="bottomsheet_title">Generar Reporte</string>
     <string name="bottomsheet_content">El video será enviado para evaluación. ¿Estás de acuerdo?</string>
-    <string name="bottomsheet_button1">Cancelar</string>
-    <string name="bottomsheet_button2">Continuar</string>
+    <string name="bottomsheet_button1">Regresar</string>
+    <string name="bottomsheet_button2">Reportar</string>
     <string name="search">Buscar palabra</string>
     <string name="empty_search">Palabra no disponible \n ¡Seguimos creciendo!</string>
     <string name="cambiar_contra">Cambiar contraseña</string>
