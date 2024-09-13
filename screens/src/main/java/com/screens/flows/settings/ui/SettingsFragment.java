@@ -1,5 +1,8 @@
 package com.screens.flows.settings.ui;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -114,6 +117,20 @@ public class SettingsFragment extends BaseFragment {
     private void setInitValues(){
         binding.switchReto.setChecked(sharedPreferencesManager.isChallengeShow());
         binding.switchCamara.setChecked(sharedPreferencesManager.isOpenCamera());
+
+
+        try {
+            Context context = getContext();
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            String versionName = packageInfo.versionName;
+
+            binding.tvVersion.setText("Versión " + versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
 
