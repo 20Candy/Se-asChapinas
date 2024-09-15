@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.screens.base.BaseViewModel;
-import com.screens.flows.profile.ui.ObjTraFav;
+import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
 
 public class TranslateViewModel extends BaseViewModel {
     public TranslateViewModel(@NonNull Application application) {

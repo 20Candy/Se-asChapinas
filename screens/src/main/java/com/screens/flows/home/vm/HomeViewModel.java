@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.screens.base.BaseViewModel;
-import com.screens.flows.profile.ui.ObjVideoFav;
+import com.senaschapinas.flows.GetUserInfo.ObjVideoFav;
 
 public class HomeViewModel extends BaseViewModel {
 

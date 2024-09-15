@@ -1,10 +1,15 @@
 package com.senaschapinas.base;
 
 import com.senaschapinas.flows.AddDictionary.AddDictionaryRequest;
+import com.senaschapinas.flows.AddStreak.AddStreakRequest;
 import com.senaschapinas.flows.ChangePassword.ChangePasswordRequest;
 import com.senaschapinas.flows.FavTraduction.FavTraductionRequest;
 import com.senaschapinas.flows.GetDictionary.GetDictionaryRequest;
 import com.senaschapinas.flows.GetDictionary.GetDictionaryResponse;
+import com.senaschapinas.flows.GetUserInfo.GetUserInfoRequest;
+import com.senaschapinas.flows.GetUserInfo.GetUserInfoResponse;
+import com.senaschapinas.flows.GetVideo.GetVideoRequest;
+import com.senaschapinas.flows.GetVideo.GetVideoResponse;
 import com.senaschapinas.flows.LogIn.FavVideo.FavVideoRequest;
 import com.senaschapinas.flows.ForgotPassword.ForgotPasswordRequest;
 import com.senaschapinas.flows.LogIn.LogInResponse;
@@ -67,6 +72,19 @@ public interface serviceAPI {
 
     @POST("get_dictionary")
     Call<GetDictionaryResponse> getDictionary(@Body GetDictionaryRequest request);
+
+    @POST("get_user_info")
+    Call<GetUserInfoResponse> getUserInfo(@Body GetUserInfoRequest request);
+
+    @DELETE("delete_user/{id_user}")
+    Call<Void> deleteUser(@Path("id_user") String idUser);
+
+    @POST("add_streak")
+    Call<Void> addStreak(@Body AddStreakRequest request);
+
+    @POST("get_video")
+    Call<GetVideoResponse> getVideo(@Body GetVideoRequest request);
+
 
 
 

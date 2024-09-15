@@ -70,8 +70,8 @@ public class TranslateFragment extends BaseFragment {
         setupListeners();
 
         if(translateViewModel.getSelectedTrans().getValue()!=null){
-            binding.tvTraduccionEspanol.setText(Objects.requireNonNull(translateViewModel.getSelectedTrans().getValue()).getTraduccionEspanol());
-            binding.edLensegua.setText(Objects.requireNonNull(translateViewModel.getSelectedTrans().getValue()).getTraduccionLensegua());
+            binding.tvTraduccionEspanol.setText(Objects.requireNonNull(translateViewModel.getSelectedTrans().getValue()).getTraduction_esp());
+            binding.edLensegua.setText(Objects.requireNonNull(translateViewModel.getSelectedTrans().getValue()).getSentence_lensegua());
             binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.full_heart));
             addFavorite = true;
 

@@ -32,6 +32,8 @@ import com.screens.flows.home.vm.HomeViewModel;
 import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.flows.translate.vm.TranslateViewModel;
 import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
+import com.senaschapinas.flows.GetUserInfo.ObjVideoFav;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -264,11 +266,7 @@ public class ProfileFragment extends BaseFragment {
         // TODO VIDEO OBTENER PRIMERA IMAGEN
 
         ArrayList<ObjVideoFav> videoFavorites = new ArrayList<>();
-        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
-        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
-        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
-        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
-        videoFavorites.add(new ObjVideoFav("", "Hoy voy a la universidad", "Yo hoy universidad ir"));
+
 
         this.videosFavoritos = videoFavorites;
         setVideoAdapter(videoFavorites);
@@ -280,12 +278,7 @@ public class ProfileFragment extends BaseFragment {
         // TODO SERVICIO
         // ON SUCESS
 
-        ArrayList<ObjTraFav> traduccionesFavoritas = new ArrayList<>();
-        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
-        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
-        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
-        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
-        traduccionesFavoritas.add(new ObjTraFav( "Hoy voy a la universidad", "Yo hoy universidad ir"));
+
 
         this.traduccionesFavoritas = traduccionesFavoritas;
         setTranslateAdapter(traduccionesFavoritas);

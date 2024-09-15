@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.components.buttons.DebounceClickListener;
 import com.screens.R;
+import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
 
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class TranslateFavoriteAdapter extends RecyclerView.Adapter<TranslateFavo
     @Override
     public void onBindViewHolder(@NonNull TranslateFavoriteViewHolder holder, int position) {
         ObjTraFav item = translateFavorites.get(position);
-        holder.tvTextEsp.setText(item.getTraduccionEspanol());
-        holder.tvLensegua.setText(item.getTraduccionLensegua());
+        holder.tvTextEsp.setText(item.getTraduction_esp());
+        holder.tvLensegua.setText(item.getSentence_lensegua());
     }
 
     @Override

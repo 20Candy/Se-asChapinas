@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.components.buttons.DebounceClickListener;
 import com.screens.R;
+import com.senaschapinas.flows.GetUserInfo.ObjVideoFav;
+
 import java.util.List;
 
 public class VideoFavoriteAdapter extends RecyclerView.Adapter<VideoFavoriteAdapter.VideoFavoriteViewHolder> {
@@ -43,7 +45,7 @@ public class VideoFavoriteAdapter extends RecyclerView.Adapter<VideoFavoriteAdap
     @Override
     public void onBindViewHolder(@NonNull VideoFavoriteViewHolder holder, int position) {
         ObjVideoFav currentVideo = videoFavorites.get(position);
-        holder.tvText.setText(currentVideo.getTraduccionEspanol());
+        holder.tvText.setText(currentVideo.getTraduction_esp());
        // TODO PONER IMAGEN DE VIDEO
         holder.imageView.setImageDrawable(context.getResources().getDrawable(com.components.R.drawable.light_blue_line));
     }
