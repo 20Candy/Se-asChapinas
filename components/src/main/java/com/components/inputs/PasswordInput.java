@@ -173,4 +173,8 @@ public class PasswordInput extends ConstraintLayout implements IInputs {
         return inputText.getText().toString().isEmpty();
     }
 
+    public String getPassword(){
+        return inputText.getText().toString();
+    }
+
 }

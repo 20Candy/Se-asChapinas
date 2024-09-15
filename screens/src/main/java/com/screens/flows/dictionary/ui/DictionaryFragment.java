@@ -1,5 +1,6 @@
 package com.screens.flows.dictionary.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,11 @@ import com.screens.flows.video.vm.VideoViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -36,7 +41,6 @@ public class DictionaryFragment extends BaseFragment {
     CategoriesAdapter categoriesAdapter;
 
     private String selectedCategory = null;
-
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -58,7 +62,8 @@ public class DictionaryFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onBackPressed(() -> {});
+        onBackPressed(() -> {
+        });
         setupRecyclerView(dictionaryViewModel.createCardData(requireContext()));
         setupRecyclerViewCategories(createCategories());
         setListeners();
@@ -106,7 +111,7 @@ public class DictionaryFragment extends BaseFragment {
     }
 
 
-    private void setListeners(){
+    private void setListeners() {
 
         adapter.setOnHeartClickListener(new DictionaryCardAdapter.OnHeartClickListener() {
             @Override
@@ -114,7 +119,7 @@ public class DictionaryFragment extends BaseFragment {
                 // Agregar a favoritos
                 if (heartFull) {
                     servicioAgregarFavorito();
-                // Borrar de favoritos
+                    // Borrar de favoritos
                 } else {
                     servicioEliminarFavorito();
                 }
@@ -166,13 +171,12 @@ public class DictionaryFragment extends BaseFragment {
     }
 
 
-
-    private void showEmptyState(Boolean show, String text){
-        if(show){
+    private void showEmptyState(Boolean show, String text) {
+        if (show) {
             binding.tvEmpty.setText(text);
             binding.clEmpty.setVisibility(View.VISIBLE);
             binding.rvCards.setVisibility(View.GONE);
-        }else{
+        } else {
             binding.clEmpty.setVisibility(View.GONE);
             binding.rvCards.setVisibility(View.VISIBLE);
         }
@@ -189,12 +193,28 @@ public class DictionaryFragment extends BaseFragment {
         // TODO
     }
 
-    private void servicioFavoritosDiccionario(){
+    private void servicioFavoritosDiccionario() {
         // TODO
         showEmptyState(true, "Aquí aparecerán tus palabras favoritas");
 
     }
 
 
+    public List<CardData> getFavoriteCardData(Context context, List<String> favoriteWords) {
+        // Cargar la lista completa de palabras desde el JSON y convertirla en un Map
+        List<CardData> cardDataList = dictionaryViewModel.createCardData(context);
+        Map<String, CardData> cardDataMap = cardDataList.stream()
+                .collect(Collectors.toMap(cardData -> cardData.getTitle().toLowerCase(), cardData -> cardData));
 
+        // Convertir la lista de palabras favoritas en un HashSet para una búsqueda rápida
+        Set<String> favoriteWordsSet = new HashSet<>(favoriteWords.stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet()));
+
+        // Filtrar las palabras favoritas utilizando el Map
+        return favoriteWordsSet.stream()
+                .filter(cardDataMap::containsKey)
+                .map(cardDataMap::get)
+                .collect(Collectors.toList());
+    }
 }

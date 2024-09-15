@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,11 @@ import com.components.buttons.DebounceClickListener;
 import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentLogInBinding;
+import com.screens.flows.login.vm.LoginViewModel;
 import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.LogIn.LoginRequest;
+
+import java.util.Random;
 
 
 public class LogInFragment extends BaseFragment implements View.OnClickListener {
@@ -24,8 +30,19 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
     // Atributos de la clase -----------------------------------------------------------------------
     SharedPreferencesManager sharedPreferencesManager;
 
+    LoginViewModel loginViewModel;
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,15 +79,37 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
     }
 
     // Services ------------------------------------------------------------------------------------
-    private void loginService(){
-        //TODO IMPLEMENTAR SERVICIO
+    private void loginService() {
 
-        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
-        sharedPreferencesManager.setLogged(true);
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(binding.emailInput.getEmailInput());
+        loginRequest.setPassword(binding.passWordInput.getPassword());
 
-        navigateTo(binding.getRoot(), R.id.action_logInFragment_to_video_nav, null);
+        loginViewModel.doLoginRequest(loginRequest);
+        loginViewModel.getLogin().observe(getViewLifecycleOwner(), login -> {
+            switch (login.status) {
+                case SUCCESS:
+                    showCustomDialogProgress(requireActivity());
+                    sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+                    sharedPreferencesManager.setLogged(true);
 
+                    navigateTo(binding.getRoot(), R.id.action_logInFragment_to_video_nav, null);
+                    break;
+                case ERROR:
+                    hideCustomDialogProgress();
+                    showCustomDialogMessage(
+                            login.message,
+                            "Oops algo salió mal",
+                            "",
+                            "Cerrar",
+                            null,
+                            ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                    );
+                    break;
+            }
+        });
     }
+
 
 
 

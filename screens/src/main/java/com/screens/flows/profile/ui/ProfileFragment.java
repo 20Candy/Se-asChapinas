@@ -135,10 +135,16 @@ public class ProfileFragment extends BaseFragment {
         binding.tvName.setText(name);
         binding.tvScore.setText(score);
 
-        if(image.equals("azul")){
+        try {
+            int resourceId = getResources().getIdentifier(image, "drawable", getActivity().getPackageName());
+            if (resourceId != 0) {
+                binding.imgProfile.setImageDrawable(getResources().getDrawable(resourceId));
+            } else {
+                binding.imgProfile.setImageDrawable(getResources().getDrawable(com.components.R.drawable.q_azul));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             binding.imgProfile.setImageDrawable(getResources().getDrawable(com.components.R.drawable.q_azul));
-        }else{
-            //TODO
         }
 
     }
@@ -243,7 +249,7 @@ public class ProfileFragment extends BaseFragment {
         // ON SUCEES SETAR VALORES
         String nombre = "Ejemplo";
         String racha = "10";
-        String imagen = "azul";
+        String imagen = "q_azul";
 
         setViewData(nombre, racha, imagen);
         servicioVideosFavoritos();

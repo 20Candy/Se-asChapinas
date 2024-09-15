@@ -145,4 +145,8 @@ public class EmailInput extends ConstraintLayout implements IInputs {
         inputText.setFocusableInTouchMode(false);
         inputText.setClickable(false);
     }
+
+    public String getEmailInput(){
+        return inputText.getText().toString();
+    }
 }
