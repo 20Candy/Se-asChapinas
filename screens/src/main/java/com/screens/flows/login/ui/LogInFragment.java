@@ -17,6 +17,7 @@ import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentLogInBinding;
 import com.screens.flows.login.vm.LoginViewModel;
 import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.ForgotPassword.ForgotPasswordRequest;
 import com.senaschapinas.flows.LogIn.LoginRequest;
 
 import java.util.Random;
@@ -62,6 +63,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
         binding.secondButton.setOnClickListener(new DebounceClickListener(this));
         binding.emailInput.setValidationListener(isValid -> checkAllInputs());
         binding.passWordInput.setValidationListener(isValid -> checkAllInputs());
+        binding.tvChangePass.setOnClickListener(new DebounceClickListener(this));
     }
 
     private void checkAllInputs() {
@@ -72,15 +74,16 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
     // On Click ------------------------------------------------------------------------------------
     @Override
     public void onClick(View view) {
-    if (view.getId() == com.components.R.id.btn_transparent) {
+        if (view.getId() == com.components.R.id.btn_transparent) {
             loginService();
+        } else if (view.getId() == R.id.tvChangePass) {
+            navigateTo(binding.getRoot(), R.id.action_logInFragment_to_forgotPasswordFragment, null);
         }
 
     }
 
     // Services ------------------------------------------------------------------------------------
     private void loginService() {
-
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(binding.emailInput.getEmailInput());
         loginRequest.setPassword(binding.passWordInput.getPassword());
@@ -108,7 +111,9 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
                     break;
             }
         });
+
     }
+
 
 
 

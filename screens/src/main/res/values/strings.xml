@@ -31,5 +31,7 @@
     <string name="challenge_subtitle">¿Cuál es la seña correcta?</string>
     <string name="challenge_omitir"><u>Omitir</u></string>
     <string name="challenge_close">Cerrar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
