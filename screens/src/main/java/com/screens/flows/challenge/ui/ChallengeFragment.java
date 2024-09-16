@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -25,6 +26,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import com.bumptech.glide.Glide;
+import com.screens.flows.profile.vm.ProfileViewModel;
+import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.AddStreak.AddStreakRequest;
 
 
 public class ChallengeFragment extends BaseFragment {
@@ -35,6 +39,10 @@ public class ChallengeFragment extends BaseFragment {
     // Atributos de la clase -----------------------------------------------------------------------
 
     private DictionaryViewModel dictionaryViewModel;
+    private ChallengeViewModel challengeViewModel;
+    private ProfileViewModel profileViewModel;
+    SharedPreferencesManager sharedPreferencesManager;
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
@@ -42,7 +50,8 @@ public class ChallengeFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dictionaryViewModel = new ViewModelProvider(requireActivity()).get(DictionaryViewModel.class);
-
+        challengeViewModel = new ViewModelProvider(requireActivity()).get(ChallengeViewModel.class);
+        profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
     }
 
@@ -55,9 +64,8 @@ public class ChallengeFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        serviceChallengeScore();
         setListeners();
-
+        setCardsData();
     }
 
     @Override
@@ -72,16 +80,8 @@ public class ChallengeFragment extends BaseFragment {
         binding.cards.setCallback(new ChallengeCards.Callback() {
             @Override
             public void onCorrectAnswer() {
-                // Manejar respuesta correcta
-                binding.imgGif.setVisibility(View.VISIBLE);
+                serviceChallengeComplete();
 
-                Glide.with(requireActivity())
-                        .load(requireActivity().getResources().getDrawable(R.drawable.confim))
-                        .into(binding.imgGif);
-
-                binding.imgBack.setVisibility(View.INVISIBLE);
-                binding.tvOmitir.setVisibility(View.GONE);
-                binding.secondButton.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -99,7 +99,7 @@ public class ChallengeFragment extends BaseFragment {
         }));
 
         binding.secondButton.setOnClickListener(new DebounceClickListener( v->{
-            serviceChallengeComplete();
+            closeChallenge();
         }));
     }
 
@@ -151,25 +151,7 @@ public class ChallengeFragment extends BaseFragment {
         binding.cards.startGame();
 
 
-        // TODO OBTENER CHALLENGE SCORE
-    }
-
-    // Servicios -----------------------------------------------------------------------------------
-    private void serviceChallengeScore(){
-        //TODO
-
-        //ON SUCESS
-        binding.tvScore.setText("10");
-        setCardsData();
-
-    }
-
-    private void serviceChallengeComplete(){
-        //TODO
-
-        //ON SUCESS
-        closeChallenge();
-
+        binding.tvScore.setText(profileViewModel.getRacha());
     }
 
     private void closeChallenge(){
@@ -180,5 +162,59 @@ public class ChallengeFragment extends BaseFragment {
 
         }
     }
+
+    // Servicios -----------------------------------------------------------------------------------
+
+
+    private void serviceChallengeComplete(){
+
+        showCustomDialogProgress(requireContext());
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
+        AddStreakRequest streakRequest = new AddStreakRequest();
+        streakRequest.setIdUser(sharedPreferencesManager.getIdUsuario());
+
+        challengeViewModel.addStreak(streakRequest);
+        challengeViewModel.getAddStreakResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+
+                        binding.imgGif.setVisibility(View.VISIBLE);
+
+                        Glide.with(requireActivity())
+                                .load(requireActivity().getResources().getDrawable(R.drawable.confim))
+                                .into(binding.imgGif);
+
+                        binding.imgBack.setVisibility(View.INVISIBLE);
+                        binding.tvOmitir.setVisibility(View.GONE);
+                        binding.secondButton.setVisibility(View.VISIBLE);
+                        binding.tvScore.setText(String.valueOf(Integer.parseInt(profileViewModel.getRacha()) + 1));
+
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
+
+    }
+
+
+
+
 
 }

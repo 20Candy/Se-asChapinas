@@ -17,6 +17,8 @@ public class ProfileViewModel extends BaseViewModel {
     private boolean showVideoFavorite= true;
     private String nombre;
 
+    private String racha;
+
     private GetUserInfoRepositoryService getUserInfoRepositoryService;
     private MutableLiveData<Resource<GetUserInfoResponse>> userInfoResource = new MutableLiveData<>();
 
@@ -43,6 +45,13 @@ public class ProfileViewModel extends BaseViewModel {
         this.nombre = nombre;
     }
 
+    public String getRacha() {
+        return racha;
+    }
+
+    public void setRacha(String racha) {
+        this.racha = racha;
+    }
 
     // Método para obtener la información del usuario
     public void fetchUserInfo(GetUserInfoRequest getUserInfoRequest) {

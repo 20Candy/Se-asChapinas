@@ -124,7 +124,7 @@ public class ProfileFragment extends BaseFragment {
             String todayDate = dateFormat.format(new Date());
 
             String lastShownDate = sharedPreferencesManager.getLastChallengeShowDate();
-            if (todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow() ) { // TODO QUITAR, EJEMPLO PARA DEMO
+            if (!todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow() ) {
                 navigateTo(binding.getRoot(), R.id.action_profileFragment_to_challengeFragment, null);
 
             }else{
@@ -269,15 +269,20 @@ public class ProfileFragment extends BaseFragment {
                                 nombre  = resource.data.getEmail().split("@")[0];
                                 profileViewModel.setNombre(resource.data.getEmail());
                             }
+
                             racha = String.valueOf(resource.data.getStreak());
+                            profileViewModel.setRacha(racha);
+
                             if(resource.data.getQuetzalito() != null){
                                 imagen = resource.data.getQuetzalito();
                             }
+
                             if(!resource.data.getVideosFav().isEmpty()){
                                 this.videosFavoritos = resource.data.getVideosFav();
                                 setVideoAdapter(this.videosFavoritos);
 
                             }
+
                             if(!resource.data.getTraductionsFav().isEmpty()){
                                 this.traduccionesFavoritas = resource.data.getTraductionsFav();
                                 setTranslateAdapter(this.traduccionesFavoritas);
