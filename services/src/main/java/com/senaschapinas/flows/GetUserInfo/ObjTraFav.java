@@ -2,23 +2,23 @@ package com.senaschapinas.flows.GetUserInfo;
 
 public class ObjTraFav {
 
-    private String traduction_esp;
+    private String id_traduction;
+    private String traduction;
     private String sentence_lensegua;
 
     // Constructor
-    public ObjTraFav(String traduction_esp, String sentence_lensegua) {
+    public ObjTraFav(String traduction, String sentence_lensegua) {
 
-        this.traduction_esp = traduction_esp;
+        this.traduction = traduction;
         this.sentence_lensegua = sentence_lensegua;
     }
 
-
     public String getTraduction_esp() {
-        return traduction_esp;
+        return traduction;
     }
 
-    public void setTraduction_esp(String traduction_esp) {
-        this.traduction_esp = traduction_esp;
+    public void setTraduction_esp(String traduction) {
+        this.traduction = traduction;
     }
 
     public String getSentence_lensegua() {
@@ -27,5 +27,13 @@ public class ObjTraFav {
 
     public void setSentence_lensegua(String sentence_lensegua) {
         this.sentence_lensegua = sentence_lensegua;
+    }
+
+    public String getId_traduction() {
+        return id_traduction;
+    }
+
+    public void setId_traduction(String id_traduction) {
+        this.id_traduction = id_traduction;
     }
 }

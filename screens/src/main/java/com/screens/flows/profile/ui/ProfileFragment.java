@@ -32,11 +32,13 @@ import com.screens.flows.home.vm.HomeViewModel;
 import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.flows.translate.vm.TranslateViewModel;
 import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.GetUserInfo.GetUserInfoRequest;
 import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
 import com.senaschapinas.flows.GetUserInfo.ObjVideoFav;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -54,9 +56,9 @@ public class ProfileFragment extends BaseFragment {
     private VideoFavoriteAdapter videoFavoriteAdapter;
     private TranslateFavoriteAdapter translateFavoriteAdapter;
 
-    ArrayList<ObjTraFav> traduccionesFavoritas;
+    List<ObjTraFav> traduccionesFavoritas;
 
-    ArrayList<ObjVideoFav> videosFavoritos;
+    List<ObjVideoFav> videosFavoritos;
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
@@ -151,7 +153,7 @@ public class ProfileFragment extends BaseFragment {
 
     }
 
-    private void setVideoAdapter(ArrayList<ObjVideoFav> videoFavorites) {
+    private void setVideoAdapter(List<ObjVideoFav> videoFavorites) {
         videoFavoriteAdapter = new VideoFavoriteAdapter(getContext(), videoFavorites, video -> {
             homeViewModel.selectVideo(video);
             ProfileViewModel.selectTab(BottomNavMenu.TAB_HOME);
@@ -165,7 +167,7 @@ public class ProfileFragment extends BaseFragment {
 
 
 
-    private void setTranslateAdapter(ArrayList<ObjTraFav> traduccionesFav) {
+    private void setTranslateAdapter(List<ObjTraFav> traduccionesFav) {
         translateFavoriteAdapter = new TranslateFavoriteAdapter(getContext(), traduccionesFav, traduccion -> {
             translateViewModel.selectTrans(traduccion);
             ProfileViewModel.selectTab(BottomNavMenu.TAB_TRANSLATE);
@@ -246,44 +248,68 @@ public class ProfileFragment extends BaseFragment {
     // Servicios -----------------------------------------------------------------------------------
 
     private void servicioPerfil(){
-        // TODO SERVICIO Y OBJETO
 
-        // ON SUCEES SETAR VALORES
-        String nombre = "carol@gmail.com";
-        String racha = "10";
-        String imagen = "q_azul";
+        showCustomDialogProgress(requireContext());
 
-        profileViewModel.setNombre(nombre);
-        setViewData(nombre, racha, imagen);
-        servicioVideosFavoritos();
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
+        GetUserInfoRequest request = new GetUserInfoRequest();
+        request.setIdUser(sharedPreferencesManager.getIdUsuario());
+
+        profileViewModel.fetchUserInfo(request);
+        profileViewModel.getUserInfoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+
+                        String nombre = "";
+                        String racha = "";
+                        String imagen = "";
+
+                        if(resource.data != null ){
+                            if(resource.data.getEmail()!= null){
+                                nombre  = resource.data.getEmail().split("@")[0];
+                                profileViewModel.setNombre(resource.data.getEmail());
+                            }
+                            racha = String.valueOf(resource.data.getStreak());
+                            if(resource.data.getQuetzalito() != null){
+                                imagen = resource.data.getQuetzalito();
+                            }
+                            if(!resource.data.getVideosFav().isEmpty()){
+                                this.videosFavoritos = resource.data.getVideosFav();
+                                setVideoAdapter(this.videosFavoritos);
+
+                            }
+                            if(!resource.data.getTraductionsFav().isEmpty()){
+                                this.traduccionesFavoritas = resource.data.getTraductionsFav();
+                                setTranslateAdapter(this.traduccionesFavoritas);
+                            }
+                        }
+
+                        setViewData(nombre, racha, imagen);
+                        inicializarAdapter();
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
 
     }
 
-    private void  servicioVideosFavoritos(){
-
-        // TODO SERVICIO
-        // ON SUCESS
-
-        // TODO VIDEO OBTENER PRIMERA IMAGEN
-
-        ArrayList<ObjVideoFav> videoFavorites = new ArrayList<>();
-
-
-        this.videosFavoritos = videoFavorites;
-        setVideoAdapter(videoFavorites);
-        servicioTraduccionesFavoritas();
-    }
-
-
-    private void servicioTraduccionesFavoritas(){
-        // TODO SERVICIO
-        // ON SUCESS
 
 
 
-        this.traduccionesFavoritas = traduccionesFavoritas;
-        setTranslateAdapter(traduccionesFavoritas);
-        inicializarAdapter();
-
-    }
 }

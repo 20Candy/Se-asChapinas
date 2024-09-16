@@ -5,14 +5,14 @@ public class ObjVideoFav {
     private String traduction_esp;
     private String sentence_lensegua;
 
-    private String preview;
+    private String prev_image;
 
     // Constructor
-    public ObjVideoFav(String id_video, String traduction_esp, String sentence_lensegua, String preview) {
+    public ObjVideoFav(String id_video, String traduction_esp, String sentence_lensegua, String prev_image) {
         this.id_video = id_video;
         this.traduction_esp = traduction_esp;
         this.sentence_lensegua = sentence_lensegua;
-        this.preview = preview;
+        this.prev_image = prev_image;
     }
 
     // Getters y Setters
@@ -41,10 +41,10 @@ public class ObjVideoFav {
     }
 
     public String getPreview() {
-        return preview;
+        return prev_image;
     }
 
-    public void setPreview(String preview) {
-        this.preview = preview;
+    public void setPreview(String prev_image) {
+        this.prev_image = prev_image;
     }
 }

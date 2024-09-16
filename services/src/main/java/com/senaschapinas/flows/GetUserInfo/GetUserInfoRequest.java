@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GetUserInfoRequest {
 
     @JsonProperty("id_user")
-    private String idUser;
+    private String id_user;
 
     public String getIdUser() {
-        return idUser;
+        return id_user;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public void setIdUser(String id_user) {
+        this.id_user = id_user;
     }
 }

@@ -5,8 +5,8 @@ import java.util.List;
 
 public class GetUserInfoResponse {
 
-    @JsonProperty("email")
-    private String email;
+    @JsonProperty("mail")
+    private String mail;
 
     @JsonProperty("streak")
     private int streak;
@@ -15,18 +15,18 @@ public class GetUserInfoResponse {
     private String quetzalito;
 
     @JsonProperty("videos_fav")
-    private List<ObjVideoFav> videosFav;
+    private List<ObjVideoFav> videos_fav;
 
     @JsonProperty("traductions_fav")
-    private List<ObjTraFav> traductionsFav;
+    private List<ObjTraFav> traductions_fav;
 
     // Getters y setters
     public String getEmail() {
-        return email;
+        return mail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String mail) {
+        this.mail = mail;
     }
 
     public int getStreak() {
@@ -46,18 +46,18 @@ public class GetUserInfoResponse {
     }
 
     public List<ObjVideoFav> getVideosFav() {
-        return videosFav;
+        return videos_fav;
     }
 
-    public void setVideosFav(List<ObjVideoFav> videosFav) {
-        this.videosFav = videosFav;
+    public void setVideosFav(List<ObjVideoFav> videos_fav) {
+        this.videos_fav = videos_fav;
     }
 
     public List<ObjTraFav> getTraductionsFav() {
-        return traductionsFav;
+        return traductions_fav;
     }
 
-    public void setTraductionsFav(List<ObjTraFav> traductionsFav) {
-        this.traductionsFav = traductionsFav;
+    public void setTraductionsFav(List<ObjTraFav> traductions_fav) {
+        this.traductions_fav = traductions_fav;
     }
 }
