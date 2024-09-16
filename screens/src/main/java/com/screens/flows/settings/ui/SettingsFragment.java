@@ -7,16 +7,21 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.components.bottomsheet.BottomSheet;
 import com.components.buttons.DebounceClickListener;
 import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentSettingsBinding;
+import com.screens.flows.login.vm.LoginViewModel;
+import com.screens.flows.settings.vm.SettingsViewModel;
 import com.screens.utils.SharedPreferencesManager;
 
 
@@ -28,13 +33,16 @@ public class SettingsFragment extends BaseFragment {
 
     // Atributos de la clase -----------------------------------------------------------------------
     private SharedPreferencesManager sharedPreferencesManager;
+    private SettingsViewModel settingsViewModel;
+    private BottomSheet bottomSheet;
+
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        settingsViewModel = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +81,7 @@ public class SettingsFragment extends BaseFragment {
                     "Cancelar",
                     () -> {
                         // Cofirmar
+                        sharedPreferencesManager.setIdUsuario("");
                         goToLandingFragment(binding.getRoot());
 
                     }
@@ -81,17 +90,23 @@ public class SettingsFragment extends BaseFragment {
         }));
 
         binding.lleliminar.setOnClickListener(new DebounceClickListener(v->{
-            showCustomDialogMessage(
-                    "Tus videos y traducciones seran eliminados permanentemente",
-                    "¿Estás seguro que quieres eliminar tu cuenta?",
-                    "Confirmar",
-                    "Cancelar",
-                    () -> {
-                        // Cofirmar
-                        servicioEliminarCuenta();
 
-                    }
+            bottomSheet = new BottomSheet(
+                    // Cancel
+                    () -> {
+                        clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+                    },
+                    // Continue
+                    () -> {
+                        servicioEliminarCuenta();
+                    },
+                    "¿Estás seguro que quieres eliminar tu cuenta?",
+                    "Tus videos y traducciones seran eliminados permanentemente",
+                    "Regresar",
+                    "Eliminar"
+
             );
+            bottomSheet.show(getChildFragmentManager(), "myTokenBottomSheet");
 
         }));
 
@@ -136,12 +151,46 @@ public class SettingsFragment extends BaseFragment {
 
 
     // Servicio ------------------------------------------------------------------------------------
-    private void servicioEliminarCuenta(){
+    private void servicioEliminarCuenta() {
+        showCustomDialogProgress(requireContext());
 
-        // TODO
-        // ON SUCESS
-        goToLandingFragment(binding.getRoot());
+        String idUser = sharedPreferencesManager.getIdUsuario();
+        settingsViewModel.deleteUser(idUser);
+        settingsViewModel.getDeleteUserResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
 
+                        showCustomDialogMessage(
+                                "Todos tus datos han sido borrados con éxito",
+                                "Tu cuenta ha sido eliminada exitosamente",
+                                "",
+                                "Entiendo",
+                                null,
+                                () ->{
+                                    goToLandingFragment(binding.getRoot());
+                                },
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                   ;
+                }
+            }
+        });
     }
+
 
 }

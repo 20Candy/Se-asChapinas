@@ -26,6 +26,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface serviceAPI {
 
@@ -53,7 +54,7 @@ public interface serviceAPI {
     Call<Void> favVideo(@Body FavVideoRequest request);
 
     @DELETE("remove_video/{id_video}")
-    Call<Void> removeVideo(@Path("id_video") String idVideo);
+    Call<Void> removeVideo(@Query("id_video") String idVideo);
 
     @POST("send_traduction")
     Call<Void> sendTraduction(@Body SendTraductionRequest request);
@@ -62,13 +63,13 @@ public interface serviceAPI {
     Call<Void> favTraduction(@Body FavTraductionRequest request);
 
     @DELETE("remove_traduction/{id_sentence}")
-    Call<Void> removeTraduction(@Path("id_sentence") String idSentence);
+    Call<Void> removeTraduction(@Query("id_sentence") String idSentence);
 
     @POST("add_dictionary")
     Call<Void> addDictionary(@Body AddDictionaryRequest request);
 
     @DELETE("remove_dictionary/{id_user}/{id_word}")
-    Call<Void> removeDictionary(@Path("id_user") String idUser, @Path("id_word") String idWord);
+    Call<Void> removeDictionary(@Query("id_user") String idUser, @Query("id_word") String idWord);
 
     @POST("get_dictionary")
     Call<GetDictionaryResponse> getDictionary(@Body GetDictionaryRequest request);
@@ -76,8 +77,9 @@ public interface serviceAPI {
     @POST("get_user_info")
     Call<GetUserInfoResponse> getUserInfo(@Body GetUserInfoRequest request);
 
-    @DELETE("delete_user/{id_user}")
-    Call<Void> deleteUser(@Path("id_user") String idUser);
+    @DELETE("delete_user")
+    Call<Void> deleteUser(@Query("id_user") String idUser);
+
 
     @POST("add_streak")
     Call<Void> addStreak(@Body AddStreakRequest request);

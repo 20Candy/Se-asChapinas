@@ -76,6 +76,8 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
 
     private void forgotPassService() {
 
+        showCustomDialogProgress(requireContext());
+
         ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
         forgotPasswordRequest.setEmail(binding.emailInput.getEmailInput());
 
@@ -83,6 +85,7 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
         forgotPasswordViewModel.getForgotPassword().observe(getViewLifecycleOwner(), change -> {
             switch (change.status) {
                 case SUCCESS:
+                    hideCustomDialogProgress();
                     showCustomDialogMessage(
                             "Hemos enviado un correo de recuperación de contraseña a tu correo." ,
                             "¡Revisa tu correo!",

@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LogInResponse {
 
-    @JsonProperty("id_user")
-    private Boolean id_user;
+    @JsonProperty("id")
+    private Integer id;
 
 
-    public Boolean getId_user() {
-        return id_user;
+    public Integer getId_user() {
+        return id;
     }
 
-    public void setId_user(Boolean id_user) {
-        this.id_user = id_user;
+    public void setId_user(Integer id_user) {
+        this.id = id_user;
     }
 
 }

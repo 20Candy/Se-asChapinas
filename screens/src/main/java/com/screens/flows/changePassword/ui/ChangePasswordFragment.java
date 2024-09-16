@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,15 @@ import android.view.ViewGroup;
 
 import com.components.buttons.DebounceClickListener;
 import com.components.navMenu.BottomNavMenu;
+import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentChangePasswordBinding;
+import com.screens.flows.changePassword.vm.ChangePasswordViewModel;
 import com.screens.flows.home.vm.HomeViewModel;
+import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.ChangePassword.ChangePasswordRequest;
+import com.senaschapinas.flows.LogIn.LoginRequest;
 
 public class ChangePasswordFragment extends BaseFragment implements View.OnClickListener {
 
@@ -23,10 +29,22 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     FragmentChangePasswordBinding binding;
 
     // Atributos de la clase -----------------------------------------------------------------------
+    ProfileViewModel profileViewModel;
+    ChangePasswordViewModel changePasswordViewModel;
     SharedPreferencesManager sharedPreferencesManager;
 
 
+
     // Metodos de ciclo de vida --------------------------------------------------------------------
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        changePasswordViewModel = new ViewModelProvider(requireActivity()).get(ChangePasswordViewModel.class);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,6 +71,12 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         binding.mainButton.setEnabled(allValid);
     }
 
+    private void getProfileData(){
+        if(profileViewModel.getNombre() != null){
+            binding.emailInput.setText(profileViewModel.getNombre());
+        }
+    }
+
 
     // On Click ------------------------------------------------------------------------------------
     @Override
@@ -66,34 +90,51 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
 
     // Servicios -----------------------------------------------------------------------------------
     private void changePasswordService(){
-        // TODO LLAMAR SERVICIO
-        // Sucess
+        showCustomDialogProgress(requireContext());
 
-        showCustomDialogMessage(
-                "Tu contraseña ha sido aztualizada existosamente.",
-                "¡Contraseña actualizada!",
-                "Cerrar",
-                "",
-                () -> {
-                    // Cofirmar
-                    HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
 
-                },
-                ContextCompat.getColor(getContext(), com.components.R.color.base_blue)
-        );
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
+        changePasswordRequest.setId_user(sharedPreferencesManager.getIdUsuario());
+        changePasswordRequest.setNew_password(binding.passWordInput.getPassword());
+
+        changePasswordViewModel.doChangePasswordRequest(changePasswordRequest);
+        changePasswordViewModel.getChangePassword().observe(getViewLifecycleOwner(), login -> {
+            switch (login.status) {
+                case SUCCESS:
+                    hideCustomDialogProgress();
+
+                    showCustomDialogMessage(
+                            "Tu contraseña ha sido aztualizada existosamente.",
+                            "¡Contraseña actualizada!",
+                            "Cerrar",
+                            "",
+                            () -> {
+                                // Cofirmar
+                                HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
+
+                            },
+                            ContextCompat.getColor(getContext(), com.components.R.color.base_blue)
+                    );
+
+                    break;
+                case ERROR:
+                    hideCustomDialogProgress();
+                    showCustomDialogMessage(
+                            login.message,
+                            "Oops algo salió mal",
+                            "",
+                            "Cerrar",
+                            null,
+                            ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                    );
+                    break;
+            }
+        });
 
 
     }
 
 
-    private void getProfileData(){
-        // TODO LLAMAR SERVICIO
 
-        //SUCESS
-        String correo = "ejemplo@gmail.com";
-        binding.emailInput.setText(correo);
-        binding.emailInput.disableInput();
-
-
-    }
 }

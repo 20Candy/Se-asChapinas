@@ -9,6 +9,7 @@ import com.screens.base.BaseViewModel;
 public class ProfileViewModel extends BaseViewModel {
 
     private boolean showVideoFavorite= true;
+    private String nombre;
 
     public ProfileViewModel(@NonNull Application application) {
         super(application);
@@ -22,5 +23,11 @@ public class ProfileViewModel extends BaseViewModel {
         showVideoFavorite = show;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 }

@@ -94,6 +94,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     // Servicios -----------------------------------------------------------------------------------
     private void signUpService(){
+        showCustomDialogProgress(requireContext());
+
         SignUpRequest signUpRequest = new SignUpRequest();
         signUpRequest.setMail(binding.emailInput.getEmailInput());
         signUpRequest.setPassword(binding.passWordInput.getPassword());
@@ -103,8 +105,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         signUpViewModel.getSignUpResult().observe(getViewLifecycleOwner(), login -> {
             switch (login.status) {
                 case SUCCESS:
+                    hideCustomDialogProgress();
+
                     sharedPreferencesManager = new SharedPreferencesManager(requireContext());
                     sharedPreferencesManager.setLogged(true);
+                    sharedPreferencesManager.setIdUsuario(login.data.getId_user().toString());
 
                     navigateTo(binding.getRoot(), R.id.action_signUpFragment_to_video_nav, null);
                     break;

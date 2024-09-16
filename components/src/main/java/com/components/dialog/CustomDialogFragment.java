@@ -19,6 +19,8 @@ import com.components.R;
 public class CustomDialogFragment extends DialogFragment {
 
     private OnConfirmListener confirmListener;
+
+    private OnCancelListener cancelListener;
     private String mTitle, mContent, mConfirmText, mCancelText;
 
     private TextView mTextViewTitle, mTextViewContent, mTextViewConfirm, mTextViewCancel;
@@ -42,6 +44,17 @@ public class CustomDialogFragment extends DialogFragment {
         mConfirmText = confirmText;
         mCancelText = cancelText;
         this.confirmListener = confirmListener;
+        mColor = color;
+
+    }
+
+    public CustomDialogFragment(String title, String content, String confirmText, String cancelText, OnConfirmListener confirmListener, OnCancelListener cancelListener ,int color) {
+        mTitle = title;
+        mContent = content;
+        mConfirmText = confirmText;
+        mCancelText = cancelText;
+        this.confirmListener = confirmListener;
+        this.cancelListener = cancelListener;
         mColor = color;
 
     }
@@ -97,7 +110,14 @@ public class CustomDialogFragment extends DialogFragment {
             dismiss();
         });
 
-        mTextViewCancel.setOnClickListener(v -> dismiss());
+        mTextViewCancel.setOnClickListener(v -> {
+            if (cancelListener != null) {
+                cancelListener.onCancel();
+            }
+            dismiss();
+        });
+
+
 
         return view;
     }
@@ -110,6 +130,9 @@ public class CustomDialogFragment extends DialogFragment {
 
     public interface OnConfirmListener {
         void onConfirm();
+    }
+    public interface OnCancelListener {
+        void onCancel();
     }
 
 }

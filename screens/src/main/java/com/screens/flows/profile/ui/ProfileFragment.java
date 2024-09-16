@@ -249,10 +249,11 @@ public class ProfileFragment extends BaseFragment {
         // TODO SERVICIO Y OBJETO
 
         // ON SUCEES SETAR VALORES
-        String nombre = "Ejemplo";
+        String nombre = "carol@gmail.com";
         String racha = "10";
         String imagen = "q_azul";
 
+        profileViewModel.setNombre(nombre);
         setViewData(nombre, racha, imagen);
         servicioVideosFavoritos();
 

@@ -84,6 +84,8 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
 
     // Services ------------------------------------------------------------------------------------
     private void loginService() {
+        showCustomDialogProgress(requireActivity());
+
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(binding.emailInput.getEmailInput());
         loginRequest.setPassword(binding.passWordInput.getPassword());
@@ -92,9 +94,10 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
         loginViewModel.getLogin().observe(getViewLifecycleOwner(), login -> {
             switch (login.status) {
                 case SUCCESS:
-                    showCustomDialogProgress(requireActivity());
+                    hideCustomDialogProgress();
                     sharedPreferencesManager = new SharedPreferencesManager(requireContext());
                     sharedPreferencesManager.setLogged(true);
+                    sharedPreferencesManager.setIdUsuario(login.data.getId_user().toString());
 
                     navigateTo(binding.getRoot(), R.id.action_logInFragment_to_video_nav, null);
                     break;
