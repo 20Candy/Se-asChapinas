@@ -54,7 +54,7 @@ public interface serviceAPI {
     @POST("fav_video")
     Call<Void> favVideo(@Body FavVideoRequest request);
 
-    @DELETE("remove_video/{id_video}")
+    @DELETE("remove_video/")
     Call<Void> removeVideo(@Query("id_video") String idVideo);
 
     @POST("send_traduction")
@@ -63,13 +63,14 @@ public interface serviceAPI {
     @POST("fav_traduction")
     Call<Void> favTraduction(@Body FavTraductionRequest request);
 
-    @DELETE("remove_traduction/{id_sentence}")
+    @DELETE("remove_traduction")
     Call<Void> removeTraduction(@Query("id_sentence") String idSentence);
+
 
     @POST("add_dictionary")
     Call<Void> addDictionary(@Body AddDictionaryRequest request);
 
-    @DELETE("remove_dictionary/{id_user}/{id_word}")
+    @DELETE("remove_dictionary")
     Call<Void> removeDictionary(@Query("id_user") String idUser, @Query("id_word") String idWord);
 
     @POST("get_dictionary")

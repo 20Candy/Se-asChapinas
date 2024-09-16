@@ -27,6 +27,7 @@ import com.screens.databinding.FragmentTranslateBinding;
 import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.flows.translate.vm.TranslateViewModel;
 import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.FavTraduction.FavTraductionRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRequest;
 
 import java.util.Locale;
@@ -135,10 +136,8 @@ public class TranslateFragment extends BaseFragment {
 
             if (addFavorite) {
                 servicioAgregarFavorito();
-                binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.full_heart));
             } else {
                 servicioEliminarFavorito();
-                binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.heart));
             }
         }));
 
@@ -286,18 +285,78 @@ public class TranslateFragment extends BaseFragment {
 
     // Servicios -----------------------------------------------------------------------------------
     private void servicioAgregarFavorito() {
-        // TODO
+        showCustomDialogProgress(requireContext());
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
+
+        FavTraductionRequest favTraductionRequest = new FavTraductionRequest();
+        favTraductionRequest.setIdUser(sharedPreferencesManager.getIdUsuario());
+        favTraductionRequest.setIdSentence(translateViewModel.getId_sentence());
+
+        translateViewModel.addTraductionToFavorites(favTraductionRequest);
+        translateViewModel.getFavTraductionResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.full_heart));
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
     }
 
+
     private void servicioEliminarFavorito() {
-        // TODO
+        showCustomDialogProgress(requireContext());
+
+        translateViewModel.removeTranslation(translateViewModel.getId_sentence());
+        translateViewModel.getRemoveTranslationResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.heart));
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
     }
+
 
 
     private void servicioTraducir() {
         showCustomDialogProgress(requireContext());
 
         sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
         SendTraductionRequest request = new SendTraductionRequest();
         request.setIdUser(sharedPreferencesManager.getIdUsuario());
         request.setSentenceLensegua(String.valueOf(binding.edLensegua.getText()));
