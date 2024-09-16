@@ -257,15 +257,52 @@ public class DictionaryFragment extends BaseFragment {
 
 
     private void servicioFavoritosDiccionario() {
-        // TODO
-        showEmptyState(true, "Aquí aparecerán tus palabras favoritas");
+        hideCustomDialogProgress();
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
+        dictionaryViewModel.fetchDictionary(sharedPreferencesManager.getIdUsuario());
+        dictionaryViewModel.getDictionaryResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+
+                        if(resource.data.getPalabras()!= null && resource.data.getPalabras().isEmpty()){
+                            showEmptyState(true, "Aquí aparecerán tus palabras favoritas");
+
+                        }else{
+                            List<CardData>  favorites = getFavoriteCardData(resource.data.getPalabras());
+                            setupRecyclerView(favorites);
+                        }
+
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+
+                        break;
+
+                }
+            }
+        });
+
+
 
     }
 
 
-    public List<CardData> getFavoriteCardData(Context context, List<String> favoriteWords) {
+    public List<CardData> getFavoriteCardData(List<String> favoriteWords) {
         // Cargar la lista completa de palabras desde el JSON y convertirla en un Map
-        List<CardData> cardDataList = dictionaryViewModel.createCardData(context);
+        List<CardData> cardDataList = dictionaryViewModel.createCardData(requireContext());
         Map<String, CardData> cardDataMap = cardDataList.stream()
                 .collect(Collectors.toMap(cardData -> cardData.getTitle().toLowerCase(), cardData -> cardData));
 

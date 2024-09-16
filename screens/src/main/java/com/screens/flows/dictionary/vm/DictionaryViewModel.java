@@ -16,6 +16,8 @@ import com.google.gson.JsonObject;
 import com.senaschapinas.base.Resource;
 import com.senaschapinas.flows.AddDictionary.AddDictionaryRepositoryService;
 import com.senaschapinas.flows.AddDictionary.AddDictionaryRequest;
+import com.senaschapinas.flows.GetDictionary.GetDictionaryRepositoryService;
+import com.senaschapinas.flows.GetDictionary.GetDictionaryResponse;
 import com.senaschapinas.flows.RemoveDictionary.RemoveDictionaryRepositoryService;
 
 import java.io.IOException;
@@ -30,14 +32,17 @@ public class DictionaryViewModel extends BaseViewModel {
 
     private AddDictionaryRepositoryService addDictionaryRepositoryService;
     private RemoveDictionaryRepositoryService removeDictionaryRepositoryService;
+    private GetDictionaryRepositoryService getDictionaryRepositoryService;
 
     private MutableLiveData<Resource<Void>> addDictionaryResource = new MutableLiveData<>();
     private MutableLiveData<Resource<Void>> removeDictionaryResource = new MutableLiveData<>();
+    private MutableLiveData<Resource<GetDictionaryResponse>> getDictionaryResource = new MutableLiveData<>();
 
     public DictionaryViewModel(@NonNull Application application) {
         super(application);
         addDictionaryRepositoryService = AddDictionaryRepositoryService.getInstance();
         removeDictionaryRepositoryService = RemoveDictionaryRepositoryService.getInstance();
+        getDictionaryRepositoryService = GetDictionaryRepositoryService.getInstance();
     }
 
     List<CardData> cardDataList = new ArrayList<>();
@@ -78,5 +83,14 @@ public class DictionaryViewModel extends BaseViewModel {
 
     public LiveData<Resource<Void>> getRemoveDictionaryResult() {
         return removeDictionaryResource;
+    }
+
+    // Método para obtener el diccionario
+    public void fetchDictionary(String idUser) {
+        getDictionaryResource = getDictionaryRepositoryService.getDictionary(idUser);
+    }
+
+    public LiveData<Resource<GetDictionaryResponse>> getDictionaryResult() {
+        return getDictionaryResource;
     }
 }

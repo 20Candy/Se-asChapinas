@@ -5,14 +5,14 @@ import java.util.List;
 
 public class GetDictionaryResponse {
 
-    @JsonProperty("palabras")
-    private List<String> palabras;
+    @JsonProperty("words")
+    private List<String> words;
 
     public List<String> getPalabras() {
-        return palabras;
+        return words;
     }
 
-    public void setPalabras(List<String> palabras) {
-        this.palabras = palabras;
+    public void setPalabras(List<String> words) {
+        this.words = words;
     }
 }
