@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ReportVideoRequest {
 
     @JsonProperty("id_user")
-    private String idUser;
+    private String id_user;
 
     @JsonProperty("id_video")
-    private String idVideo;
+    private String id_video;
 
     @JsonProperty("report_message")
     private String reportMessage;
@@ -17,19 +17,19 @@ public class ReportVideoRequest {
     private String reportImg;
 
     public String getIdUser() {
-        return idUser;
+        return id_user;
     }
 
     public void setIdUser(String idUser) {
-        this.idUser = idUser;
+        this.id_user = idUser;
     }
 
     public String getIdVideo() {
-        return idVideo;
+        return id_video;
     }
 
     public void setIdVideo(String idVideo) {
-        this.idVideo = idVideo;
+        this.id_video = idVideo;
     }
 
     public String getReportMessage() {

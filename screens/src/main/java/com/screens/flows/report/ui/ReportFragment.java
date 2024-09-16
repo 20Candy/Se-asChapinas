@@ -1,8 +1,12 @@
 package com.screens.flows.report.ui;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.components.bottomsheet.BottomSheet;
@@ -18,13 +23,19 @@ import com.components.buttons.DebounceClickListener;
 import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentReportBinding;
+import com.screens.flows.login.vm.LoginViewModel;
 import com.screens.flows.video.vm.VideoViewModel;
+import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.ReportVideo.ReportVideoRequest;
 
 import android.media.MediaMetadataRetriever;
 import android.graphics.Bitmap;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ReportFragment extends BaseFragment {
 
@@ -41,8 +52,21 @@ public class ReportFragment extends BaseFragment {
 
     private BottomSheet bottomSheet;
 
+    private ReportViewModel reportViewModel;
+
+    SharedPreferencesManager sharedPreferencesManager;
+
+
+
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        reportViewModel = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
+
+    }
 
     @Nullable
     @Override
@@ -54,13 +78,8 @@ public class ReportFragment extends BaseFragment {
             videoPath = getArguments().getString("video_path");
         }
 
-        try {
-            generateThumbnails();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        generateThumbnails();
 
-        setupThumbnailsView();
         setListeners();
         setButtonResources();
         checkAndToggleButtonState();
@@ -79,45 +98,69 @@ public class ReportFragment extends BaseFragment {
 
     // Metodos privados de la clase ----------------------------------------------------------------
 
-    private void setupThumbnailsView() {
+    private void setupThumbnailsView(ArrayList<Bitmap> thumbnailImages) {
         binding.thumbnailsView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new ThumbnailAdapter(thumbnailImages, this::seekToPosition);
         binding.thumbnailsView.setAdapter(adapter);
     }
 
-    private void generateThumbnails() throws IOException {
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        retriever.setDataSource(videoPath);  // Asegúrate de que 'videoPath' es la ruta correcta al archivo de vídeo
 
-        String durationStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        long videoDuration = Long.parseLong(durationStr);  // Duración total del video en milisegundos
+    private void generateThumbnails() {
 
-        if (videoDuration == 0) {
-            Log.e("Thumbnail Generator", "Video duration is zero or unavailable.");
-            return;
-        }
+        showCustomDialogProgress(requireContext());
 
-        int numberOfThumbnails = 15;  // Número fijo de thumbnails
-        long interval = videoDuration / (numberOfThumbnails - 1);  // Calcula el intervalo entre thumbnails
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        for (int i = 0; i < numberOfThumbnails; i++) {
-            long time = interval * i * 1000;  // Calcula el momento en microsegundos para el thumbnail
-            Bitmap thumb = retriever.getFrameAtTime(time, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);  // Obtiene el frame en ese momento
-            if (thumb != null) {
-                thumbnailImages.add(thumb);  // Añade el thumbnail a la lista
+        executor.execute(() -> {
+            ArrayList<Bitmap> thumbnails = new ArrayList<>();
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            try {
+                retriever.setDataSource(videoPath);
+                String durationStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+
+                if (durationStr == null) {
+                    Log.e("Thumbnail Generator", "Duration string is null.");
+                    return;
+                }
+
+                long videoDuration = Long.parseLong(durationStr);
+
+                if (videoDuration == 0) {
+                    Log.e("Thumbnail Generator", "Video duration is zero or unavailable.");
+                    return;
+                }
+
+                int numberOfThumbnails = 15;
+                long interval = videoDuration / (numberOfThumbnails - 1);
+
+                for (int i = 0; i < numberOfThumbnails; i++) {
+                    long time = interval * i * 1000;
+                    Bitmap thumb = retriever.getFrameAtTime(time, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+                    if (thumb != null) {
+                        thumbnails.add(thumb);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("Thumbnail Generator", "Error generating thumbnails: " + e.getMessage(), e);
+            } finally {
+                try {
+                    retriever.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
 
-        retriever.release();  // Libera el objeto retriever
-
-        // Establecer la primera imagen si existe alguna
-        if (!thumbnailImages.isEmpty()) {
-            getActivity().runOnUiThread(() -> {
-                seekToPosition(0);
+            handler.post(() -> {
+                setupThumbnailsView(thumbnails);
+                hideCustomDialogProgress();
+                thumbnailImages = thumbnails;
+                if (!thumbnailImages.isEmpty()) {
+                    seekToPosition(0);
+                }
             });
-        }
+        });
     }
-
 
 
 
@@ -192,25 +235,64 @@ public class ReportFragment extends BaseFragment {
         binding.secondButton.setEnabled(isImageSelected && isTextNotEmpty);
     }
 
+    private String encodeBitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream); // Comprimir la imagen a un formato JPEG con calidad del 80%
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+
+
 
     // Servicios -----------------------------------------------------------------------------------
-    private void servicioReporte(){
-        // TODO LLAMAR SERVICIO Y MANDAR ALERTA
-        // On sucess
-        showCustomDialogMessage(
-                "Tu reporte ha sido enviado exitosamente",
-                "¡Tu reporte nos ayuda a mejorar!",
-                "Cerrar",
-                "",
-                () -> {
-                    // Cofirmar
-                    clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+    private void servicioReporte() {
 
+        showCustomDialogProgress(requireContext());
 
-                },
-                ContextCompat.getColor(getContext(), com.components.R.color.base_blue)
-        );
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+        String idUser = sharedPreferencesManager.getIdUsuario();
 
+        String reportImg = encodeBitmapToBase64(selectedThumbnailBitmap);
+
+        ReportVideoRequest request = new ReportVideoRequest();
+        request.setReportImg(reportImg);
+        request.setReportMessage(binding.tvReport.getText().toString());
+        request.setIdUser(idUser);
+        request.setIdVideo("22");
+
+        reportViewModel.reportVideo(request);
+        reportViewModel.getReportVideoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                "Tu reporte ha sido enviado exitosamente",
+                                "¡Tu reporte nos ayuda a mejorar!",
+                                "Cerrar",
+                                "",
+                                () -> {
+                                    clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+                                },
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_blue)
+                        );
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+                }
+            }
+        });
     }
+
 
 }
