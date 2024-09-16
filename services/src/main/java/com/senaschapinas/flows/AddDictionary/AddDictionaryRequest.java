@@ -5,25 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AddDictionaryRequest {
 
     @JsonProperty("id_user")
-    private String idUser;
+    private String id_user;
 
     @JsonProperty("id_word")
-    private String idWord;
+    private String id_word;
 
     // Getters and setters
     public String getIdUser() {
-        return idUser;
+        return id_user;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public void setIdUser(String id_user) {
+        this.id_user = id_user;
     }
 
     public String getIdWord() {
-        return idWord;
+        return id_word;
     }
 
-    public void setIdWord(String idWord) {
-        this.idWord = idWord;
+    public void setIdWord(String id_word) {
+        this.id_word = id_word;
     }
 }

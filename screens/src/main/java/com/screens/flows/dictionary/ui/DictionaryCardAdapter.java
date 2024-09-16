@@ -67,9 +67,9 @@ public class DictionaryCardAdapter extends RecyclerView.Adapter<DictionaryCardAd
         // Configura el listener para el clic en el corazón
         holder.cardDictionary.setHeartClickListener(new CardDictionary.HeartClickListener() {
             @Override
-            public void onHeartClicked(boolean heartFull, CardData cardData) {
+            public void onHeartClicked(boolean heartFull) {
                 if (heartClickListener != null) {
-                    heartClickListener.onHeartClicked(heartFull, cardData);
+                    heartClickListener.onHeartClicked(heartFull, data);
                 }
             }
         });

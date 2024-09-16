@@ -34,7 +34,6 @@ public class CardDictionary extends ConstraintLayout {
     private boolean isFront = true;
     private boolean heartFull = false;
 
-    private CardData cardData;  // Objeto CardData asociado a esta tarjeta
 
     // Métodos de ConstraintLayout -----------------------------------------------------------------
     public CardDictionary(@NonNull Context context) {
@@ -125,8 +124,8 @@ public class CardDictionary extends ConstraintLayout {
         updateHeartImages();
 
         // Notifica a cualquier listener externo si es necesario
-        if (this.heartClickListener != null && cardData != null) {
-            this.heartClickListener.onHeartClicked(heartFull, cardData);
+        if (this.heartClickListener != null) {
+            this.heartClickListener.onHeartClicked(heartFull);
         }
     }
 
@@ -190,7 +189,7 @@ public class CardDictionary extends ConstraintLayout {
 
     // Interface para eventos de clic en el corazón ------------------------------------------------
     public interface HeartClickListener {
-        void onHeartClicked(boolean heartFull, CardData cardData);
+        void onHeartClicked(boolean heartFull);
     }
 
     private HeartClickListener heartClickListener;

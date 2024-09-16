@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -18,6 +19,8 @@ import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentDictionaryBinding;
 import com.screens.flows.dictionary.vm.DictionaryViewModel;
 import com.screens.flows.video.vm.VideoViewModel;
+import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.AddDictionary.AddDictionaryRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +44,9 @@ public class DictionaryFragment extends BaseFragment {
     CategoriesAdapter categoriesAdapter;
 
     private String selectedCategory = null;
+
+    SharedPreferencesManager sharedPreferencesManager;
+
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -118,10 +124,10 @@ public class DictionaryFragment extends BaseFragment {
             public void onHeartClicked(boolean heartFull, CardData cardData) {
                 // Agregar a favoritos
                 if (heartFull) {
-                    servicioAgregarFavorito();
+                    servicioAgregarFavorito(cardData.getTitle());
                     // Borrar de favoritos
                 } else {
-                    servicioEliminarFavorito();
+                    servicioEliminarFavorito(cardData.getTitle());
                 }
             }
         });
@@ -185,13 +191,70 @@ public class DictionaryFragment extends BaseFragment {
 
 
     // Servicios -----------------------------------------------------------------------------------
-    private void servicioAgregarFavorito() {
-        // TODO
+    private void servicioAgregarFavorito(String idWord) {
+        showCustomDialogProgress(requireContext());
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
+        AddDictionaryRequest request = new AddDictionaryRequest();
+        request.setIdUser(sharedPreferencesManager.getIdUsuario());
+        request.setIdWord(idWord);
+
+        dictionaryViewModel.addWordToDictionary(request);
+        dictionaryViewModel.getAddDictionaryResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
     }
 
-    private void servicioEliminarFavorito() {
-        // TODO
+
+    private void servicioEliminarFavorito( String idWord) {
+        showCustomDialogProgress(requireContext());
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
+        dictionaryViewModel.removeDictionaryEntry(sharedPreferencesManager.getIdUsuario(), idWord);
+        dictionaryViewModel.getRemoveDictionaryResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
     }
+
 
     private void servicioFavoritosDiccionario() {
         // TODO
