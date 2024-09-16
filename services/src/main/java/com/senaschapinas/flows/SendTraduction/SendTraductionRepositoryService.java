@@ -28,14 +28,14 @@ public class SendTraductionRepositoryService {
         return instance;
     }
 
-    public MutableLiveData<Resource<Void>> sendTraduction(SendTraductionRequest request) {
-        MutableLiveData<Resource<Void>> liveData = new MutableLiveData<>();
+    public MutableLiveData<Resource<SendTraductionResponse>> sendTraduction(SendTraductionRequest request) {
+        MutableLiveData<Resource<SendTraductionResponse>> liveData = new MutableLiveData<>();
 
-        apiService.sendTraduction(request).enqueue(new Callback<Void>() {
+        apiService.sendTraduction(request).enqueue(new Callback<SendTraductionResponse>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    liveData.setValue(Resource.success(null));
+            public void onResponse(Call<SendTraductionResponse> call, Response<SendTraductionResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    liveData.setValue(Resource.success(response.body()));
                 } else {
                     try {
                         // Extraer el cuerpo de error como una cadena
@@ -52,7 +52,7 @@ public class SendTraductionRepositoryService {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<SendTraductionResponse> call, Throwable t) {
                 liveData.setValue(Resource.error("Fallo de servicio: " + t.getMessage(), null));
             }
         });

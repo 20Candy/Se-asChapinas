@@ -5,47 +5,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SendTraductionRequest {
 
     @JsonProperty("id_user")
-    private String idUser;
+    private String id_user;
 
     @JsonProperty("sentence_lensegua")
-    private String sentenceLensegua;
-
-    @JsonProperty("id_sentence")
-    private String idSentence;
-
-    @JsonProperty("traduction_esp")
-    private String traductionEsp;
+    private String sentence_lensegua;
 
 
     public String getIdUser() {
-        return idUser;
+        return id_user;
     }
 
     public void setIdUser(String idUser) {
-        this.idUser = idUser;
+        this.id_user = idUser;
     }
 
     public String getSentenceLensegua() {
-        return sentenceLensegua;
+        return sentence_lensegua;
     }
 
     public void setSentenceLensegua(String sentenceLensegua) {
-        this.sentenceLensegua = sentenceLensegua;
+        this.sentence_lensegua = sentenceLensegua;
     }
 
-    public String getIdSentence() {
-        return idSentence;
-    }
-
-    public void setIdSentence(String idSentence) {
-        this.idSentence = idSentence;
-    }
-
-    public String getTraductionEsp() {
-        return traductionEsp;
-    }
-
-    public void setTraductionEsp(String traductionEsp) {
-        this.traductionEsp = traductionEsp;
-    }
 }

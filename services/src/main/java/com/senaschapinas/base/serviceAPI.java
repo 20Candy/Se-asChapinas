@@ -16,6 +16,7 @@ import com.senaschapinas.flows.LogIn.LogInResponse;
 import com.senaschapinas.flows.LogIn.LoginRequest;
 import com.senaschapinas.flows.ReportVideo.ReportVideoRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRequest;
+import com.senaschapinas.flows.SendTraduction.SendTraductionResponse;
 import com.senaschapinas.flows.SendVideo.SendVideoRequest;
 import com.senaschapinas.flows.SendVideo.SendVideoResponse;
 import com.senaschapinas.flows.SignUp.SignUpRequest;
@@ -57,7 +58,7 @@ public interface serviceAPI {
     Call<Void> removeVideo(@Query("id_video") String idVideo);
 
     @POST("send_traduction")
-    Call<Void> sendTraduction(@Body SendTraductionRequest request);
+    Call<SendTraductionResponse> sendTraduction(@Body SendTraductionRequest request);
 
     @POST("fav_traduction")
     Call<Void> favTraduction(@Body FavTraductionRequest request);

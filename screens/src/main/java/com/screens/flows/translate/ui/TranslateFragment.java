@@ -26,6 +26,8 @@ import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentTranslateBinding;
 import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.flows.translate.vm.TranslateViewModel;
+import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.SendTraduction.SendTraductionRequest;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -43,6 +45,8 @@ public class TranslateFragment extends BaseFragment {
     private boolean addFavorite = false;
 
     private int maxChar = 150;
+
+    SharedPreferencesManager sharedPreferencesManager;
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -289,13 +293,42 @@ public class TranslateFragment extends BaseFragment {
         // TODO
     }
 
-    private void servicioTraducir() {
 
-        // TODO
-        // ON SUCESS
-        String traduccion = "Hoy voy a la universidad";
-        binding.tvTraduccionEspanol.setText(traduccion);
-        setEstadoTraducido(true);
+    private void servicioTraducir() {
+        showCustomDialogProgress(requireContext());
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+        SendTraductionRequest request = new SendTraductionRequest();
+        request.setIdUser(sharedPreferencesManager.getIdUsuario());
+        request.setSentenceLensegua(String.valueOf(binding.edLensegua.getText()));
+
+
+        translateViewModel.sendTraduction(request);
+        translateViewModel.getSendTraductionResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        binding.tvTraduccionEspanol.setText(resource.data.getTraductionEsp());
+                        translateViewModel.setId_sentence(resource.data.getIdSentence());
+
+                        setEstadoTraducido(true);
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
     }
 
 }
