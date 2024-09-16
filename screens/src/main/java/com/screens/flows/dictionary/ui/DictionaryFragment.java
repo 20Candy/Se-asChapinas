@@ -87,6 +87,20 @@ public class DictionaryFragment extends BaseFragment {
         binding.rvCards.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new DictionaryCardAdapter(getActivity(), list);
         binding.rvCards.setAdapter(adapter);
+
+        adapter.setOnHeartClickListener(new DictionaryCardAdapter.OnHeartClickListener() {
+            @Override
+            public void onHeartClicked(boolean heartFull, CardData cardData) {
+                // Agregar a favoritos
+                if (heartFull) {
+                    servicioAgregarFavorito(cardData.getTitle());
+                    // Borrar de favoritos
+                } else {
+                    servicioEliminarFavorito(cardData.getTitle());
+                }
+            }
+        });
+
     }
 
     private void setupRecyclerViewCategories(List<String> list) {
@@ -118,19 +132,6 @@ public class DictionaryFragment extends BaseFragment {
 
 
     private void setListeners() {
-
-        adapter.setOnHeartClickListener(new DictionaryCardAdapter.OnHeartClickListener() {
-            @Override
-            public void onHeartClicked(boolean heartFull, CardData cardData) {
-                // Agregar a favoritos
-                if (heartFull) {
-                    servicioAgregarFavorito(cardData.getTitle());
-                    // Borrar de favoritos
-                } else {
-                    servicioEliminarFavorito(cardData.getTitle());
-                }
-            }
-        });
 
 
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
