@@ -47,6 +47,8 @@ public class VideoFragment extends BaseFragment {
 
     private String videoPath = "";
 
+    private String id_video = "";
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
@@ -143,7 +145,9 @@ public class VideoFragment extends BaseFragment {
         if (getArguments() != null && getArguments().containsKey("favorito")) {
             addFavorite = true;
             binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.full_heart));
-
+        }
+        if(getArguments() != null && getArguments().containsKey("id_video")){
+            this.id_video = getArguments().getString("id_video");
         }
     }
 
@@ -292,9 +296,36 @@ public class VideoFragment extends BaseFragment {
     // Servicios -----------------------------------------------------------------------------------
     private void servicioAgregarFavorito() {
         // TODO
+
+
     }
 
     private void servicioEliminarFavorito() {
-        // TODO
+        showCustomDialogProgress(requireContext());
+
+        videoViewModel.removeVideo(this.id_video);
+        videoViewModel.getRemoveVideoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
     }
+
 }

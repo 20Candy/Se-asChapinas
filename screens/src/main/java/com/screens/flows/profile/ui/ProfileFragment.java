@@ -31,6 +31,7 @@ import com.screens.databinding.FragmentProfileBinding;
 import com.screens.flows.home.vm.HomeViewModel;
 import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.flows.translate.vm.TranslateViewModel;
+import com.screens.flows.video.vm.VideoViewModel;
 import com.screens.utils.SharedPreferencesManager;
 import com.senaschapinas.flows.GetUserInfo.GetUserInfoRequest;
 import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
@@ -50,6 +51,7 @@ public class ProfileFragment extends BaseFragment {
     // Atributos de la clase -----------------------------------------------------------------------
     private ProfileViewModel profileViewModel;
     private HomeViewModel homeViewModel;
+    private VideoViewModel videoViewModel;
     private TranslateViewModel translateViewModel;
     private SharedPreferencesManager sharedPreferencesManager;
 
@@ -67,7 +69,7 @@ public class ProfileFragment extends BaseFragment {
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         translateViewModel = new ViewModelProvider(requireActivity()).get(TranslateViewModel.class);
-
+        videoViewModel = new ViewModelProvider(requireActivity()).get(VideoViewModel.class);
     }
 
     @Override
@@ -204,15 +206,10 @@ public class ProfileFragment extends BaseFragment {
 
                 // Determina cuál lista está activa basándose en el adaptador actual del RecyclerView
                 if (recyclerView.getAdapter() instanceof VideoFavoriteAdapter) {
-                    videosFavoritos.remove(position);  // Remover de videos favoritos
-                    recyclerView.getAdapter().notifyItemRemoved(position);
+                    servicioEliminarVideoFavorito(position, recyclerView);
 
-                    // TODO: Llamar al servicio para eliminar video
                 } else if (recyclerView.getAdapter() instanceof TranslateFavoriteAdapter) {
-                    traduccionesFavoritas.remove(position);  // Remover de traducciones favoritas
-                    recyclerView.getAdapter().notifyItemRemoved(position);
-
-                    // TODO: Llamar al servicio para eliminar traducción
+                    servicioEliminarTraduccionFavorita(position, recyclerView);
                 }
             }
 
@@ -307,6 +304,75 @@ public class ProfileFragment extends BaseFragment {
             }
         });
 
+    }
+
+
+    private void servicioEliminarVideoFavorito(int position, RecyclerView recyclerView) {
+        showCustomDialogProgress(requireContext());
+
+        String id_video = videosFavoritos.get(position).getId_video();
+        videoViewModel.removeVideo(id_video);
+        videoViewModel.getRemoveVideoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        videosFavoritos.remove(position);
+                        recyclerView.getAdapter().notifyItemRemoved(position);
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        recyclerView.getAdapter().notifyItemChanged(position);
+
+                        break;
+
+                }
+            }
+        });
+    }
+
+
+    private void servicioEliminarTraduccionFavorita(int position, RecyclerView recyclerView) {
+        showCustomDialogProgress(requireContext());
+
+        String translate_id = traduccionesFavoritas.get(position).getId_traduction();
+
+        translateViewModel.removeTranslation(translate_id);
+        translateViewModel.getRemoveTranslationResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        traduccionesFavoritas.remove(position);
+                        recyclerView.getAdapter().notifyItemRemoved(position);
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        recyclerView.getAdapter().notifyItemChanged(position);
+
+                        break;
+
+                }
+            }
+        });
     }
 
 

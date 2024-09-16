@@ -82,7 +82,6 @@ public class TranslateFragment extends BaseFragment {
 
             setEstadoTraducido(true);
 
-            translateViewModel.selectTrans(null);
         }
     }
 

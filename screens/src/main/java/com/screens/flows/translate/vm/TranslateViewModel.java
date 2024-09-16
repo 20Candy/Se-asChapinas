@@ -12,7 +12,6 @@ import com.senaschapinas.flows.FavTraduction.FavTraductionRepositoryService;
 import com.senaschapinas.flows.FavTraduction.FavTraductionRequest;
 import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
 import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRepositoryService;
-import com.senaschapinas.flows.RemoveVideo.RemoveVideoRepositoryService;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRepositoryService;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionResponse;
@@ -39,6 +38,7 @@ public class TranslateViewModel extends BaseViewModel {
 
     public void selectTrans(ObjTraFav video) {
         selectedTrans.setValue(video);
+        this.id_sentence = video.getId_traduction();
     }
 
     public LiveData<ObjTraFav> getSelectedTrans() {
