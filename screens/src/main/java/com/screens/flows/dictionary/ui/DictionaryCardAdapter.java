@@ -64,6 +64,9 @@ public class DictionaryCardAdapter extends RecyclerView.Adapter<DictionaryCardAd
             holder.cardDictionary.getTvLetter().setVisibility(View.INVISIBLE);
         }
 
+        // Poner favorito
+        holder.cardDictionary.setFavorite(data.isFavorite());
+
         // Configura el listener para el clic en el corazón
         holder.cardDictionary.setHeartClickListener(new CardDictionary.HeartClickListener() {
             @Override
@@ -100,5 +103,12 @@ public class DictionaryCardAdapter extends RecyclerView.Adapter<DictionaryCardAd
     public interface OnHeartClickListener {
         void onHeartClicked(boolean heartFull, CardData cardData);
     }
+
+    public void updateData(List<CardData> newData) {
+        this.cardDataList.clear();
+        this.cardDataList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
 
 }

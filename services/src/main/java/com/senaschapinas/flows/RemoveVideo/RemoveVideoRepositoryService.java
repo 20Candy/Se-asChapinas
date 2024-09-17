@@ -28,10 +28,10 @@ public class RemoveVideoRepositoryService {
         return instance;
     }
 
-    public MutableLiveData<Resource<Void>> removeVideo(String idVideo) {
+    public MutableLiveData<Resource<Void>> removeVideo(RemoveVideoRequest request) {
         MutableLiveData<Resource<Void>> liveData = new MutableLiveData<>();
 
-        apiService.removeVideo(idVideo).enqueue(new Callback<Void>() {
+        apiService.removeVideo(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

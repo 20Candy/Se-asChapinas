@@ -36,6 +36,8 @@ import com.screens.utils.SharedPreferencesManager;
 import com.senaschapinas.flows.GetUserInfo.GetUserInfoRequest;
 import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
 import com.senaschapinas.flows.GetUserInfo.ObjVideoFav;
+import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRequest;
+import com.senaschapinas.flows.RemoveVideo.RemoveVideoRequest;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,6 +78,8 @@ public class ProfileFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+
         return binding.getRoot();
     }
 
@@ -118,7 +122,6 @@ public class ProfileFragment extends BaseFragment {
         }));
 
         binding.llScore.setOnClickListener(new DebounceClickListener(view -> {
-            sharedPreferencesManager = new SharedPreferencesManager(requireContext());
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
             String todayDate = dateFormat.format(new Date());
@@ -248,8 +251,6 @@ public class ProfileFragment extends BaseFragment {
 
         showCustomDialogProgress(requireContext());
 
-        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
-
         GetUserInfoRequest request = new GetUserInfoRequest();
         request.setIdUser(sharedPreferencesManager.getIdUsuario());
 
@@ -315,8 +316,11 @@ public class ProfileFragment extends BaseFragment {
     private void servicioEliminarVideoFavorito(int position, RecyclerView recyclerView) {
         showCustomDialogProgress(requireContext());
 
-        String id_video = videosFavoritos.get(position).getId_video();
-        videoViewModel.removeVideo(id_video);
+        RemoveVideoRequest request = new RemoveVideoRequest();
+        request.setId_video(videosFavoritos.get(position).getId_video());
+        request.setId_user(sharedPreferencesManager.getIdUsuario());
+
+        videoViewModel.removeVideo(request);
         videoViewModel.getRemoveVideoResult().observe(getViewLifecycleOwner(), resource -> {
             if (resource != null) {
                 switch (resource.status) {
@@ -349,9 +353,11 @@ public class ProfileFragment extends BaseFragment {
     private void servicioEliminarTraduccionFavorita(int position, RecyclerView recyclerView) {
         showCustomDialogProgress(requireContext());
 
-        String translate_id = traduccionesFavoritas.get(position).getId_traduction();
+        RemoveTraductionRequest request  = new RemoveTraductionRequest();
+        request.setId_sentence(traduccionesFavoritas.get(position).getId_traduction());
+        request.setId_user(sharedPreferencesManager.getIdUsuario());
 
-        translateViewModel.removeTranslation(translate_id);
+        translateViewModel.removeTranslation(request);
         translateViewModel.getRemoveTranslationResult().observe(getViewLifecycleOwner(), resource -> {
             if (resource != null) {
                 switch (resource.status) {

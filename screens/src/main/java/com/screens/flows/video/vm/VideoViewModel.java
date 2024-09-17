@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.screens.base.BaseViewModel;
 import com.senaschapinas.base.Resource;
 import com.senaschapinas.flows.RemoveVideo.RemoveVideoRepositoryService;
+import com.senaschapinas.flows.RemoveVideo.RemoveVideoRequest;
 
 public class VideoViewModel extends BaseViewModel {
 
@@ -21,8 +22,8 @@ public class VideoViewModel extends BaseViewModel {
     }
 
     // Método para eliminar un video
-    public void removeVideo(String idVideo) {
-        removeVideoResource = removeVideoRepositoryService.removeVideo(idVideo);
+    public void removeVideo(RemoveVideoRequest request) {
+        removeVideoResource = removeVideoRepositoryService.removeVideo(request);
     }
 
     public LiveData<Resource<Void>> getRemoveVideoResult() {

@@ -14,6 +14,8 @@ import com.senaschapinas.flows.LogIn.FavVideo.FavVideoRequest;
 import com.senaschapinas.flows.ForgotPassword.ForgotPasswordRequest;
 import com.senaschapinas.flows.LogIn.LogInResponse;
 import com.senaschapinas.flows.LogIn.LoginRequest;
+import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRequest;
+import com.senaschapinas.flows.RemoveVideo.RemoveVideoRequest;
 import com.senaschapinas.flows.ReportVideo.ReportVideoRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionResponse;
@@ -54,8 +56,8 @@ public interface serviceAPI {
     @POST("fav_video")
     Call<Void> favVideo(@Body FavVideoRequest request);
 
-    @DELETE("remove_video/")
-    Call<Void> removeVideo(@Query("id_video") String idVideo);
+    @POST("remove_fav_video")
+    Call<Void> removeVideo(@Body RemoveVideoRequest request);
 
     @POST("send_traduction")
     Call<SendTraductionResponse> sendTraduction(@Body SendTraductionRequest request);
@@ -63,8 +65,8 @@ public interface serviceAPI {
     @POST("fav_traduction")
     Call<Void> favTraduction(@Body FavTraductionRequest request);
 
-    @DELETE("remove_traduction")
-    Call<Void> removeTraduction(@Query("id_sentence") String idSentence);
+    @POST("remove_fav_traduction")
+    Call<Void> removeTraduction(@Body RemoveTraductionRequest request);
 
 
     @POST("add_dictionary")

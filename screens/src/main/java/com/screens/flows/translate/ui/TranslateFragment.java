@@ -28,6 +28,7 @@ import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.flows.translate.vm.TranslateViewModel;
 import com.screens.utils.SharedPreferencesManager;
 import com.senaschapinas.flows.FavTraduction.FavTraductionRequest;
+import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRequest;
 
 import java.util.Locale;
@@ -323,7 +324,11 @@ public class TranslateFragment extends BaseFragment {
     private void servicioEliminarFavorito() {
         showCustomDialogProgress(requireContext());
 
-        translateViewModel.removeTranslation(translateViewModel.getId_sentence());
+        RemoveTraductionRequest request  = new RemoveTraductionRequest();
+        request.setId_sentence(translateViewModel.getId_sentence());
+        request.setId_user(sharedPreferencesManager.getIdUsuario());
+
+        translateViewModel.removeTranslation(request);
         translateViewModel.getRemoveTranslationResult().observe(getViewLifecycleOwner(), resource -> {
             if (resource != null) {
                 switch (resource.status) {

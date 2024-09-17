@@ -7,6 +7,8 @@ public class CardData {
 
     String categoria;
 
+    boolean isFavorite;
+
     public CardData(String title, String imgLenseguaResId, String imgCardResId, String categoria) {
         this.title = title;
         this.imgLenseguaResId = imgLenseguaResId;
@@ -44,6 +46,14 @@ public class CardData {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }
 

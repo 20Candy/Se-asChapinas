@@ -55,6 +55,7 @@ public class DictionaryFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dictionaryViewModel = new ViewModelProvider(requireActivity()).get(DictionaryViewModel.class);
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
 
     }
 
@@ -68,12 +69,24 @@ public class DictionaryFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onBackPressed(() -> {
-        });
-        setupRecyclerView(dictionaryViewModel.createCardData(requireContext()));
-        setupRecyclerViewCategories(createCategories());
+        onBackPressed(() -> { });
+
+        setupRecyclerView(new ArrayList<>()); // Inicialmente vacío
+        setupRecyclerViewCategories(dictionaryViewModel.createCategories(requireContext()));
         setListeners();
+
+        // Obtener favoritos al iniciar el fragmento
+        servicioFavoritosDiccionario();
+
+        // Observa los cambios en los datos filtrados
+        dictionaryViewModel.getFilteredCardData().observe(getViewLifecycleOwner(), filteredList -> {
+            if (filteredList != null) {
+                showEmptyState(filteredList.isEmpty(), "Palabra no disponible\n ¡Seguimos creciendo!");
+                adapter.updateData(filteredList);
+            }
+        });
     }
+
 
     public void onResume() {
         super.onResume();
@@ -109,15 +122,22 @@ public class DictionaryFragment extends BaseFragment {
 
         categoriesAdapter = new CategoriesAdapter(getActivity(), list, (isFavorite, category) -> {
             if (isFavorite) {
-                servicioFavoritosDiccionario();
+                // Alternar entre mostrar y ocultar favoritos
+                if ("favoritos".equalsIgnoreCase(selectedCategory)) {
+                    selectedCategory = null; // Si ya estás en favoritos, restablecer el filtro
+                    dictionaryViewModel.filtrarLista(requireContext(), "", "titulo"); // Mostrar toda la lista
+                } else {
+                    dictionaryViewModel.filtrarLista(requireContext(), "favoritos", "favoritos"); // Aplicar el filtro de favoritos
+                    selectedCategory = "favoritos";
+                }
             } else {
                 // Si la categoría ya está seleccionada, quitar el filtro
                 if (category.equals(selectedCategory)) {
                     selectedCategory = null; // Resetear la categoría seleccionada
-                    setupRecyclerView(dictionaryViewModel.createCardData(requireContext())); // Mostrar toda la lista
+                    dictionaryViewModel.filtrarLista(requireContext(), "", "titulo"); // Mostrar toda la lista
                 } else {
                     selectedCategory = category; // Establecer la nueva categoría seleccionada
-                    filtrarLista(category, "categoria"); // Aplicar el filtro de categoría
+                    dictionaryViewModel.filtrarLista(requireContext(), category, "categoria"); // Aplicar el filtro de categoría
                 }
             }
         });
@@ -126,14 +146,10 @@ public class DictionaryFragment extends BaseFragment {
     }
 
 
-    private List<String> createCategories() {
-        return new ArrayList<>(Arrays.asList("Favoritos", "Acciones", "Lugares", "Estados", "Tiempo", "Personas", "Preguntas", "Objetos"));
-    }
+
 
 
     private void setListeners() {
-
-
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -142,40 +158,13 @@ public class DictionaryFragment extends BaseFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filtrarLista(newText, "titulo");
+                dictionaryViewModel.filtrarLista(requireContext(), newText, "titulo");
                 return false;
             }
         });
-
-
     }
 
-    private void filtrarLista(String filtro, String tipo) {
-        List<CardData> listaFiltrada = new ArrayList<>();
-        List<CardData> listaOriginal = dictionaryViewModel.createCardData(requireContext());
 
-        if (filtro != null && !filtro.isEmpty()) {
-            listaFiltrada = listaOriginal.stream()
-                    .filter(card -> {
-                        if ("titulo".equalsIgnoreCase(tipo)) {
-                            return card.getTitle() != null && card.getTitle().toLowerCase().contains(filtro.toLowerCase());
-                        } else if ("categoria".equalsIgnoreCase(tipo)) {
-                            return card.getCategoria() != null && card.getCategoria().toLowerCase().contains(filtro.toLowerCase());
-                        }
-                        // Devuelve false si el tipo no coincide con "titulo" o "categoria"
-                        return false;
-                    })
-                    .collect(Collectors.toList());
-
-            // Mostrar estado vacío si la lista filtrada está vacía
-            showEmptyState(listaFiltrada.isEmpty(), "Palabra no disponible\n ¡Seguimos creciendo!");
-            setupRecyclerView(listaFiltrada);
-        } else {
-            // Si el filtro es nulo o vacío, mostrar la lista original
-            showEmptyState(false, "");
-            setupRecyclerView(listaOriginal);
-        }
-    }
 
 
     private void showEmptyState(Boolean show, String text) {
@@ -195,8 +184,6 @@ public class DictionaryFragment extends BaseFragment {
     private void servicioAgregarFavorito(String idWord) {
         showCustomDialogProgress(requireContext());
 
-        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
-
         AddDictionaryRequest request = new AddDictionaryRequest();
         request.setIdUser(sharedPreferencesManager.getIdUsuario());
         request.setIdWord(idWord);
@@ -207,6 +194,8 @@ public class DictionaryFragment extends BaseFragment {
                 switch (resource.status) {
                     case SUCCESS:
                         hideCustomDialogProgress();
+                        servicioFavoritosDiccionario();
+
                         break;
                     case ERROR:
                         hideCustomDialogProgress();
@@ -229,14 +218,13 @@ public class DictionaryFragment extends BaseFragment {
     private void servicioEliminarFavorito( String idWord) {
         showCustomDialogProgress(requireContext());
 
-        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
-
         dictionaryViewModel.removeDictionaryEntry(sharedPreferencesManager.getIdUsuario(), idWord);
         dictionaryViewModel.getRemoveDictionaryResult().observe(getViewLifecycleOwner(), resource -> {
             if (resource != null) {
                 switch (resource.status) {
                     case SUCCESS:
                         hideCustomDialogProgress();
+                        servicioFavoritosDiccionario();
 
                         break;
                     case ERROR:
@@ -258,9 +246,7 @@ public class DictionaryFragment extends BaseFragment {
 
 
     private void servicioFavoritosDiccionario() {
-        hideCustomDialogProgress();
-
-        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+        showCustomDialogProgress(requireContext());
 
         dictionaryViewModel.fetchDictionary(sharedPreferencesManager.getIdUsuario());
         dictionaryViewModel.getDictionaryResult().observe(getViewLifecycleOwner(), resource -> {
@@ -269,15 +255,21 @@ public class DictionaryFragment extends BaseFragment {
                     case SUCCESS:
                         hideCustomDialogProgress();
 
-                        if(resource.data.getPalabras()!= null && resource.data.getPalabras().isEmpty()){
-                            showEmptyState(true, "Aquí aparecerán tus palabras favoritas");
+                        if (resource.data != null && resource.data.getPalabras() != null) {
+                            List<String> palabras = resource.data.getPalabras();
+                            dictionaryViewModel.setFavoriteTitles(palabras); // Establecer los favoritos
 
-                        }else{
-                            List<CardData>  favorites = getFavoriteCardData(resource.data.getPalabras());
-                            setupRecyclerView(favorites);
+                            // Obtener el filtro actual y volver a aplicarlo
+                            String currentFilter = selectedCategory != null ? selectedCategory : "";
+                            String filterType = "categoria"; // O "favoritos" si estás en la vista de favoritos
+                            if (currentFilter.isEmpty()) {
+                                filterType = "titulo";
+                            }else if (currentFilter.equals("favoritos")){
+                                filterType = "favoritos";
+                            }
+
+                            dictionaryViewModel.filtrarLista(requireContext(), currentFilter, filterType);
                         }
-
-
                         break;
                     case ERROR:
                         hideCustomDialogProgress();
@@ -289,33 +281,12 @@ public class DictionaryFragment extends BaseFragment {
                                 null,
                                 ContextCompat.getColor(getContext(), com.components.R.color.base_red)
                         );
-
                         break;
-
                 }
             }
         });
-
-
-
     }
 
 
-    public List<CardData> getFavoriteCardData(List<String> favoriteWords) {
-        // Cargar la lista completa de palabras desde el JSON y convertirla en un Map
-        List<CardData> cardDataList = dictionaryViewModel.createCardData(requireContext());
-        Map<String, CardData> cardDataMap = cardDataList.stream()
-                .collect(Collectors.toMap(cardData -> cardData.getTitle().toLowerCase(), cardData -> cardData));
 
-        // Convertir la lista de palabras favoritas en un HashSet para una búsqueda rápida
-        Set<String> favoriteWordsSet = new HashSet<>(favoriteWords.stream()
-                .map(String::toLowerCase)
-                .collect(Collectors.toSet()));
-
-        // Filtrar las palabras favoritas utilizando el Map
-        return favoriteWordsSet.stream()
-                .filter(cardDataMap::containsKey)
-                .map(cardDataMap::get)
-                .collect(Collectors.toList());
-    }
 }

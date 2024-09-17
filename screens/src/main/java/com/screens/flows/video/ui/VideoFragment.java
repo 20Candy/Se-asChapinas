@@ -26,6 +26,8 @@ import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentVideoBinding;
 import com.screens.flows.video.vm.VideoViewModel;
+import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.flows.RemoveVideo.RemoveVideoRequest;
 
 import java.io.File;
 import java.util.Locale;
@@ -48,6 +50,8 @@ public class VideoFragment extends BaseFragment {
     private String videoPath = "";
 
     private String id_video = "";
+    private SharedPreferencesManager sharedPreferencesManager;
+
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -61,6 +65,7 @@ public class VideoFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentVideoBinding.inflate(inflater, container, false);
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
         return binding.getRoot();
     }
 
@@ -303,7 +308,11 @@ public class VideoFragment extends BaseFragment {
     private void servicioEliminarFavorito() {
         showCustomDialogProgress(requireContext());
 
-        videoViewModel.removeVideo(this.id_video);
+        RemoveVideoRequest request = new RemoveVideoRequest();
+        request.setId_video(this.id_video);
+        request.setId_user(sharedPreferencesManager.getIdUsuario());
+
+        videoViewModel.removeVideo(request);
         videoViewModel.getRemoveVideoResult().observe(getViewLifecycleOwner(), resource -> {
             if (resource != null) {
                 switch (resource.status) {

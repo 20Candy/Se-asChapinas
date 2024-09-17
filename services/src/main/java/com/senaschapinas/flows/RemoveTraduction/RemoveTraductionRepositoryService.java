@@ -28,10 +28,10 @@ public class RemoveTraductionRepositoryService {
         return instance;
     }
 
-    public MutableLiveData<Resource<Void>> removeTraduction(String idSentence) {
+    public MutableLiveData<Resource<Void>> removeTraduction(RemoveTraductionRequest request) {
         MutableLiveData<Resource<Void>> liveData = new MutableLiveData<>();
 
-        apiService.removeTraduction(idSentence).enqueue(new Callback<Void>() {
+        apiService.removeTraduction(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

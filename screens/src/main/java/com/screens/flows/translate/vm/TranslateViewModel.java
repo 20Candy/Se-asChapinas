@@ -12,6 +12,7 @@ import com.senaschapinas.flows.FavTraduction.FavTraductionRepositoryService;
 import com.senaschapinas.flows.FavTraduction.FavTraductionRequest;
 import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
 import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRepositoryService;
+import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRepositoryService;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionResponse;
@@ -55,8 +56,8 @@ public class TranslateViewModel extends BaseViewModel {
     }
 
     // Método para eliminar una traducción
-    public void removeTranslation(String id_sentence) {
-        removeVideoResource = removeTraductionRepositoryService.removeTraduction(id_sentence);
+    public void removeTranslation(RemoveTraductionRequest request) {
+        removeVideoResource = removeTraductionRepositoryService.removeTraduction(request);
     }
 
     public LiveData<Resource<Void>> getRemoveTranslationResult() {

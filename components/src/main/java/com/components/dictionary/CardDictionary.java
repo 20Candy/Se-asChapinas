@@ -93,6 +93,14 @@ public class CardDictionary extends ConstraintLayout {
         tvTitle.setText(title);
     }
 
+    public void setFavorite(Boolean favorite){
+        if(favorite){
+            imgHeart.setImageDrawable(getResources().getDrawable(R.drawable.full_heart));
+        }else{
+            imgHeart.setImageDrawable(getResources().getDrawable(R.drawable.heart));
+        }
+    }
+
     // Listener ------------------------------------------------------------------------------------
     private void setupListeners() {
         View.OnClickListener heartClickListener = new View.OnClickListener() {
