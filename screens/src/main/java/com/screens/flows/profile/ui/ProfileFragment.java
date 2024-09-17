@@ -97,7 +97,6 @@ public class ProfileFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         ProfileViewModel.setBottomNavVisible(true);
-        ProfileViewModel.selectTab(BottomNavMenu.TAB_PROFILE);
     }
 
     // Metodos privados de la clase ----------------------------------------------------------------

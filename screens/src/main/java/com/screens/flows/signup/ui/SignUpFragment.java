@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.components.buttons.DebounceClickListener;
+import com.components.navMenu.BottomNavMenu;
 import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentSignUpBinding;
+import com.screens.flows.home.vm.HomeViewModel;
 import com.screens.flows.login.vm.LoginViewModel;
 import com.screens.flows.signup.vm.SignUpViewModel;
 import com.screens.utils.SharedPreferencesManager;
@@ -108,10 +110,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                     hideCustomDialogProgress();
 
                     sharedPreferencesManager = new SharedPreferencesManager(requireContext());
-                    sharedPreferencesManager.setLogged(true);
                     sharedPreferencesManager.setIdUsuario(login.data.getId_user().toString());
+                    sharedPreferencesManager.setFirstLogin(true);
 
-                    navigateTo(binding.getRoot(), R.id.action_signUpFragment_to_video_nav, null);
+                    HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
+
                     break;
                 case ERROR:
                     hideCustomDialogProgress();

@@ -2,24 +2,16 @@ package com.screens.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKey;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
+import android.util.Log;
 
 public class SharedPreferencesManager {
 
     private static final String PREF_NAME = "AppPreferences";
-    private static final String IS_LOGGED = "isLogged";
     private static final String FIRST_LOGIN = "firstLogin";
     private static final String SHOW_CHALLENGE = "showChallenge";
     private static final String OPEN_CAMERA = "openCamera";
     private static final String CHALLENGE_DATE = "challengeDate";
-
     private static final String ID_USUARIO = "id_user";
-
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -27,34 +19,10 @@ public class SharedPreferencesManager {
 
     public SharedPreferencesManager(Context context) {
         this.context = context;
-        try {
-            // Crear una clave maestra utilizando el Android Keystore
-            MasterKey masterKey = new MasterKey.Builder(context)
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                    .build();
-
-            // Inicializar EncryptedSharedPreferences
-            prefs = EncryptedSharedPreferences.create(
-                    context,
-                    PREF_NAME,
-                    masterKey,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-            editor = prefs.edit();
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
+        prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        editor = prefs.edit();
     }
 
-    public boolean isLogged() {
-        return prefs.getBoolean(IS_LOGGED, false);
-    }
-
-    public void setLogged(boolean isLoggedIn) {
-        editor.putBoolean(IS_LOGGED, isLoggedIn);
-        editor.apply();
-    }
 
     public boolean isFirstLogin() {
         return prefs.getBoolean(FIRST_LOGIN, true);

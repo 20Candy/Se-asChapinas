@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.components.buttons.DebounceClickListener;
+import com.components.navMenu.BottomNavMenu;
 import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentLogInBinding;
+import com.screens.flows.home.vm.HomeViewModel;
 import com.screens.flows.login.vm.LoginViewModel;
 import com.screens.utils.SharedPreferencesManager;
 import com.senaschapinas.flows.ForgotPassword.ForgotPasswordRequest;
@@ -96,10 +98,10 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener 
                 case SUCCESS:
                     hideCustomDialogProgress();
                     sharedPreferencesManager = new SharedPreferencesManager(requireContext());
-                    sharedPreferencesManager.setLogged(true);
                     sharedPreferencesManager.setIdUsuario(login.data.getId_user().toString());
+                    sharedPreferencesManager.setFirstLogin(true);
 
-                    navigateTo(binding.getRoot(), R.id.action_logInFragment_to_video_nav, null);
+                    HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
                     break;
                 case ERROR:
                     hideCustomDialogProgress();

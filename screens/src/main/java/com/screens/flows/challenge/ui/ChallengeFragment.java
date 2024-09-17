@@ -62,6 +62,7 @@ public class ChallengeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentChallengeBinding.inflate(inflater, container, false);
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
         return binding.getRoot();
     }
 
@@ -95,10 +96,22 @@ public class ChallengeFragment extends BaseFragment {
         });
 
         binding.imgBack.setOnClickListener(new DebounceClickListener( v->{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+            String todayDate = dateFormat.format(new Date());
+
+            // Actualizar la fecha y marcar que el challenge ya fue mostrado
+            sharedPreferencesManager.setLastChallengeShowDate(todayDate);
+
             closeChallenge();
         }));
 
         binding.tvOmitir.setOnClickListener(new DebounceClickListener( v->{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+            String todayDate = dateFormat.format(new Date());
+
+            // Actualizar la fecha y marcar que el challenge ya fue mostrado
+            sharedPreferencesManager.setLastChallengeShowDate(todayDate);
+
             closeChallenge();
         }));
 

@@ -85,7 +85,7 @@ public class BaseFragment extends Fragment {
     public void goToLandingFragment(View view) {
         SharedPreferencesManager sharedPreferencesManager;
         sharedPreferencesManager = new SharedPreferencesManager(requireContext());
-        sharedPreferencesManager.setLogged(false);
+        sharedPreferencesManager.setIdUsuario("");
 
         NavController navController = Navigation.findNavController(view);
         navController.setGraph(R.navigation.main_nav);

@@ -1,5 +1,6 @@
 package com.screens.flows.home.ui;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -91,7 +92,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         String lastShownDate = sharedPreferencesManager.getLastChallengeShowDate();
 
-        if (!todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow() ) {
+        if (!todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow()) {
+            Log.d("firstlogin", sharedPreferencesManager.isFirstLogin()+"");
             Bundle bundle = new Bundle();
             bundle.putBoolean("fromHome", true);
             navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, bundle);
@@ -119,12 +121,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         HomeViewModel.setBottomNavVisible(true);
-        HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
         if (hasAllPermissionsGranted() && binding.clCamera.getVisibility() == View.VISIBLE) {
             encenderCamara();
         }
     }
-
 
     @Override
     public void onPause() {
@@ -185,7 +185,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private void verifyAndHandlePermissions() {
         // Es primer login
         if (sharedPreferencesManager.isFirstLogin()) {
-            sharedPreferencesManager.setFirstLogin(false);  // Actualiza first login status
             requestPermissionsIfNeeded();
 
         // No es primer login

@@ -31,11 +31,13 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
+        // Variables
         sharedPreferencesManager = new SharedPreferencesManager(this);
-
         bottomNavMenu = findViewById(R.id.bottom_nav_menu);
         baseViewModel = new ViewModelProvider(this).get(BaseViewModel.class);
 
+
+        // Observers
         baseViewModel.getIsBottomNavVisible().observe(this, isVisible -> {
             if (bottomNavMenu != null) {
                 bottomNavMenu.setVisibility(isVisible ? View.VISIBLE : View.GONE);
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Navegacion
         bottomNavMenu.setOnTabSelectedListener(new BottomNavMenu.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int tabId) {
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Verificar sesión activa
-        if (sharedPreferencesManager.isLogged()) {
+        if (!sharedPreferencesManager.getIdUsuario().isEmpty()) {
             navController.setGraph(com.screens.R.navigation.video_nav);
             bottomNavMenu.setActiveTab(BottomNavMenu.TAB_HOME);
         } else {
