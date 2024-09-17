@@ -1,5 +1,6 @@
 package com.screens.flows.challenge.ui;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,12 +24,15 @@ import com.screens.flows.dictionary.vm.DictionaryViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import com.bumptech.glide.Glide;
 import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.utils.SharedPreferencesManager;
 import com.senaschapinas.flows.AddStreak.AddStreakRequest;
+import com.senaschapinas.flows.GetUserInfo.GetUserInfoRequest;
 
 
 public class ChallengeFragment extends BaseFragment {
@@ -150,8 +154,14 @@ public class ChallengeFragment extends BaseFragment {
         // Inicia el juego
         binding.cards.startGame();
 
+        // racha
+        if(profileViewModel.getRacha().isEmpty()){
+            servicioPerfil();
+        }else{
+            binding.tvScore.setText(profileViewModel.getRacha());
 
-        binding.tvScore.setText(profileViewModel.getRacha());
+        }
+
     }
 
     private void closeChallenge(){
@@ -165,6 +175,51 @@ public class ChallengeFragment extends BaseFragment {
 
     // Servicios -----------------------------------------------------------------------------------
 
+
+    private void servicioPerfil(){
+
+        showCustomDialogProgress(requireContext());
+
+        GetUserInfoRequest request = new GetUserInfoRequest();
+        request.setIdUser(sharedPreferencesManager.getIdUsuario());
+
+        profileViewModel.fetchUserInfo(request);
+        profileViewModel.getUserInfoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+
+                        String racha = "";
+
+                        if(resource.data != null ){
+                            racha = String.valueOf(resource.data.getStreak());
+                            binding.tvScore.setText(racha);
+                        }
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+                        String todayDate = dateFormat.format(new Date());
+
+                        // Actualizar la fecha y marcar que el challenge ya fue mostrado
+                        sharedPreferencesManager.setLastChallengeShowDate(todayDate);
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
+
+    }
 
     private void serviceChallengeComplete(){
 

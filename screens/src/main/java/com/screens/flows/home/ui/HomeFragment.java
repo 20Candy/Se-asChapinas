@@ -95,8 +95,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             Bundle bundle = new Bundle();
             bundle.putBoolean("fromHome", true);
             navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, bundle);
-            // Actualizar la fecha y marcar que el challenge ya fue mostrado
-            sharedPreferencesManager.setLastChallengeShowDate(todayDate);
 
         } else if (homeViewModel.getSelectedVideo().getValue() != null) {
             Bundle bundle = new Bundle();
@@ -313,7 +311,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 } else {
                     // Confirmación de que el archivo está guardado y listo
                     hideCustomDialogProgress();
-                    videoTraductionService();
+                    videoTraductionService(videoFile);
 
                 }
             }
@@ -323,9 +321,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     private void stopRecording() {
         if (recording != null) {
-            showCustomDialogProgress(requireContext());
             recording.stop();
-            recording = null; // Reset the recording object
+            recording = null;
         }
 
 
@@ -337,23 +334,60 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-
-
     // Servicios -----------------------------------------------------------------------------------
-    private void videoTraductionService(){
-        // TODO IMPLEMENTAR SERVICIO Y LOADER
-        String lensegua = "Yo hoy universidad ir";
-        String espanol = "Hoy voy a la universidad";
+    private void videoTraductionService(File video) {
+        showCustomDialogProgress(requireContext());
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
 
 
-        Bundle bundle = new Bundle();
-        bundle.putString("video_path", this.filepath);
-        bundle.putString("lensegua", lensegua);
-        bundle.putString("espanol", espanol);
+        homeViewModel.sendVideo(sharedPreferencesManager.getIdUsuario(), video);
+        homeViewModel.getSendVideoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        String lensegua= "";
+                        String espanol = "";
+                        String video_id = "";
 
-        navigateTo(binding.getRoot(), R.id.action_homeFragment_to_videoFragment, bundle);
+                        if(resource.data != null){
+                            if(resource.data.getTraduction_esp() != null){
+                                espanol = resource.data.getTraduction_esp();
+                            }
+                            if(resource.data.getTraduction_lensegua() != null){
+                                lensegua = resource.data.getTraduction_lensegua();
+                            }
+                            if(resource.data.getId_video() != null){
+                                video_id = resource.data.getId_video();
+                            }
+                        }
 
+                        Bundle bundle = new Bundle();
+                        bundle.putString("video_path", this.filepath);
+                        bundle.putString("lensegua", lensegua);
+                        bundle.putString("espanol", espanol);
+                        bundle.putString("video_id", video_id);
+
+                        navigateTo(binding.getRoot(), R.id.action_homeFragment_to_videoFragment, bundle);
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
     }
+
 
 
 

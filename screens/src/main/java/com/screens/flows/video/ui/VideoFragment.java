@@ -1,7 +1,9 @@
 package com.screens.flows.video.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -30,6 +32,8 @@ import com.screens.utils.SharedPreferencesManager;
 import com.senaschapinas.flows.RemoveVideo.RemoveVideoRequest;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
 public class VideoFragment extends BaseFragment {
@@ -176,7 +180,12 @@ public class VideoFragment extends BaseFragment {
             addFavorite = !addFavorite;
 
             if (addFavorite) {
-                servicioAgregarFavorito();
+                try {
+                    obtenerImagen();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.full_heart));
             } else {
                 servicioEliminarFavorito();
@@ -298,9 +307,73 @@ public class VideoFragment extends BaseFragment {
         }
     }
 
+
+    private void obtenerImagen() throws IOException {
+        File imagenFile = capturarFotogramaComoArchivo();
+        if (imagenFile != null) {
+            servicioAgregarFavorito(imagenFile);
+        } else {
+            Toast.makeText(getContext(), "Error al capturar la imagen", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private File capturarFotogramaComoArchivo() throws IOException {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(videoPath);
+        Bitmap fotograma = retriever.getFrameAtTime(binding.videoView.getCurrentPosition() * 1000); // Fotograma en el momento actual del video
+        retriever.release();
+
+        if (fotograma == null) {
+            return null;
+        }
+
+        // Crear un archivo temporal para guardar la imagen
+        File imagenFile = new File(requireContext().getCacheDir(), "video_frame.png");
+        try (FileOutputStream fos = new FileOutputStream(imagenFile)) {
+            fotograma.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            return imagenFile;
+        } catch (IOException e) {
+            Log.e("VideoFragment", "Error al guardar la imagen: " + e.getMessage());
+            return null;
+        }
+    }
+
+
     // Servicios -----------------------------------------------------------------------------------
-    private void servicioAgregarFavorito() {
-        // TODO
+    private void servicioAgregarFavorito(File imagen) {
+        showCustomDialogProgress(requireContext());
+
+
+        videoViewModel.favVideo(sharedPreferencesManager.getIdUsuario(),this.id_video,imagen);
+
+        videoViewModel.getFavVideoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        if (imagen.exists()) {
+                            boolean deleted = imagen.delete();
+                            if (!deleted) {
+                                Log.e("VideoFragment", "No se pudo borrar el archivo temporal");
+                            }
+                        }
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
+
 
 
     }

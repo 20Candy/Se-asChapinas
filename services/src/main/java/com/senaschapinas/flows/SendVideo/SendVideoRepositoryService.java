@@ -9,6 +9,11 @@ import com.senaschapinas.base.serviceRetrofit;
 
 import org.json.JSONObject;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,10 +35,17 @@ public class SendVideoRepositoryService {
     }
 
 
-    public MutableLiveData<Resource<SendVideoResponse>> doLogin(SendVideoRequest sendVideoRequest) {
+    public MutableLiveData<Resource<SendVideoResponse>> sendVideo(String idUser, File videoFile) {
         MutableLiveData<Resource<SendVideoResponse>> liveData = new MutableLiveData<>();
 
-        apiService.doSendVideo(sendVideoRequest).enqueue(new Callback<SendVideoResponse>() {
+        // Crear RequestBody
+        RequestBody idUserRequest = RequestBody.create(MediaType.parse("text/plain"), idUser);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("video/mp4"), videoFile);
+        MultipartBody.Part videoPart = MultipartBody.Part.createFormData("video", videoFile.getName(), requestFile);
+
+
+
+        apiService.doSendVideo(idUserRequest, videoPart).enqueue(new Callback<SendVideoResponse>() {
             @Override
             public void onResponse(Call<SendVideoResponse> call, Response<SendVideoResponse> response) {
                 if (response.isSuccessful()) {
@@ -46,6 +58,7 @@ public class SendVideoRepositoryService {
                         String errorMessage = jsonObject.getString("message");
 
                         liveData.setValue(Resource.error(errorMessage, null));
+
                     } catch (Exception e) {
                         e.printStackTrace();
                         liveData.setValue(Resource.error("Error de servicio", null));

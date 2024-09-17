@@ -17,7 +17,7 @@ public class ProfileViewModel extends BaseViewModel {
     private boolean showVideoFavorite= true;
     private String nombre;
 
-    private String racha;
+    private String racha = "";
 
     private GetUserInfoRepositoryService getUserInfoRepositoryService;
     private MutableLiveData<Resource<GetUserInfoResponse>> userInfoResource = new MutableLiveData<>();

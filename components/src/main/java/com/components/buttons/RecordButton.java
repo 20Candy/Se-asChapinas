@@ -88,9 +88,6 @@ public class RecordButton extends ConstraintLayout implements IButtons {
                     startRecording();
                 } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     stopRecording();
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        v.performClick();
-                    }
                 }
                 return false;
             }
@@ -114,24 +111,17 @@ public class RecordButton extends ConstraintLayout implements IButtons {
         }
     }
 
+    private static final long MINIMUM_RECORD_TIME = 500;
+
     private void stopRecording() {
         if (isRecording) {
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            if (elapsedTime <= 2000) {
-                // Reiniciar el estado sin llamar a los callbacks
-                resetRecording();
-            } else {
-                isRecording = false;
-                recording.setVisibility(GONE);
-                pre_record.setVisibility(VISIBLE);
-                stopTimer();
-                animateButton(false);
-                if (onRecordListener != null) {
-                    onRecordListener.onStopRecording();
-                }
+            resetRecording();
+            if (onRecordListener != null) {
+                onRecordListener.onStopRecording();
             }
         }
     }
+
 
     private void animateButton(boolean startRecording) {
         AnimatorSet animatorSet = new AnimatorSet();
