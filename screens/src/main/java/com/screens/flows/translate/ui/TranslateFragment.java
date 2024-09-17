@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.text.Editable;
@@ -49,6 +50,8 @@ public class TranslateFragment extends BaseFragment {
     private int maxChar = 150;
 
     SharedPreferencesManager sharedPreferencesManager;
+
+    private Handler uiHandler = new Handler(Looper.getMainLooper());
 
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
@@ -95,18 +98,29 @@ public class TranslateFragment extends BaseFragment {
         super.onDestroy();
     }
 
+    @Override
+    public void onPause() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+            textToSpeech = null;
+        }
+        super.onPause();
+    }
+
+
     // Metodos privados de la clase ----------------------------------------------------------------
     private void setupListeners(){
 
         // Favorite button
-        binding.smallButton.setOnClickListener( new DebounceClickListener( v ->{
+        binding.smallButton.setOnClickListener(v ->{
             profileViewModel.setShowVideoFavorite(false);
             ProfileViewModel.selectTab(BottomNavMenu.TAB_PROFILE);
 
-        }));
+        });
 
         // Copy button
-        binding.imgCopy.setOnClickListener(new DebounceClickListener(v ->{
+        binding.imgCopy.setOnClickListener(v ->{
             binding.imgCopy.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.copy_full));
 
             new Handler().postDelayed(() -> {
@@ -119,16 +133,16 @@ public class TranslateFragment extends BaseFragment {
             ClipData clip = ClipData.newPlainText("Texto copiado", textToCopy);
             clipboard.setPrimaryClip(clip);
             Toast.makeText(v.getContext(), "Texto copiado al portapapeles", Toast.LENGTH_SHORT).show();
-        }));
+        });
 
         // Speaker button
-        binding.imgSpeaker.setOnClickListener(new DebounceClickListener(v ->{
+        binding.imgSpeaker.setOnClickListener(v ->{
             Bundle params = new Bundle();
             params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
             textToSpeech.speak((String) binding.tvTraduccionEspanol.getText(), TextToSpeech.QUEUE_FLUSH, params, "UniqueID");
             binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.speaker_full));
 
-        }));
+        });
 
         // Heart button
         binding.imgHeart.setOnClickListener(new DebounceClickListener(v ->{
@@ -195,6 +209,7 @@ public class TranslateFragment extends BaseFragment {
 
     }
 
+
     private void initTextToSpeech() {
         textToSpeech = new TextToSpeech(getContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
@@ -209,17 +224,26 @@ public class TranslateFragment extends BaseFragment {
 
                         @Override
                         public void onDone(String utteranceId) {
-                            binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.speaker));
+                            // Usar un Handler para actualizar la UI
+                            uiHandler.post(() -> {
+                                if (binding != null) {
+                                    binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.speaker));
+                                }
+                            });
                         }
 
                         @Override
                         public void onError(String utteranceId) {
-                            Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+                            uiHandler.post(() -> {
+                                Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+                            });
                         }
 
                         @Override
                         public void onError(String utteranceId, int errorCode) {
-                            Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+                            uiHandler.post(() -> {
+                                Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+                            });
                         }
                     });
                 }
@@ -228,6 +252,9 @@ public class TranslateFragment extends BaseFragment {
             }
         });
     }
+
+
+
 
     private void verificarBoton(boolean enable){
         binding.smallTransparentButton2.setEnabled(!enable);
