@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -173,7 +174,7 @@ public class VideoFragment extends BaseFragment {
     private void setListeners() {
         binding.imgClose.setOnClickListener(view -> {
             borrarVideo();
-            clearBackStackTo(binding.getRoot(), R.id.homeFragment);
+            NavHostFragment.findNavController(this).popBackStack();
         });
 
         binding.imgHeart.setOnClickListener(view -> {

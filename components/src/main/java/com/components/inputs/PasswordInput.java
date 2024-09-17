@@ -48,7 +48,7 @@ public class PasswordInput extends ConstraintLayout implements IInputs {
 
         // Configurando el tipo de entrada como contraseña
         inputText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_medium));
+        inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_regular));
         inputText.setHintTextColor(ContextCompat.getColor(getContext(), R.color.light_blue));
 
         applyAttributes(context, attrs);
@@ -141,13 +141,13 @@ public class PasswordInput extends ConstraintLayout implements IInputs {
                 if (isPasswordVisible) {
                     // Ocultar contraseña
                     inputText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_medium));
+                    inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_regular));
                     eye.setImageResource(R.drawable.eye_closed);
                     inputText.setSelection(inputText.getText().length());
                 } else {
                     // Mostrar contraseña
                     inputText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_medium));
+                    inputText.setTypeface(ResourcesCompat.getFont(getContext(), R.font.nunito_regular));
                     eye.setImageResource(R.drawable.eye_open);
                     inputText.setSelection(inputText.getText().length());
                 }

@@ -10,7 +10,7 @@
         android:layout_width="115dp"
         android:layout_height="36dp"
         android:background="@drawable/white_background"
-        android:fontFamily="@font/nunito_semibold"
+        android:fontFamily="@font/nunito_medium"
         android:gravity="center_vertical|center"
         android:textAllCaps="false"
         android:textColor="@color/base_blue"

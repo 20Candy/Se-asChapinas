@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:fontFamily="@font/nunito_medium"
+            android:fontFamily="@font/nunito_regular"
             android:textColor="@color/base_blue"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
