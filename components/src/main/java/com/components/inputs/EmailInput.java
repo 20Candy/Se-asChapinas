@@ -64,6 +64,7 @@ public class EmailInput extends ConstraintLayout implements IInputs {
     @Override
     public void setText(String value) {
         inputText.setText(value);
+        disableInput();
     }
 
     @Override

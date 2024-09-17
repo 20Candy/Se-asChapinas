@@ -46,4 +46,9 @@
         android:id="@+id/forgotPasswordFragment"
         android:name="com.screens.flows.forgotPassword.ui.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment" />
+    <fragment
+        android:id="@+id/changePasswordFragment2"
+        android:name="com.screens.flows.changePassword.ui.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" />
 </navigation>

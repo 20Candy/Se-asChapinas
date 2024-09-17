@@ -128,7 +128,7 @@ public class PasswordInput extends ConstraintLayout implements IInputs {
     @Override
     public boolean isInputValid() {
         String password = inputText.getText().toString();
-        return password.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{8,}$");
+        return password.matches("^(?=.*[0-9])(?=.*[!@#$%^&*.])(?=.*[A-Z]).{8,}$");
     }
 
     //Metodod privados -----------------------------------------------------------------------------

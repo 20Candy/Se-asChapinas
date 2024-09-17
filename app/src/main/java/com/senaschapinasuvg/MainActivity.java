@@ -1,6 +1,9 @@
 package com.senaschapinasuvg;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     public BottomNavMenu bottomNavMenu;
     private BaseViewModel baseViewModel;
 
+    private NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
 
         sharedPreferencesManager = new SharedPreferencesManager(this);
 
@@ -71,8 +76,39 @@ public class MainActivity extends AppCompatActivity {
             navController.setGraph(com.screens.R.navigation.main_nav);
         }
 
+        // Deeplink
+        handleDeepLink(getIntent());
+
 
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+
+        handleDeepLink(intent);
+    }
+
+
+    // Método para manejar el deep link
+    private void handleDeepLink(Intent intent) {
+        if (intent != null && Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri data = intent.getData();
+            if (data != null) {
+                String path = data.getPath();
+                if ("/cambio-contra".equals(path)) {
+
+                    String email = data.getQueryParameter("email");
+                    Bundle bundle = new Bundle();
+                    bundle.putString("email", email);
+
+                    navController.navigate(com.screens.R.id.changePasswordFragment2, bundle);
+                }
+            }
+        }
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {

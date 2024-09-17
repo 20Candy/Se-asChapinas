@@ -242,6 +242,23 @@ public class ProfileFragment extends BaseFragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
+    private void toogleEmptyState(Boolean empty, Boolean video){
+        if(empty){
+            binding.rvFavoritos.setVisibility(View.GONE);
+            binding.emptystate.setVisibility(View.VISIBLE);
+
+            if(video){
+                binding.tvEmpty.setText(R.string.empty_video);
+            }else{
+                binding.tvEmpty.setText(R.string.empty_trad);
+            }
+
+        }else{
+            binding.rvFavoritos.setVisibility(View.VISIBLE);
+            binding.emptystate.setVisibility(View.GONE);
+        }
+    }
+
 
 
 
@@ -282,11 +299,15 @@ public class ProfileFragment extends BaseFragment {
                                 this.videosFavoritos = resource.data.getVideosFav();
                                 setVideoAdapter(this.videosFavoritos);
 
+                            }else{
+                                toogleEmptyState(true, true);
                             }
 
                             if(!resource.data.getTraductionsFav().isEmpty()){
                                 this.traduccionesFavoritas = resource.data.getTraductionsFav();
                                 setTranslateAdapter(this.traduccionesFavoritas);
+                            }else{
+                                toogleEmptyState(true, false);
                             }
                         }
 

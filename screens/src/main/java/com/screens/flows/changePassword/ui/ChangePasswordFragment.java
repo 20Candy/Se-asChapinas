@@ -19,6 +19,7 @@ import com.screens.databinding.FragmentChangePasswordBinding;
 import com.screens.flows.changePassword.vm.ChangePasswordViewModel;
 import com.screens.flows.home.vm.HomeViewModel;
 import com.screens.flows.profile.vm.ProfileViewModel;
+import com.screens.flows.video.vm.VideoViewModel;
 import com.screens.utils.SharedPreferencesManager;
 import com.senaschapinas.flows.ChangePassword.ChangePasswordRequest;
 import com.senaschapinas.flows.LogIn.LoginRequest;
@@ -62,18 +63,24 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     // Metodos privados de la clase ----------------------------------------------------------------
     private void startListeners(){
         binding.mainButton.setOnClickListener(new DebounceClickListener(this));
-        binding.emailInput.setValidationListener(isValid -> checkAllInputs());
         binding.passWordInput.setValidationListener(isValid -> checkAllInputs());
     }
 
     private void checkAllInputs() {
-        boolean allValid = binding.emailInput.isInputValid() && binding.passWordInput.isInputValid();
+        boolean allValid = binding.passWordInput.isInputValid();
         binding.mainButton.setEnabled(allValid);
     }
 
     private void getProfileData(){
         if(profileViewModel.getNombre() != null){
             binding.emailInput.setText(profileViewModel.getNombre());
+        }else{
+            if(getArguments() != null){
+                if(getArguments().containsKey("email")){
+                    binding.emailInput.setText(getArguments().getString("email"));
+                }
+                ChangePasswordViewModel.setBottomNavVisible(false);
+            }
         }
     }
 
