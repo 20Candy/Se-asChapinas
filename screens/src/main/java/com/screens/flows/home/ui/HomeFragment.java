@@ -98,17 +98,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             bundle.putBoolean("fromHome", true);
             navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, bundle);
 
-        } else if (homeViewModel.getSelectedVideo().getValue() != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString("video_path", ""); // TODO VIDEO
-            bundle.putString("lensegua", homeViewModel.getSelectedVideo().getValue().getSentence_lensegua());
-            bundle.putString("espanol", homeViewModel.getSelectedVideo().getValue().getTraduction_esp());
-            bundle.putString("id_video", homeViewModel.getSelectedVideo().getValue().getId_video());
-            bundle.putBoolean("favorito", true);
-
-            navigateTo(binding.getRoot(), R.id.action_homeFragment_to_videoFragment, bundle);
-            homeViewModel.selectVideo(null);
-
         }else{
             verifyAndHandlePermissions();
             setupListeners();

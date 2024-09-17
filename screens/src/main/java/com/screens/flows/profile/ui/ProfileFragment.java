@@ -160,7 +160,16 @@ public class ProfileFragment extends BaseFragment {
     private void setVideoAdapter(List<ObjVideoFav> videoFavorites) {
         videoFavoriteAdapter = new VideoFavoriteAdapter(getContext(), videoFavorites, video -> {
             homeViewModel.selectVideo(video);
-            ProfileViewModel.selectTab(BottomNavMenu.TAB_HOME);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("video_path",video.getId_video() );
+                bundle.putString("lensegua", homeViewModel.getSelectedVideo().getValue().getSentence_lensegua());
+                bundle.putString("espanol", homeViewModel.getSelectedVideo().getValue().getTraduction_esp());
+                bundle.putString("id_video", homeViewModel.getSelectedVideo().getValue().getId_video());
+                bundle.putBoolean("favorito", true);
+
+                navigateTo(binding.getRoot(), R.id.action_profileFragment_to_videoFragment2, bundle);
+                homeViewModel.selectVideo(null);
         });
 
         binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
