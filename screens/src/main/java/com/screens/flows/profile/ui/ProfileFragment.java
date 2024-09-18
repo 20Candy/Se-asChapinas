@@ -276,7 +276,6 @@ public class ProfileFragment extends BaseFragment {
 
     private void paintData(Resource<GetUserInfoResponse> resource){
 
-
         // Data
         String nombre = "";
         String racha = "";

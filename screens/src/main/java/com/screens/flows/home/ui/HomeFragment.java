@@ -38,6 +38,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.io.File;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
@@ -284,7 +285,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             return;
         }
 
-        File videoFile = new File(getContext().getExternalFilesDir(null), "video.mp4");
+        // Generar un nombre de archivo único utilizando UUID
+        String uniqueFileName = "video_" + UUID.randomUUID().toString() + ".mp4";
+        File videoFile = new File(getContext().getExternalFilesDir(null), uniqueFileName);
         filepath = videoFile.getAbsolutePath();
         FileOutputOptions outputOptions = new FileOutputOptions.Builder(videoFile).build();
 
@@ -300,11 +303,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     // Confirmación de que el archivo está guardado y listo
                     hideCustomDialogProgress();
                     videoTraductionService(videoFile);
-
                 }
             }
         });
     }
+
 
 
     private void stopRecording() {

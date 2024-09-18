@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.UUID;
 
 public class VideoFragment extends BaseFragment {
 
@@ -328,8 +329,9 @@ public class VideoFragment extends BaseFragment {
             return null;
         }
 
-        // Crear un archivo temporal para guardar la imagen
-        File imagenFile = new File(requireContext().getCacheDir(), "video_frame.png");
+        String uniqueFileName = "video_frame_" + UUID.randomUUID().toString() + ".png";
+        File imagenFile = new File(requireContext().getCacheDir(), uniqueFileName);
+
         try (FileOutputStream fos = new FileOutputStream(imagenFile)) {
             fotograma.compress(Bitmap.CompressFormat.PNG, 100, fos);
             return imagenFile;
@@ -338,6 +340,7 @@ public class VideoFragment extends BaseFragment {
             return null;
         }
     }
+
 
 
     // Servicios -----------------------------------------------------------------------------------
