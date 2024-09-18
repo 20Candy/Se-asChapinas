@@ -116,6 +116,12 @@ public class ChallengeFragment extends BaseFragment {
         }));
 
         binding.secondButton.setOnClickListener(new DebounceClickListener( v->{
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+            String todayDate = dateFormat.format(new Date());
+
+            // Actualizar la fecha y marcar que el challenge ya fue mostrado
+            sharedPreferencesManager.setLastChallengeShowDate(todayDate);
             closeChallenge();
         }));
     }

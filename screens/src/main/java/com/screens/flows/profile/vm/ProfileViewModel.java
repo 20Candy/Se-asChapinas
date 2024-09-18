@@ -28,7 +28,7 @@ public class ProfileViewModel extends BaseViewModel {
     private boolean showVideoFavorite= true;
     private String nombre;
 
-    private String racha = "";
+    private String racha = "0";
 
     private GetUserInfoRepositoryService getUserInfoRepositoryService;
     private GetVideoRepositoryService getVideoRepositoryService;
