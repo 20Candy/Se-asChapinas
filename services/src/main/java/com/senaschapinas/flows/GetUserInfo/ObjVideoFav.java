@@ -4,15 +4,15 @@ public class ObjVideoFav {
     private String id_video;
     private String traduction_esp;
     private String sentence_lensegua;
-
     private String prev_image;
+    private String link_video;
 
-    // Constructor
-    public ObjVideoFav(String id_video, String traduction_esp, String sentence_lensegua, String prev_image) {
+    public ObjVideoFav(String id_video, String traduction_esp, String sentence_lensegua, String prev_image, String link_video) {
         this.id_video = id_video;
         this.traduction_esp = traduction_esp;
         this.sentence_lensegua = sentence_lensegua;
         this.prev_image = prev_image;
+        this.link_video = link_video;
     }
 
     // Getters y Setters
@@ -46,5 +46,13 @@ public class ObjVideoFav {
 
     public void setPreview(String prev_image) {
         this.prev_image = prev_image;
+    }
+
+    public String getLink_video() {
+        return link_video;
+    }
+
+    public void setLink_video(String link_video) {
+        this.link_video = link_video;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.components.buttons.DebounceClickListener;
 import com.screens.R;
 import com.senaschapinas.flows.GetUserInfo.ObjVideoFav;
@@ -46,9 +47,16 @@ public class VideoFavoriteAdapter extends RecyclerView.Adapter<VideoFavoriteAdap
     public void onBindViewHolder(@NonNull VideoFavoriteViewHolder holder, int position) {
         ObjVideoFav currentVideo = videoFavorites.get(position);
         holder.tvText.setText(currentVideo.getTraduction_esp());
-       // TODO PONER IMAGEN DE VIDEO
-        holder.imageView.setImageDrawable(context.getResources().getDrawable(com.components.R.drawable.light_blue_line));
+
+        // Descargar y mostrar la imagen de vista previa del video usando Glide
+        String previewUrl = currentVideo.getPreview();
+        Glide.with(holder.itemView.getContext())
+                .load(previewUrl)
+                .placeholder(context.getResources().getDrawable(com.components.R.drawable.light_blue_line))
+                .centerCrop()
+                .into(holder.imageView);
     }
+
 
     @Override
     public int getItemCount() {

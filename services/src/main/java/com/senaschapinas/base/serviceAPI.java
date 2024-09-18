@@ -8,8 +8,7 @@ import com.senaschapinas.flows.GetDictionary.GetDictionaryRequest;
 import com.senaschapinas.flows.GetDictionary.GetDictionaryResponse;
 import com.senaschapinas.flows.GetUserInfo.GetUserInfoRequest;
 import com.senaschapinas.flows.GetUserInfo.GetUserInfoResponse;
-import com.senaschapinas.flows.GetVideo.GetVideoRequest;
-import com.senaschapinas.flows.GetVideo.GetVideoResponse;
+
 import com.senaschapinas.flows.ForgotPassword.ForgotPasswordRequest;
 import com.senaschapinas.flows.LogIn.LogInResponse;
 import com.senaschapinas.flows.LogIn.LoginRequest;
@@ -97,11 +96,6 @@ public interface serviceAPI {
 
     @POST("add_streak")
     Call<Void> addStreak(@Body AddStreakRequest request);
-
-    @POST("get_video")
-    Call<GetVideoResponse> getVideo(@Body GetVideoRequest request);
-
-
 
 
 }

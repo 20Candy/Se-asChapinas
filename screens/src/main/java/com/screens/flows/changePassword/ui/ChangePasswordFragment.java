@@ -66,21 +66,22 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         binding.passWordInput.setValidationListener(isValid -> checkAllInputs());
     }
 
+
     private void checkAllInputs() {
         boolean allValid = binding.passWordInput.isInputValid();
         binding.mainButton.setEnabled(allValid);
     }
 
     private void getProfileData(){
-        if(profileViewModel.getNombre() != null){
+        if(profileViewModel.getNombre() != null || !profileViewModel.getNombre().isEmpty()){
             binding.emailInput.setText(profileViewModel.getNombre());
-        }else{
-            if(getArguments() != null){
-                if(getArguments().containsKey("email")){
-                    binding.emailInput.setText(getArguments().getString("email"));
-                }
-                ChangePasswordViewModel.setBottomNavVisible(false);
+        }
+
+        if(getArguments() != null){
+            if(getArguments().containsKey("email")){
+                binding.emailInput.setText(getArguments().getString("email"));
             }
+            ChangePasswordViewModel.setBottomNavVisible(false);
         }
     }
 

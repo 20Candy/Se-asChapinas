@@ -7,8 +7,8 @@ public class SendVideoResponse {
     @JsonProperty("id_video")
     private String id_video;
 
-    @JsonProperty("traduction_lensegua")
-    private String traduction_lensegua;
+    @JsonProperty("sentence_lensegua")
+    private String sentence_lensegua;
 
     @JsonProperty("traduction_esp")
     private String traduction_esp;
@@ -22,11 +22,11 @@ public class SendVideoResponse {
     }
 
     public String getTraduction_lensegua() {
-        return traduction_lensegua;
+        return sentence_lensegua;
     }
 
-    public void setTraduction_lensegua(String traduction_lensegua) {
-        this.traduction_lensegua = traduction_lensegua;
+    public void setTraduction_lensegua(String sentence_lensegua) {
+        this.sentence_lensegua = sentence_lensegua;
     }
 
     public String getTraduction_esp() {

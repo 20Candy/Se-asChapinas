@@ -36,7 +36,9 @@ import com.screens.flows.profile.vm.ProfileViewModel;
 import com.screens.flows.translate.vm.TranslateViewModel;
 import com.screens.flows.video.vm.VideoViewModel;
 import com.screens.utils.SharedPreferencesManager;
+import com.senaschapinas.base.Resource;
 import com.senaschapinas.flows.GetUserInfo.GetUserInfoRequest;
+import com.senaschapinas.flows.GetUserInfo.GetUserInfoResponse;
 import com.senaschapinas.flows.GetUserInfo.ObjTraFav;
 import com.senaschapinas.flows.GetUserInfo.ObjVideoFav;
 import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRequest;
@@ -46,8 +48,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -78,6 +78,11 @@ public class ProfileFragment extends BaseFragment {
     List<ObjTraFav> traduccionesFavoritas;
 
     List<ObjVideoFav> videosFavoritos;
+
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    private int remainingImagesToLoad = 0;
+
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
     @Override
@@ -116,19 +121,30 @@ public class ProfileFragment extends BaseFragment {
 
     // Metodos privados de la clase ----------------------------------------------------------------
     private void setListeners(){
-        binding.navBar.setOnTabSelectedListener((tabId) ->{
+        binding.navBar.setOnTabSelectedListener((tabId) -> {
             switch (tabId) {
                 // Tab video
                 case SettingsNavBar.VIDEO:
-                    binding.rvFavoritos.setAdapter(videoFavoriteAdapter);
+                    if (videosFavoritos == null || videosFavoritos.isEmpty()) {
+                        toggleEmptyStateForFavorites(true, true);
+                    } else {
+                        toggleEmptyStateForFavorites(false, true);
+                        binding.rvFavoritos.setAdapter(videoFavoriteAdapter);
+                    }
                     break;
 
                 // Tab translate
                 case SettingsNavBar.TRANSLATE:
-                    binding.rvFavoritos.setAdapter(translateFavoriteAdapter);
+                    if (traduccionesFavoritas == null || traduccionesFavoritas.isEmpty()) {
+                        toggleEmptyStateForFavorites(true, false);
+                    } else {
+                        toggleEmptyStateForFavorites(false, false);
+                        binding.rvFavoritos.setAdapter(translateFavoriteAdapter);
+                    }
                     break;
             }
         });
+
 
         binding.imgSettings.setOnClickListener(new DebounceClickListener(view -> {
             navigateTo(binding.getRoot(), R.id.action_profileFragment_to_settingsFragment, null);
@@ -175,7 +191,7 @@ public class ProfileFragment extends BaseFragment {
     private void setVideoAdapter(List<ObjVideoFav> videoFavorites) {
         videoFavoriteAdapter = new VideoFavoriteAdapter(getContext(), videoFavorites, video -> {
             homeViewModel.selectVideo(video);
-                getVideo(video);
+                downloadVideo(video);
         });
 
         binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -199,16 +215,6 @@ public class ProfileFragment extends BaseFragment {
     }
 
 
-    private void inicializarAdapter(){
-        if(profileViewModel.getShowVideoFavorite()){
-            binding.rvFavoritos.setAdapter(videoFavoriteAdapter);
-
-        }else{
-            binding.rvFavoritos.setAdapter(translateFavoriteAdapter);
-            binding.navBar.setActiveTab(com.components.R.id.imgTranslate);
-            profileViewModel.setShowVideoFavorite(true);
-        }
-    }
 
     private void setupSwipeToDelete(RecyclerView recyclerView) {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -256,22 +262,80 @@ public class ProfileFragment extends BaseFragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void toogleEmptyState(Boolean empty, Boolean video){
-        if(empty){
+
+    private void toggleEmptyStateForFavorites(boolean isEmpty, boolean isVideo) {
+        if (isEmpty) {
             binding.rvFavoritos.setVisibility(View.GONE);
             binding.emptystate.setVisibility(View.VISIBLE);
-
-            if(video){
-                binding.tvEmpty.setText(R.string.empty_video);
-            }else{
-                binding.tvEmpty.setText(R.string.empty_trad);
-            }
-
-        }else{
+            binding.tvEmpty.setText(isVideo ? R.string.empty_video : R.string.empty_trad);
+        } else {
             binding.rvFavoritos.setVisibility(View.VISIBLE);
             binding.emptystate.setVisibility(View.GONE);
         }
     }
+
+    private void paintData(Resource<GetUserInfoResponse> resource){
+
+
+        // Data
+        String nombre = "";
+        String racha = "";
+        String imagen = "";
+
+        if(resource.data != null ){
+            if(resource.data.getEmail()!= null){
+                nombre  = resource.data.getEmail().split("@")[0];
+                profileViewModel.setNombre(resource.data.getEmail());
+            }
+
+            racha = String.valueOf(resource.data.getStreak());
+            profileViewModel.setRacha(racha);
+
+            if(resource.data.getQuetzalito() != null){
+                imagen = resource.data.getQuetzalito();
+            }
+
+            if(!resource.data.getVideosFav().isEmpty()){
+                this.videosFavoritos = resource.data.getVideosFav();
+                setVideoAdapter(this.videosFavoritos);
+            }
+
+            if(!resource.data.getTraductionsFav().isEmpty()){
+                this.traduccionesFavoritas = resource.data.getTraductionsFav();
+                setTranslateAdapter(this.traduccionesFavoritas);
+            }
+        }
+
+        setViewData(nombre, racha, imagen);
+
+
+        // Navegacion
+        if (profileViewModel.getShowVideoFavorite()) {
+            if (videosFavoritos == null || videosFavoritos.isEmpty()) {
+                toggleEmptyStateForFavorites(true, true);
+            } else {
+                toggleEmptyStateForFavorites(false, true);
+                binding.rvFavoritos.setAdapter(videoFavoriteAdapter);
+            }
+        } else {
+            binding.navBar.setActiveTab(com.components.R.id.imgTranslate);
+            profileViewModel.setShowVideoFavorite(true);
+
+            if (traduccionesFavoritas == null || traduccionesFavoritas.isEmpty()) {
+                toggleEmptyStateForFavorites(true, false);
+            } else {
+                toggleEmptyStateForFavorites(false, false);
+                binding.rvFavoritos.setAdapter(translateFavoriteAdapter);
+            }
+        }
+
+
+    }
+
+
+
+
+
 
 
     // Servicios -----------------------------------------------------------------------------------
@@ -290,41 +354,7 @@ public class ProfileFragment extends BaseFragment {
                     case SUCCESS:
                         hideCustomDialogProgress();
 
-                        String nombre = "";
-                        String racha = "";
-                        String imagen = "";
-
-                        if(resource.data != null ){
-                            if(resource.data.getEmail()!= null){
-                                nombre  = resource.data.getEmail().split("@")[0];
-                                profileViewModel.setNombre(resource.data.getEmail());
-                            }
-
-                            racha = String.valueOf(resource.data.getStreak());
-                            profileViewModel.setRacha(racha);
-
-                            if(resource.data.getQuetzalito() != null){
-                                imagen = resource.data.getQuetzalito();
-                            }
-
-                            if(!resource.data.getVideosFav().isEmpty()){
-                                this.videosFavoritos = resource.data.getVideosFav();
-                                setVideoAdapter(this.videosFavoritos);
-
-                            }else{
-                                toogleEmptyState(true, true);
-                            }
-
-                            if(!resource.data.getTraductionsFav().isEmpty()){
-                                this.traduccionesFavoritas = resource.data.getTraductionsFav();
-                                setTranslateAdapter(this.traduccionesFavoritas);
-                            }else{
-                                toogleEmptyState(true, false);
-                            }
-                        }
-
-                        setViewData(nombre, racha, imagen);
-                        inicializarAdapter();
+                        paintData(resource);
 
                         break;
                     case ERROR:
@@ -419,46 +449,14 @@ public class ProfileFragment extends BaseFragment {
         });
     }
 
-    private void getVideo(ObjVideoFav videoFav){
-        showCustomDialogProgress(requireContext());
-        profileViewModel.fetchVideo(sharedPreferencesManager.getIdUsuario(), videoFav.getId_video());
-        profileViewModel.getVideoResult().observe(getViewLifecycleOwner(), resource -> {
-            if (resource != null) {
-                switch (resource.status) {
-                    case SUCCESS:
-                        hideCustomDialogProgress();
 
-                        // Descargar y guardar el video usando la URL proporcionada por el servicio
-                        String videoUrl = resource.data;
-                        downloadVideo(videoUrl, videoFav);
 
-                        break;
-                    case ERROR:
-                        hideCustomDialogProgress();
-                        showCustomDialogMessage(
-                                resource.message,
-                                "Oops algo salió mal",
-                                "",
-                                "Cerrar",
-                                null,
-                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
-                        );
-                        break;
-
-                }
-            }
-        });
-
-    }
-
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-
-    public void downloadVideo(String videoUrl, ObjVideoFav videoFav) {
+    public void downloadVideo(ObjVideoFav videoFav) {
         showCustomDialogProgress(requireContext());
 
         executor.execute(() -> {
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url(videoUrl).build();
+            Request request = new Request.Builder().url(videoFav.getLink_video()).build();
 
             try (Response response = client.newCall(request).execute()) {
                 if (response.isSuccessful() && response.body() != null) {
