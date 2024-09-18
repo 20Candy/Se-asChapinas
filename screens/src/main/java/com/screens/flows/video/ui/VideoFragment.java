@@ -110,6 +110,7 @@ public class VideoFragment extends BaseFragment {
         }
 
         releaseVideoView();
+        borrarVideo();
 
     }
 
@@ -156,8 +157,8 @@ public class VideoFragment extends BaseFragment {
             addFavorite = true;
             binding.imgHeart.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.full_heart));
         }
-        if(getArguments() != null && getArguments().containsKey("id_video")){
-            this.id_video = getArguments().getString("id_video");
+        if(getArguments() != null && getArguments().containsKey("video_id")){
+            this.id_video = getArguments().getString("video_id");
         }
     }
 
@@ -173,7 +174,6 @@ public class VideoFragment extends BaseFragment {
 
     private void setListeners() {
         binding.imgClose.setOnClickListener(view -> {
-            borrarVideo();
             NavHostFragment.findNavController(this).popBackStack();
         });
 

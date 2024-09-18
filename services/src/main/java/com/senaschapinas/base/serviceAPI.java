@@ -63,7 +63,7 @@ public interface serviceAPI {
     Call<Void> favVideo(
             @Part("id_user") RequestBody id_user,
             @Part("id_video") RequestBody id_video,
-            @Part MultipartBody.Part image
+            @Part MultipartBody.Part prev_video
     );
 
     @POST("remove_fav_video")

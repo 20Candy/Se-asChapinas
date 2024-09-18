@@ -1,5 +1,6 @@
 package com.screens.flows.profile.ui;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +42,22 @@ import com.senaschapinas.flows.GetUserInfo.ObjVideoFav;
 import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRequest;
 import com.senaschapinas.flows.RemoveVideo.RemoveVideoRequest;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 
 public class ProfileFragment extends BaseFragment {
@@ -160,16 +175,7 @@ public class ProfileFragment extends BaseFragment {
     private void setVideoAdapter(List<ObjVideoFav> videoFavorites) {
         videoFavoriteAdapter = new VideoFavoriteAdapter(getContext(), videoFavorites, video -> {
             homeViewModel.selectVideo(video);
-
-                Bundle bundle = new Bundle();
-                bundle.putString("video_path",video.getId_video() );
-                bundle.putString("lensegua", homeViewModel.getSelectedVideo().getValue().getSentence_lensegua());
-                bundle.putString("espanol", homeViewModel.getSelectedVideo().getValue().getTraduction_esp());
-                bundle.putString("id_video", homeViewModel.getSelectedVideo().getValue().getId_video());
-                bundle.putBoolean("favorito", true);
-
-                navigateTo(binding.getRoot(), R.id.action_profileFragment_to_videoFragment2, bundle);
-                homeViewModel.selectVideo(null);
+                getVideo(video);
         });
 
         binding.rvFavoritos.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -266,8 +272,6 @@ public class ProfileFragment extends BaseFragment {
             binding.emptystate.setVisibility(View.GONE);
         }
     }
-
-
 
 
     // Servicios -----------------------------------------------------------------------------------
@@ -414,6 +418,137 @@ public class ProfileFragment extends BaseFragment {
             }
         });
     }
+
+    private void getVideo(ObjVideoFav videoFav){
+        showCustomDialogProgress(requireContext());
+        profileViewModel.fetchVideo(sharedPreferencesManager.getIdUsuario(), videoFav.getId_video());
+        profileViewModel.getVideoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+
+                        // Descargar y guardar el video usando la URL proporcionada por el servicio
+                        String videoUrl = resource.data;
+                        downloadVideo(videoUrl, videoFav);
+
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
+
+                }
+            }
+        });
+
+    }
+
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    public void downloadVideo(String videoUrl, ObjVideoFav videoFav) {
+        showCustomDialogProgress(requireContext());
+
+        executor.execute(() -> {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url(videoUrl).build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String videoPath = saveVideoToFile(requireContext(), response.body());
+                    if (videoPath != null) {
+                        // Pasar el resultado de vuelta al hilo principal y navegar al fragmento
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            hideCustomDialogProgress();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("video_path", videoPath);
+                            bundle.putString("lensegua", videoFav.getSentence_lensegua());
+                            bundle.putString("espanol", videoFav.getTraduction_esp());
+                            bundle.putString("id_video", videoFav.getId_video());
+                            bundle.putBoolean("favorito", true);
+
+                            navigateTo(binding.getRoot(), R.id.action_profileFragment_to_videoFragment2, bundle);
+                            homeViewModel.selectVideo(null);
+                        });
+                    } else {
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            hideCustomDialogProgress();
+                            showCustomDialogMessage(
+                                    "Error al guardar el video.",
+                                    "Oops algo salió mal",
+                                    "",
+                                    "Cerrar",
+                                    null,
+                                    ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                            );
+                        });
+                    }
+                } else {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                "Error al descargar el video.",
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                    });
+                }
+            } catch (IOException e) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    hideCustomDialogProgress();
+                    showCustomDialogMessage(
+                            e.getMessage(),
+                            "Oops algo salió mal",
+                            "",
+                            "Cerrar",
+                            null,
+                            ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                    );
+                });
+            }
+        });
+    }
+
+    private String saveVideoToFile(Context context, ResponseBody body) {
+        try {
+            File tempFile = File.createTempFile("temp_video", ".mp4", context.getCacheDir());
+            InputStream inputStream = null;
+            FileOutputStream outputStream = null;
+
+            try {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(tempFile);
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                outputStream.flush();
+                return tempFile.getAbsolutePath();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                if (inputStream != null) inputStream.close();
+                if (outputStream != null) outputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
 

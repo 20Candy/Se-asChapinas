@@ -38,7 +38,7 @@ public class FavVideoRepositoryService {
         RequestBody idVideoRequest = RequestBody.create(MediaType.parse("text/plain"), id_video);
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), imageFile);
-        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), requestFile);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("prev_video", imageFile.getName(), requestFile);
 
         apiService.favVideo(idUserRequest,idVideoRequest,imagePart).enqueue(new Callback<Void>() {
             @Override

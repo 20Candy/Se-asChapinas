@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GetVideoResponse {
 
     @JsonProperty("video")
-    private String videoUrl;
+    private String video;
 
     public String getVideoUrl() {
-        return videoUrl;
+        return video;
     }
 
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
+    public void setVideoUrl(String video) {
+        this.video = video;
     }
 }
