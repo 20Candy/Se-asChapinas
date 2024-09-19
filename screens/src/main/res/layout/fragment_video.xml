@@ -35,8 +35,8 @@
 
         <ImageView
             android:id="@+id/imgReport"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="21dp"
             android:layout_marginEnd="21dp"
             android:layout_marginBottom="21dp"
@@ -98,24 +98,24 @@
 
             <ImageView
                 android:id="@+id/imgSpeaker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="right"
                 android:layout_marginBottom="27dp"
                 android:src="@drawable/speaker" />
 
             <ImageView
                 android:id="@+id/imgHeart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="right"
                 android:layout_marginBottom="27dp"
                 android:src="@drawable/heart" />
 
             <ImageView
                 android:id="@+id/imgShare"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="right"
                 android:src="@drawable/share" />
 

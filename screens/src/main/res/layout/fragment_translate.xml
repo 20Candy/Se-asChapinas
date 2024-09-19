@@ -41,18 +41,20 @@
         <EditText
             android:id="@+id/edLensegua"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="35dp"
             android:layout_marginBottom="35dp"
             android:background="@android:color/transparent"
+            android:ellipsize="end"
             android:fontFamily="@font/nunito_semibold"
             android:gravity="top"
             android:hint="@string/translate_hint"
             android:inputType="textMultiLine"
+            android:maxLength="150"
             android:textColor="@color/background"
             android:textColorHint="#B2B3C6"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/smallButton"
+            app:layout_constraintBottom_toTopOf="@+id/mainButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTtitleLensegua"
@@ -63,24 +65,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nunito_light"
+            android:foregroundGravity="center_vertical"
+            android:gravity="clip_vertical"
             android:text="150"
             android:textColor="@color/background"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/smallButton"
+            app:layout_constraintBottom_toBottomOf="@+id/mainButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/smallButton"
-            app:layout_constraintTop_toTopOf="@+id/smallButton"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintStart_toEndOf="@+id/mainButton"
+            app:layout_constraintTop_toTopOf="@+id/mainButton" />
 
-        <com.components.buttons.SmallButton
-            android:id="@+id/smallButton"
+        <com.components.buttons.MainButton
+            android:id="@+id/mainButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
+            app:background="@drawable/white_background"
             app:image="@drawable/small_heart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:text="@string/favorite" />
+            app:text="@string/favorite"
+            app:textColor="@color/base_blue" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -167,16 +172,18 @@
                 android:src="@drawable/heart" />
         </LinearLayout>
 
-        <com.components.buttons.SmallTransparentButton
+        <com.components.buttons.TransparentButton
             android:id="@+id/smallTransparentButton2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
+            app:background="@drawable/transparent_green_button"
             app:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTraduccionEspanol"
             app:layout_constraintVertical_bias="1.0"
-            app:text="Traducir" />
+            app:text="Traducir"
+            app:textColor="@color/base_green" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

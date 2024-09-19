@@ -118,19 +118,15 @@ public class MainButton extends ConstraintLayout implements IButtons {
 
     public void setButtonImage(Drawable drawable) {
         if (drawable != null) {
-            // Define los márgenes como quieras, aquí se establece solo el margen izquierdo
-            int left = 8; // 8px de margen izquierdo
+            int right = 5;  //margen derecho imagen
             Drawable[] layers = {drawable};
             LayerDrawable layerDrawable = new LayerDrawable(layers);
 
-            // Convertir 8px a dp para mantener la consistencia en diferentes densidades de pantalla
             float density = getContext().getResources().getDisplayMetrics().density;
-            int leftInset = (int) (left * density);
+            int rightInset = (int) (right * density);
 
-            // Crear un nuevo drawable con margen (Insets)
-            InsetDrawable insetDrawable = new InsetDrawable(layerDrawable, leftInset, 0, 0, 0);
+            InsetDrawable insetDrawable = new InsetDrawable(layerDrawable, 0, 0, rightInset, 0);
 
-            // Establece el drawable con el margen aplicado
             mainButton.setCompoundDrawablesWithIntrinsicBounds(insetDrawable, null, null, null);
         } else {
             mainButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);

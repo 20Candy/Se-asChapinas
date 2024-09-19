@@ -113,7 +113,7 @@ public class TranslateFragment extends BaseFragment {
     private void setupListeners(){
 
         // Favorite button
-        binding.smallButton.setOnClickListener(v ->{
+        binding.mainButton.setOnClickListener(v ->{
             profileViewModel.setShowVideoFavorite(false);
             ProfileViewModel.selectTab(BottomNavMenu.TAB_PROFILE);
 
@@ -265,7 +265,7 @@ public class TranslateFragment extends BaseFragment {
         // Traduccion hecha
 
         if(traducido){
-            binding.smallButton.setVisibility(View.GONE);
+            binding.mainButton.setVisibility(View.GONE);
             binding.tvLimit.setVisibility(View.GONE);
             binding.smallTransparentButton2.setText("Nueva Traducción");
             binding.llOptions.setVisibility(View.VISIBLE);
@@ -275,7 +275,7 @@ public class TranslateFragment extends BaseFragment {
 
         // Nueva traduccion
         }else{
-            binding.smallButton.setVisibility(View.VISIBLE);
+            binding.mainButton.setVisibility(View.VISIBLE);
             binding.tvLimit.setVisibility(View.VISIBLE);
             binding.tvLimit.setText(String.valueOf(maxChar));
             binding.smallTransparentButton2.setText("Traducir");
