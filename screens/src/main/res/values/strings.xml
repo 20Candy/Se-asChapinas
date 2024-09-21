@@ -6,7 +6,7 @@
     <string name="email_hint">Ingresa tu correo</string>
     <string name="password_hint">Ingresa tu contraseña</string>
     <string name="permissions_alert">Para que “Señas Chapinas” funcione, necesitamos acceso a tu cámara. ¡Actívalo y empecemos!</string>
-    <string name="camera_alert">Para que “¡Presiona el botón para empezar a grabar!</string>
+    <string name="camera_alert">¡Presiona el botón para empezar a grabar!</string>
     <string name="button_give_permissions">Dar Permisos</string>
     <string name="button_activate_camera">Activar Cámara</string>
     <string name="bottomsheet_title">Generar Reporte</string>
