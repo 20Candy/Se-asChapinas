@@ -51,24 +51,18 @@ public class TransparentButton extends ConstraintLayout implements IButtons {
         String text = array.getString(R.styleable.button_text);
         int textSize = array.getInt(R.styleable.button_textSize, 18);
         boolean enabled = array.getBoolean(R.styleable.button_enabled, true);
-        int textColor = array.getInt(R.styleable.button_textColor, 0);
-        Drawable background = array.getDrawable(R.styleable.button_background);
+        colorEnable = array.getInt(R.styleable.button_textColor, 0);
+        colorDisable = array.getInt(R.styleable.button_textColor_disable, 0);
+        backgroundEnable = array.getDrawable(R.styleable.button_background);
+        backgroundDisable = array.getDrawable(R.styleable.button_background_disable);
 
         if (text != null && !text.isEmpty()) {
             setText(text);
         }
 
         setTextSize(textSize);
+
         setEnabled(enabled);
-
-        if (textColor != 0) {
-            setTextColor(textColor);
-        }
-
-        if (background != null) {
-            setBackground(background);
-        }
-
     }
 
     // Metodos de IButtons -------------------------------------------------------------------------

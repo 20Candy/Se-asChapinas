@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imgSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="23dp"
         android:src="@drawable/settings"
@@ -52,7 +52,7 @@
 
         <ImageView
             android:id="@+id/imgBlue"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/fire" />

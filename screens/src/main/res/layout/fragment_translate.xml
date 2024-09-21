@@ -177,13 +177,16 @@
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             app:background="@drawable/transparent_green_button"
+            app:background_disable="@drawable/transparent_light_green_button"
             app:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTraduccionEspanol"
             app:layout_constraintVertical_bias="1.0"
             app:text="Traducir"
-            app:textColor="@color/base_green" />
+            app:textColor="@color/base_green"
+            app:textColor_disable="@color/desable_text_green"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

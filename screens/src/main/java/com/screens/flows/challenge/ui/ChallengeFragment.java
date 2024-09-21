@@ -174,7 +174,7 @@ public class ChallengeFragment extends BaseFragment {
         binding.cards.startGame();
 
         // racha
-        if(profileViewModel.getRacha().isEmpty()){
+        if(profileViewModel.getRacha().isEmpty() || profileViewModel.getRacha() == null){
             servicioPerfil();
         }else{
             binding.tvScore.setText(profileViewModel.getRacha());
@@ -214,12 +214,8 @@ public class ChallengeFragment extends BaseFragment {
                         if(resource.data != null ){
                             racha = String.valueOf(resource.data.getStreak());
                             binding.tvScore.setText(racha);
+                            profileViewModel.setRacha(racha);
                         }
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-                        String todayDate = dateFormat.format(new Date());
-
-                        // Actualizar la fecha y marcar que el challenge ya fue mostrado
-                        sharedPreferencesManager.setLastChallengeShowDate(todayDate);
 
                         break;
                     case ERROR:
@@ -265,7 +261,26 @@ public class ChallengeFragment extends BaseFragment {
                         binding.imgBack.setVisibility(View.INVISIBLE);
                         binding.tvOmitir.setVisibility(View.GONE);
                         binding.secondButton.setVisibility(View.VISIBLE);
-                        binding.tvScore.setText(String.valueOf(Integer.parseInt(profileViewModel.getRacha()) + 1));
+
+                        int racha = 0;
+                        try {
+                            racha = Integer.parseInt(profileViewModel.getRacha());
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+
+                        binding.tvScore.setText(String.valueOf(racha + 1));
+
+
+
+                        binding.tvScore.setText(String.valueOf(racha+ 1));
+
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+                        String todayDate = dateFormat.format(new Date());
+
+                        // Actualizar la fecha y marcar que el challenge ya fue mostrado
+                        sharedPreferencesManager.setLastChallengeShowDate(todayDate);
 
 
                         break;

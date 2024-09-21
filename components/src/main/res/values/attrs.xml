@@ -5,7 +5,9 @@
         <attr name="textSize" format="integer" />
         <attr name="enabled" format="boolean" />
         <attr name="textColor" format="integer"/>
+        <attr name="textColor_disable" format="integer"/>
         <attr name="background" format="reference" />
+        <attr name="background_disable" format="reference" />
         <attr name="image" format="reference" />
     </declare-styleable>
 

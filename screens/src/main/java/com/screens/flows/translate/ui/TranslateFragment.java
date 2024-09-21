@@ -278,7 +278,22 @@ public class TranslateFragment extends BaseFragment {
             binding.mainButton.setVisibility(View.VISIBLE);
             binding.tvLimit.setVisibility(View.VISIBLE);
             binding.tvLimit.setText(String.valueOf(maxChar));
+
+
+            // Cambiar el texto del botón
             binding.smallTransparentButton2.setText("Traducir");
+
+            // Forzar al botón a volver a calcular el layout
+            ViewGroup.LayoutParams params = binding.smallTransparentButton2.getLayoutParams();
+            params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            binding.smallTransparentButton2.setLayoutParams(params);
+            binding.smallTransparentButton2.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            binding.smallTransparentButton2.invalidate();
+            binding.smallTransparentButton2.requestLayout();  // Forzar redimensionado y redibujar
+
+
+
             binding.llOptions.setVisibility(View.GONE);
             binding.tvTitleEspanol.setVisibility(View.GONE);
             binding.tvTraduccionEspanol.setVisibility(View.GONE);

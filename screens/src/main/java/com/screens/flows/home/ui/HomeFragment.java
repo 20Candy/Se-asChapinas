@@ -175,8 +175,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private void verifyAndHandlePermissions() {
         // Es primer login
         if (sharedPreferencesManager.isFirstLogin()) {
+            sharedPreferencesManager.setFirstLogin(false);
             requestPermissionsIfNeeded();
-
         // No es primer login
         } else {
             //Usuario permite encender camara al abrir la app
@@ -315,6 +315,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             recording.stop();
             recording = null;
         }
+
+        apagarCamara();
 
 
     }
