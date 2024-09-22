@@ -55,12 +55,6 @@
       "categoria": "acciones"
     },
     {
-      "title": "Comida",
-      "imgLenseguaResId": "comida_lensegua",
-      "imgCardResId": "comida",
-      "categoria": "objetos"
-    },
-    {
       "title": "Cómo",
       "imgLenseguaResId": "como_lensegua",
       "imgCardResId": "como",
@@ -115,6 +109,12 @@
       "categoria": "acciones"
     },
     {
+      "title": "LLamar",
+      "imgLenseguaResId": "llamar_lensegua",
+      "imgCardResId": "llamar",
+      "categoria": "acciones"
+    },
+    {
       "title": "Mañana",
       "imgLenseguaResId": "manana_lensegua",
       "imgCardResId": "manana",
@@ -131,6 +131,12 @@
       "imgLenseguaResId": "policia_lensegua",
       "imgCardResId": "policia",
       "categoria": "personas"
+    },
+    {
+      "title": "Por favor",
+      "imgLenseguaResId": "por_favor_lensegua",
+      "imgCardResId": "porfavor",
+      "categoria": "pregunta"
     },
     {
       "title": "Qué",
@@ -182,7 +188,7 @@
     },
     {
       "title": "Yo",
-      "imgLenseguaResId": "yo_lensegya",
+      "imgLenseguaResId": "yo_lensegua",
       "imgCardResId": "yo",
       "categoria": "personas"
     },

@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="233dp"
+        android:layout_height="227dp"
         android:layout_gravity="center"
         android:src="@drawable/senas_chapinas_logo_nombre_abajo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/nunito_semibold"
         android:gravity="center|center_horizontal"
         android:text="@string/landing_title"
@@ -37,7 +37,7 @@
 
     <LinearLayout
         android:id="@+id/ll_lensegua"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:orientation="horizontal"
@@ -47,22 +47,22 @@
 
         <ImageView
             android:id="@+id/img_traduce"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_weight="1"
             android:src="@drawable/traduce_lensegua" />
 
         <ImageView
             android:id="@+id/img_juega"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_weight="1"
             android:src="@drawable/juega_lensegua" />
 
         <ImageView
             android:id="@+id/img_aprende"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_weight="1"
             android:src="@drawable/aprende_lensegua" />
     </LinearLayout>

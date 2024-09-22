@@ -230,7 +230,9 @@ public class TranslateFragment extends BaseFragment {
                     textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                         @Override
                         public void onStart(String utteranceId) {
-                            showCustomDialogProgress(requireContext());
+//                            uiHandler.post(() -> {
+//                                showCustomDialogProgress(requireContext());
+//                            });
 
                         }
 
@@ -241,9 +243,8 @@ public class TranslateFragment extends BaseFragment {
                                 if (binding != null) {
                                     binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.speaker));
                                 }
+//                                hideCustomDialogProgress();
                             });
-
-                            hideCustomDialogProgress();
 
 
                         }
@@ -252,6 +253,7 @@ public class TranslateFragment extends BaseFragment {
                         public void onError(String utteranceId) {
                             uiHandler.post(() -> {
                                 Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+//                                hideCustomDialogProgress();
                             });
                         }
 
@@ -259,6 +261,7 @@ public class TranslateFragment extends BaseFragment {
                         public void onError(String utteranceId, int errorCode) {
                             uiHandler.post(() -> {
                                 Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
+//                                hideCustomDialogProgress();
                             });
                         }
                     });
