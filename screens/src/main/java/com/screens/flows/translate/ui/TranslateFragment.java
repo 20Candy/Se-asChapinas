@@ -470,7 +470,6 @@ public class TranslateFragment extends BaseFragment {
                         binding.tvTraduccionEspanol.setText(resource.data.getTraductionEsp());
                         translateViewModel.setId_sentence(resource.data.getIdSentence());
 
-                        binding.tvTraduccionEspanol.setText("hola buen dia, el dia de hoy mi hija no ira al colegio porque esta enferma, gracias por su comprension atentamente la se;ora xyz gracias por su comprension atentamente la se;ora xyz gracias por su comprension atentamente la se;ora xyz");
                         ajustarAltura();
 
                         setEstadoTraducido(true);
