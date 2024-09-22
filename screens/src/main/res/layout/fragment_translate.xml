@@ -1,7 +1,7 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -21,8 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_default="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvTtitleLensegua"
@@ -67,7 +66,7 @@
             android:fontFamily="@font/nunito_light"
             android:foregroundGravity="center_vertical"
             android:gravity="clip_vertical"
-            android:text="150"
+            android:text="100"
             android:textColor="@color/background"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/mainButton"
@@ -92,17 +91,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clEspanol"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:paddingStart="20dp"
         android:paddingTop="35dp"
         android:paddingEnd="20dp"
         android:paddingBottom="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clLensegua"
         app:layout_constraintHeight_default="spread"
-        app:layout_constraintVertical_weight="1">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clLensegua">
 
         <TextView
             android:id="@+id/tvTitleEspanol"
@@ -113,7 +111,7 @@
             android:text="@string/translate_title2"
             android:textColor="@color/base_blue"
             android:textSize="16sp"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -128,7 +126,7 @@
             android:gravity="left"
             android:textColor="@color/base_blue"
             android:textSize="20sp"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/llOptions"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -141,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/smallTransparentButton2"
             app:layout_constraintEnd_toStartOf="@+id/smallTransparentButton2"
             app:layout_constraintHorizontal_bias="0.0"
@@ -185,8 +183,7 @@
             app:layout_constraintVertical_bias="1.0"
             app:text="Traducir"
             app:textColor="@color/base_green"
-            app:textColor_disable="@color/desable_text_green"
-            />
+            app:textColor_disable="@color/desable_text_green" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

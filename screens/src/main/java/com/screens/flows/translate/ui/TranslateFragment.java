@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,9 +17,11 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.components.buttons.DebounceClickListener;
@@ -47,7 +50,7 @@ public class TranslateFragment extends BaseFragment {
     private TextToSpeech textToSpeech;
     private boolean addFavorite = false;
 
-    private int maxChar = 150;
+    private int maxChar = 100;
 
     SharedPreferencesManager sharedPreferencesManager;
 
@@ -87,6 +90,11 @@ public class TranslateFragment extends BaseFragment {
             setEstadoTraducido(true);
 
         }
+
+        binding.tvLimit.setText(String.valueOf(maxChar));
+
+       ajustarAltura();
+
     }
 
     @Override
@@ -164,8 +172,9 @@ public class TranslateFragment extends BaseFragment {
             // Nueva traduccion
             }else{
                 setEstadoTraducido(false);
-            }
+                ajustarAltura();
 
+            }
 
         }));
 
@@ -217,9 +226,12 @@ public class TranslateFragment extends BaseFragment {
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                     Toast.makeText(getContext(), "Error al reproducir texto", Toast.LENGTH_SHORT).show();
                 } else {
+
                     textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                         @Override
                         public void onStart(String utteranceId) {
+                            showCustomDialogProgress(requireContext());
+
                         }
 
                         @Override
@@ -230,6 +242,10 @@ public class TranslateFragment extends BaseFragment {
                                     binding.imgSpeaker.setBackground(ContextCompat.getDrawable(getContext(), com.components.R.drawable.speaker));
                                 }
                             });
+
+                            hideCustomDialogProgress();
+
+
                         }
 
                         @Override
@@ -293,7 +309,6 @@ public class TranslateFragment extends BaseFragment {
             binding.smallTransparentButton2.requestLayout();  // Forzar redimensionado y redibujar
 
 
-
             binding.llOptions.setVisibility(View.GONE);
             binding.tvTitleEspanol.setVisibility(View.GONE);
             binding.tvTraduccionEspanol.setVisibility(View.GONE);
@@ -323,6 +338,41 @@ public class TranslateFragment extends BaseFragment {
                 })
                 .start();
     }
+
+
+    private void ajustarAltura(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenHeight = displayMetrics.heightPixels;
+        int dpToPx = (int) (62 * displayMetrics.density);
+
+        binding.clEspanol.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // Restablecer a wrap_content para permitir que el layout se ajuste al contenido
+                binding.clEspanol.getLayoutParams().height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                binding.clEspanol.requestLayout();
+
+                // Medir manualmente cómo sería la altura de clEspanol con wrap_content
+                int widthSpec = View.MeasureSpec.makeMeasureSpec(binding.clEspanol.getWidth(), View.MeasureSpec.EXACTLY);
+                int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                binding.clEspanol.measure(widthSpec, heightSpec);
+                int measuredHeight = binding.clEspanol.getMeasuredHeight();
+
+                // Si la altura medida es menor a la mitad de la pantalla, ajustarla
+                if (measuredHeight < (screenHeight / 2 - dpToPx)){
+                    binding.clEspanol.getLayoutParams().height = (screenHeight / 2) - dpToPx;
+                    binding.clEspanol.requestLayout();
+                }
+
+                // Eliminar el listener para evitar múltiples llamadas
+                binding.clEspanol.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+
+    }
+
 
 
     // Servicios -----------------------------------------------------------------------------------
@@ -416,6 +466,9 @@ public class TranslateFragment extends BaseFragment {
                         hideCustomDialogProgress();
                         binding.tvTraduccionEspanol.setText(resource.data.getTraductionEsp());
                         translateViewModel.setId_sentence(resource.data.getIdSentence());
+
+                        binding.tvTraduccionEspanol.setText("hola buen dia, el dia de hoy mi hija no ira al colegio porque esta enferma, gracias por su comprension atentamente la se;ora xyz gracias por su comprension atentamente la se;ora xyz gracias por su comprension atentamente la se;ora xyz");
+                        ajustarAltura();
 
                         setEstadoTraducido(true);
                         break;
