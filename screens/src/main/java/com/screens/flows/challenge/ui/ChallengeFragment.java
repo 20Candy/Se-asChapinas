@@ -255,7 +255,7 @@ public class ChallengeFragment extends BaseFragment {
                         binding.imgGif.setVisibility(View.VISIBLE);
 
                         Glide.with(requireActivity())
-                                .load(requireActivity().getResources().getDrawable(R.drawable.confim))
+                                .load(requireActivity().getResources().getDrawable(R.drawable.confirm))
                                 .into(binding.imgGif);
 
                         binding.imgBack.setVisibility(View.INVISIBLE);

@@ -12,14 +12,16 @@
         android:layout_width="wrap_content"
         android:layout_height="405dp"
         android:layout_gravity="center"
-        android:layout_marginTop="25dp"
+        android:layout_marginBottom="40dp"
         android:alpha="1"
         android:scaleType="fitXY"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/cards"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20"
-        app:srcCompat="@drawable/confim" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView14"
+        app:srcCompat="@drawable/confirm" />
 
     <ImageView
         android:id="@+id/imgBack"
@@ -47,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/nunito_bold"
-        android:text="T"
+        android:text=""
         android:textColor="@color/challenge"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView14"
