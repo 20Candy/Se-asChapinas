@@ -44,8 +44,8 @@
 
             <ImageView
                 android:id="@+id/imgHeartBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -66,8 +66,8 @@
 
             <ImageView
                 android:id="@+id/imgTurnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
                 android:rotationY="180"
@@ -86,8 +86,8 @@
 
             <ImageView
                 android:id="@+id/imgHeart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:visibility="visible"
@@ -124,8 +124,8 @@
 
             <ImageView
                 android:id="@+id/imgTurn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:visibility="visible"

@@ -28,7 +28,7 @@
             <ImageView
                 android:id="@+id/imgRecord"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="25dp"
                 app:srcCompat="@drawable/video_bold" />
 
             <ImageView
@@ -48,7 +48,7 @@
             <ImageView
                 android:id="@+id/imgTranslate"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="25dp"
                 app:srcCompat="@drawable/translate_normal" />
 
             <ImageView
