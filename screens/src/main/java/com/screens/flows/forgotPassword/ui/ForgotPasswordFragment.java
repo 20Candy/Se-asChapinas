@@ -68,7 +68,7 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
     // On Click ------------------------------------------------------------------------------------
     @Override
     public void onClick(View view) {
-        if (view.getId() == com.components.R.id.btn_transparent) {
+        if (view.getId() == com.components.R.id.btn_main) {
             forgotPassService();
         }
 
