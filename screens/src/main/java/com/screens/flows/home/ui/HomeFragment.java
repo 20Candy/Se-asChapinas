@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.video.FallbackStrategy;
 import androidx.camera.video.FileOutputOptions;
 import androidx.camera.video.PendingRecording;
 import androidx.camera.video.Quality;
@@ -263,10 +264,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         ? CameraSelector.DEFAULT_FRONT_CAMERA
                         : CameraSelector.DEFAULT_BACK_CAMERA;
 
-                // Asegúrate de crear un nuevo VideoCapture cada vez
+                Quality preferredQuality = Quality.HD;
+
                 Recorder recorder = new Recorder.Builder()
-                        .setQualitySelector(QualitySelector.from(Quality.FHD))
+                        .setQualitySelector(
+                                QualitySelector.from(
+                                        preferredQuality,
+                                        FallbackStrategy.higherQualityOrLowerThan(preferredQuality)
+                                )
+                        )
                         .build();
+
+                VideoCapture videoCapture = VideoCapture.withOutput(recorder);
 
                 videoCapture = VideoCapture.withOutput(recorder);
 

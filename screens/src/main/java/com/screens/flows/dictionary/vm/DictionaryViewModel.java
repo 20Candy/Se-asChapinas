@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -134,19 +135,22 @@ public class DictionaryViewModel extends BaseViewModel {
         List<CardData> listaOriginal = createCardData(context);
         List<CardData> listaFiltrada = new ArrayList<>();
 
-        // Lista de títulos favoritos en minúsculas para la comparación
+        // Lista de títulos favoritos normalizada para la comparación
         Set<String> favoriteTitlesSet = new HashSet<>(favoriteTitles.stream()
-                .map(String::toLowerCase)
+                .map(title -> normalizeString(title))
                 .collect(Collectors.toSet()));
 
-        if (filtro != null && !filtro.isEmpty()) {
+        // Normalizar filtro si no es nulo ni vacío
+        String filtroNormalizado = filtro != null && !filtro.isEmpty() ? normalizeString(filtro) : null;
+
+        if (filtroNormalizado != null) {
             for (CardData card : listaOriginal) {
-                if ("titulo".equalsIgnoreCase(tipo)) {
-                    if (card.getTitle() != null && card.getTitle().toLowerCase().contains(filtro.toLowerCase())) {
+                if ("titulo".equalsIgnoreCase(tipo) && card.getTitle() != null) {
+                    if (normalizeString(card.getTitle()).contains(filtroNormalizado)) {
                         listaFiltrada.add(card);
                     }
-                } else if ("categoria".equalsIgnoreCase(tipo)) {
-                    if (card.getCategoria() != null && card.getCategoria().toLowerCase().contains(filtro.toLowerCase())) {
+                } else if ("categoria".equalsIgnoreCase(tipo) && card.getCategoria() != null) {
+                    if (normalizeString(card.getCategoria()).contains(filtroNormalizado)) {
                         listaFiltrada.add(card);
                     }
                 } else if ("favoritos".equalsIgnoreCase(tipo)) {
@@ -159,12 +163,18 @@ public class DictionaryViewModel extends BaseViewModel {
 
         // Aplicar el estado de favorito a las tarjetas filtradas
         for (CardData card : listaFiltrada) {
-            card.setFavorite(favoriteTitlesSet.contains(card.getTitle().toLowerCase()));
+            card.setFavorite(favoriteTitlesSet.contains(normalizeString(card.getTitle())));
         }
 
         filteredCardData.setValue(listaFiltrada);
     }
 
+    // Método para normalizar strings (eliminar tildes y convertir a minúsculas)
+    private String normalizeString(String input) {
+        return Normalizer.normalize(input, Normalizer.Form.NFD)
+                .replaceAll("[^\\p{ASCII}]", "")
+                .toLowerCase();
+    }
 
 
     // Método para obtener los datos filtrados
