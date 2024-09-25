@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.components.dictionary.CategoryDictionary;
@@ -47,12 +48,20 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         holder.categoryView.setSelected(selectedPosition == position);
 
         holder.categoryView.setOnClickListener(v -> {
+            RecyclerView recyclerView = (RecyclerView) holder.itemView.getParent();
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+
             // Si la categoría seleccionada es la misma, deseleccionarla
             if (selectedPosition == holder.getAdapterPosition()) {
                 // Deseleccionar la categoría
                 selectedPosition = RecyclerView.NO_POSITION;
                 notifyItemChanged(holder.getAdapterPosition());
-                listener.onCardClicked(isFavorite, ""); // Aquí puedes pasar una categoría vacía o manejarlo de otra forma para quitar el filtro
+                listener.onCardClicked(isFavorite, "");
+
+                // Mover el scroll a la primera posición cuando no hay nada seleccionado
+                if (layoutManager instanceof LinearLayoutManager) {
+                    ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(0, 0);
+                }
             } else {
                 // Seleccionar una nueva categoría
                 int previousSelectedPosition = selectedPosition;
@@ -63,9 +72,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                 notifyItemChanged(selectedPosition);
 
                 listener.onCardClicked(isFavorite, category);
+
+                // Mover el scroll al nuevo elemento seleccionado con desplazamiento preciso
+                if (layoutManager instanceof LinearLayoutManager) {
+                    ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(selectedPosition, 0);
+                }
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
