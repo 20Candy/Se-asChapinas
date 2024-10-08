@@ -275,7 +275,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         )
                         .build();
 
-                VideoCapture videoCapture = VideoCapture.withOutput(recorder);
 
                 videoCapture = VideoCapture.withOutput(recorder);
 
