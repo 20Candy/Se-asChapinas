@@ -102,9 +102,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clLensegua">
 
+        <ImageView
+            android:id="@+id/imgReport"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:foregroundGravity="left"
+            android:padding="1dp"
+            android:src="@drawable/alert_light"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitleEspanol"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvTitleEspanol" />
+
         <TextView
             android:id="@+id/tvTitleEspanol"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nunito_light"
             android:gravity="left"
@@ -112,7 +124,8 @@
             android:textColor="@color/base_blue"
             android:textSize="16sp"
             android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgReport"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -128,7 +141,6 @@
             android:textSize="20sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/llOptions"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitleEspanol"
             app:layout_constraintVertical_bias="0.0" />

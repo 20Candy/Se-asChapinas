@@ -43,13 +43,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <EditText
         android:id="@+id/tvReport"
         android:layout_width="0dp"
         android:layout_height="75dp"
         android:layout_marginStart="21dp"
         android:layout_marginEnd="21dp"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/input_text_rectangle"
         android:gravity="top"
         android:hint="@string/hint_report_input"
@@ -60,8 +61,8 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/secondButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <com.components.buttons.TransparentButton
         android:id="@+id/secondButton"

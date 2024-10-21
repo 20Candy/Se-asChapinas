@@ -259,7 +259,7 @@ public class ReportFragment extends BaseFragment {
         request.setReportImg(reportImg);
         request.setReportMessage(binding.tvReport.getText().toString());
         request.setIdUser(idUser);
-        request.setIdVideo("22");
+        request.setIdVideo("");
 
         reportViewModel.reportVideo(request);
         reportViewModel.getReportVideoResult().observe(getViewLifecycleOwner(), resource -> {
@@ -270,7 +270,7 @@ public class ReportFragment extends BaseFragment {
                         showCustomDialogMessage(
                                 "Tu reporte ha sido enviado exitosamente",
                                 "¡Tu reporte nos ayuda a mejorar!",
-                                "Cerrar",
+                                "Regresar",
                                 "",
                                 () -> {
                                     clearBackStackTo(binding.getRoot(), R.id.videoFragment);

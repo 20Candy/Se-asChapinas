@@ -117,6 +117,7 @@ public class ChallengeCards extends ConstraintLayout {
         adjustBrightness(false, clickedLayout);
         vibrateCard(clickedLayout, () -> adjustBrightness(true, clickedLayout));
     }
+
     private void handleCorrectAnswer() {
         // Obtener los views de las tarjetas
         ConstraintLayout cardAqua = findViewById(R.id.card_aqua);
@@ -127,17 +128,22 @@ public class ChallengeCards extends ConstraintLayout {
         // Lista de todas las tarjetas para facilitar la iteración
         ConstraintLayout[] allCards = {cardAqua, cardBlue, cardYellow, cardGreen};
 
-        // Iterar sobre todas las tarjetas
+        // Variable para almacenar la tarjeta correcta
+        ConstraintLayout correctCard = null;
+
+        // Iterar sobre todas las tarjetas para identificar y ocultar las incorrectas
         for (ConstraintLayout card : allCards) {
             ImageView imageView = (ImageView) card.getChildAt(0);
             if (imageView.getDrawable().getConstantState().equals(getResources().getDrawable(correctImageRes).getConstantState())) {
-                // La tarjeta correcta permanece completamente visible
-                card.setAlpha(1.0f);
+                correctCard = card;
             } else {
-                // Las tarjetas incorrectas se vuelven opacas
-                card.setElevation(0);  // Establecer la elevación a 0
-                card.setAlpha(0.5f);
+                card.setVisibility(View.GONE);  // Ocultar las tarjetas incorrectas
             }
+        }
+
+        // Animar la tarjeta correcta si existe
+        if (correctCard != null) {
+            animateCard(correctCard);
         }
 
         // Notificar al fragment o actividad
@@ -146,6 +152,36 @@ public class ChallengeCards extends ConstraintLayout {
         }
     }
 
+
+    private void animateCard(ConstraintLayout card) {
+        // Acceder a los parámetros de layout del card
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) card.getLayoutParams();
+
+        // Eliminar márgenes
+        params.setMargins(0, 0, 0, 0);
+
+        // Establecer las restricciones para que la tarjeta esté vinculada a todos los lados del padre
+        params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+
+        // Aplicar los nuevos parámetros al card
+        card.setLayoutParams(params);
+
+        // Animación para escalar la tarjeta
+        card.animate()
+                .scaleX(1.5f)  // Aumentar el tamaño en X
+                .scaleY(1.5f)  // Aumentar el tamaño en Y
+                .setDuration(300)  // Duración de la animación en milisegundos
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        card.bringToFront();  // Traer al frente después de la animación
+                    }
+                })
+                .start();
+    }
 
 
 

@@ -24,15 +24,19 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import com.components.bottomsheet.BottomSheet;
 import com.components.buttons.DebounceClickListener;
 import com.components.navMenu.BottomNavMenu;
+import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentTranslateBinding;
 import com.screens.flows.profile.vm.ProfileViewModel;
+import com.screens.flows.report.ui.ReportViewModel;
 import com.screens.flows.translate.vm.TranslateViewModel;
 import com.screens.utils.SharedPreferencesManager;
 import com.senaschapinas.flows.FavTraduction.FavTraductionRequest;
 import com.senaschapinas.flows.RemoveTraduction.RemoveTraductionRequest;
+import com.senaschapinas.flows.ReportVideo.ReportVideoRequest;
 import com.senaschapinas.flows.SendTraduction.SendTraductionRequest;
 
 import java.util.Locale;
@@ -47,15 +51,16 @@ public class TranslateFragment extends BaseFragment {
     // Atributos de la clase -----------------------------------------------------------------------
     private TranslateViewModel translateViewModel;
     private ProfileViewModel profileViewModel;
+    private ReportViewModel reportViewModel;
     private TextToSpeech textToSpeech;
     private boolean addFavorite = false;
+    private BottomSheet bottomSheet;
 
     private int maxChar = 100;
 
     SharedPreferencesManager sharedPreferencesManager;
 
     private Handler uiHandler = new Handler(Looper.getMainLooper());
-
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
@@ -64,6 +69,8 @@ public class TranslateFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         translateViewModel = new ViewModelProvider(requireActivity()).get(TranslateViewModel.class);
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        reportViewModel = new ViewModelProvider(requireActivity()).get(ReportViewModel.class);
+
     }
 
     @Override
@@ -215,6 +222,27 @@ public class TranslateFragment extends BaseFragment {
             }
         });
 
+        binding.imgReport.setOnClickListener(new DebounceClickListener( v ->{
+
+            bottomSheet = new BottomSheet(
+                    // Cancel
+                    () -> {
+                        clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+                    },
+                    // Continue
+                    () -> {
+                        servicioReporte();
+                    },
+                    ContextCompat.getString(getContext(), com.screens.R.string.bottomsheet_title),
+                    "",
+                    ContextCompat.getString(getContext(), com.screens.R.string.bottomsheet_button1),
+                    ContextCompat.getString(getContext(), com.screens.R.string.bottomsheet_button2),
+                    true
+
+            );
+            bottomSheet.show(getChildFragmentManager(), "myTokenBottomSheet");
+        } ));
+
 
     }
 
@@ -273,8 +301,6 @@ public class TranslateFragment extends BaseFragment {
     }
 
 
-
-
     private void verificarBoton(boolean enable){
         binding.smallTransparentButton2.setEnabled(!enable);
 
@@ -290,6 +316,7 @@ public class TranslateFragment extends BaseFragment {
             binding.llOptions.setVisibility(View.VISIBLE);
             binding.tvTitleEspanol.setVisibility(View.VISIBLE);
             binding.tvTraduccionEspanol.setVisibility(View.VISIBLE);
+            binding.imgReport.setVisibility(View.VISIBLE);
             binding.edLensegua.setEnabled(false);
 
         // Nueva traduccion
@@ -324,24 +351,6 @@ public class TranslateFragment extends BaseFragment {
 
         }
     }
-
-    private void changeButtonBackgroundWithAnimation(View view, int newBackgroundResource) {
-        // Animación de desvanecimiento para el fondo actual
-        view.animate()
-                .alpha(0f)
-                .setDuration(200)
-                .withEndAction(() -> {
-                    // Cambia el fondo cuando la animación termina
-                    view.setBackground(ContextCompat.getDrawable(getContext(), newBackgroundResource));
-                    // Animación de desvanecimiento para el nuevo fondo
-                    view.animate()
-                            .alpha(1f)
-                            .setDuration(200)
-                            .start();
-                })
-                .start();
-    }
-
 
     private void ajustarAltura(){
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -486,6 +495,53 @@ public class TranslateFragment extends BaseFragment {
                         );
                         break;
 
+                }
+            }
+        });
+    }
+
+
+    private void servicioReporte() {
+
+        showCustomDialogProgress(requireContext());
+
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
+        String idUser = sharedPreferencesManager.getIdUsuario();
+
+        ReportVideoRequest request = new ReportVideoRequest();
+        request.setReportImg("");
+        request.setReportMessage(bottomSheet.getReport());
+        request.setIdUser(idUser);
+        request.setIdVideo("");
+
+        reportViewModel.reportVideo(request);
+        reportViewModel.getReportVideoResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource != null) {
+                switch (resource.status) {
+                    case SUCCESS:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                "Tu reporte ha sido enviado exitosamente",
+                                "¡Tu reporte nos ayuda a mejorar!",
+                                "Regresar",
+                                "",
+                                () -> {
+                                    clearBackStackTo(binding.getRoot(), R.id.videoFragment);
+                                },
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_blue)
+                        );
+                        break;
+                    case ERROR:
+                        hideCustomDialogProgress();
+                        showCustomDialogMessage(
+                                resource.message,
+                                "Oops algo salió mal",
+                                "",
+                                "Cerrar",
+                                null,
+                                ContextCompat.getColor(getContext(), com.components.R.color.base_red)
+                        );
+                        break;
                 }
             }
         });

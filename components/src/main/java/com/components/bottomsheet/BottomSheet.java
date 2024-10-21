@@ -2,9 +2,12 @@ package com.components.bottomsheet;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +27,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private String mtitle, mcontent, mbutton1, mbutton2;
     private Drawable mimage;
     private boolean isContinuePressed = false;
+    private boolean showEdittext;
+    private String report = "";
 
     public BottomSheet(OnCancelClickListener cancelListener, OnContinueClickListener continueListener) {
         mCancelListener = cancelListener;
@@ -44,6 +49,16 @@ public class BottomSheet extends BottomSheetDialogFragment {
         mbutton1 = button1;
         mbutton2 = button2;
 
+    }
+
+    public BottomSheet(OnCancelClickListener cancelListener, OnContinueClickListener continueListener, String title, String content, String button1, String button2, Boolean showEdittext) {
+        mCancelListener = cancelListener;
+        mContinueListener = continueListener;
+        mtitle = title;
+        mcontent = content;
+        mbutton1 = button1;
+        mbutton2 = button2;
+        this.showEdittext = showEdittext;
     }
 
 
@@ -73,6 +88,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         TextView contentView = view.findViewById(R.id.tvContent);
         MainButton button1View = view.findViewById(R.id.mainButton);
         TransparentButton button2View = view.findViewById(R.id.secondButton);
+        EditText editText = view.findViewById(R.id.tvReport);
 
         // Configurar título, contenido y textos de botones si no son nulos
         if (mtitle != null) {
@@ -104,11 +120,25 @@ public class BottomSheet extends BottomSheetDialogFragment {
             isContinuePressed = true;
             if (mCancelListener != null) {
                 mCancelListener.mCancelListener();
+                this.report = String.valueOf(editText.getText());
             }
             dismiss(); // Cerrar el BottomSheet después de la acción
         });
 
+        // Mostrar eddittext, no text
+        editText.setVisibility(showEdittext ? View.VISIBLE : View.GONE);
+
         return view;
     }
 
+    // Getter Setter
+
+
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
 }

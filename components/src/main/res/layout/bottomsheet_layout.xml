@@ -45,6 +45,26 @@
             android:textSize="16sp"
             android:layout_marginTop="16dp"/>
 
+
+        <EditText
+            android:id="@+id/tvReport"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/input_text_rectangle"
+            android:gravity="top"
+            android:hint="@string/hint_report_input"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:padding="10dp"
+            android:textColorHint="#B2B3C6"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/secondButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
