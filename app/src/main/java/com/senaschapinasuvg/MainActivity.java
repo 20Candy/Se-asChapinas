@@ -84,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
         // Deeplink
         handleDeepLink(getIntent());
 
-        showTutorial();
-
-
     }
 
     @Override
@@ -125,54 +122,6 @@ public class MainActivity extends AppCompatActivity {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
-    // Tutorial
 
-    private void showTutorial() {
-        new TapTargetSequence(this)
-                .targets(
-                        TapTarget.forView(findViewById(com.components.R.id.ll_home), "Video", "Aquí puedes grabar frases en LENSEGUA para ser traducidas.")
-                                .outerCircleColor(com.components.R.color.base_blue)
-                                .targetCircleColor(com.components.R.color.background)
-                                .titleTextSize(20)
-                                .descriptionTextSize(18)
-                                .transparentTarget(true),
-                        TapTarget.forView(findViewById(com.components.R.id.ll_translate), "Traducir", "Utiliza esta opción para traducir texto de LENSEGUA a gramática en español.")
-                                .outerCircleColor(com.components.R.color.base_blue)
-                                .targetCircleColor(com.components.R.color.background)
-                                .titleTextSize(20)
-                                .descriptionTextSize(18)
-                                .transparentTarget(true),
-                        TapTarget.forView(findViewById(com.components.R.id.ll_dictionary), "Diccionario", "Consulta el diccionario de términos en LENSEGUA.")
-                                .outerCircleColor(com.components.R.color.base_blue)
-                                .targetCircleColor(com.components.R.color.background)
-                                .titleTextSize(20)
-                                .descriptionTextSize(18)
-                                .transparentTarget(true),
-                        TapTarget.forView(findViewById(com.components.R.id.ll_profile), "Perfil", "Accede a tu perfil y ajustes de la aplicación.")
-                                .outerCircleColor(com.components.R.color.base_blue)
-                                .targetCircleColor(com.components.R.color.background)
-                                .titleTextSize(20)
-                                .descriptionTextSize(18)
-                                .transparentTarget(true)
-                )
-                .listener(new TapTargetSequence.Listener() {
-                    @Override
-                    public void onSequenceFinish() {
-                        // Acciones a realizar cuando la secuencia de tutorial finaliza
-                    }
-
-                    @Override
-                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
-                        // Acciones a realizar en cada paso de la secuencia
-                    }
-
-                    @Override
-                    public void onSequenceCanceled(TapTarget lastTarget) {
-                        // Acciones a realizar si el usuario cancela la secuencia
-                    }
-                })
-                .start();
-
-    }
 
 }

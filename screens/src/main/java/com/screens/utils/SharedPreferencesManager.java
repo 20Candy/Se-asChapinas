@@ -13,6 +13,7 @@ public class SharedPreferencesManager {
     private static final String CHALLENGE_DATE = "challengeDate";
     private static final String ID_USUARIO = "id_user";
 
+
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private Context context;

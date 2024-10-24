@@ -33,8 +33,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
     ProfileViewModel profileViewModel;
     ChangePasswordViewModel changePasswordViewModel;
     SharedPreferencesManager sharedPreferencesManager;
-
-
+    boolean fromDeeplink;
 
     // Metodos de ciclo de vida --------------------------------------------------------------------
 
@@ -80,6 +79,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         if(getArguments() != null){
             if(getArguments().containsKey("email")){
                 binding.emailInput.setText(getArguments().getString("email"));
+                fromDeeplink = true;
             }
             ChangePasswordViewModel.setBottomNavVisible(false);
         }
@@ -103,7 +103,7 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
         sharedPreferencesManager = new SharedPreferencesManager(requireContext());
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
-        changePasswordRequest.setId_user(sharedPreferencesManager.getIdUsuario());
+        changePasswordRequest.setId_user(fromDeeplink? binding.emailInput.getEmailInput() : sharedPreferencesManager.getIdUsuario());
         changePasswordRequest.setNew_password(binding.passWordInput.getPassword());
 
         changePasswordViewModel.doChangePasswordRequest(changePasswordRequest);

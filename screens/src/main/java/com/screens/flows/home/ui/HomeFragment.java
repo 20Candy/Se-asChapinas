@@ -29,6 +29,8 @@ import android.view.ViewGroup;
 import com.components.buttons.DebounceClickListener;
 import com.components.buttons.RecordButton;
 import com.components.navMenu.BottomNavMenu;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.screens.R;
 import com.screens.base.BaseFragment;
 import com.screens.databinding.FragmentHomeBinding;
@@ -39,6 +41,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.io.File;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -87,22 +90,23 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         onBackPressed(() -> {});
-        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
 
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
         String todayDate = dateFormat.format(new Date());
-
         String lastShownDate = sharedPreferencesManager.getLastChallengeShowDate();
 
-        if (!todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow()) {
-            Log.d("firstlogin", sharedPreferencesManager.isFirstLogin()+"");
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("fromHome", true);
-            navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, bundle);
+        setupListeners();
+
+        if(sharedPreferencesManager.isFirstLogin()){
+            showTutorial();
 
         }else{
-            verifyAndHandlePermissions();
-            setupListeners();
+            if (!todayDate.equals(lastShownDate) && sharedPreferencesManager.isChallengeShow()) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("fromHome", true);
+                navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, bundle);
+            }
         }
 
     }
@@ -211,6 +215,58 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         binding.clCamera.setVisibility(View.GONE);
         binding.tvEmtpy.setText(permissionsNeeded ? R.string.permissions_alert : R.string.camera_alert); // Cambia mensaje
         binding.btnEmpezar.setText(permissionsNeeded ? getString(R.string.button_give_permissions) : getString(R.string.button_activate_camera));
+    }
+
+    // Tutorial -----------------------------------------------------------------------------------
+    private void showTutorial() {
+        new TapTargetSequence(requireActivity())
+                .targets(
+                        TapTarget.forView(requireActivity().findViewById(com.components.R.id.ll_home), "Video", "Aquí puedes grabar frases en LENSEGUA para ser traducidas.")
+                                .outerCircleColor(com.components.R.color.base_blue)
+                                .targetCircleColor(com.components.R.color.background)
+                                .titleTextSize(20)
+                                .descriptionTextSize(18)
+                                .transparentTarget(true),
+                        TapTarget.forView(requireActivity().findViewById(com.components.R.id.ll_translate), "Traducir", "Utiliza esta opción para traducir texto de LENSEGUA a gramática en español.")
+                                .outerCircleColor(com.components.R.color.base_blue)
+                                .targetCircleColor(com.components.R.color.background)
+                                .titleTextSize(20)
+                                .descriptionTextSize(18)
+                                .transparentTarget(true),
+                        TapTarget.forView(requireActivity().findViewById(com.components.R.id.ll_dictionary), "Diccionario", "Consulta el diccionario de términos en LENSEGUA.")
+                                .outerCircleColor(com.components.R.color.base_blue)
+                                .targetCircleColor(com.components.R.color.background)
+                                .titleTextSize(20)
+                                .descriptionTextSize(18)
+                                .transparentTarget(true),
+                        TapTarget.forView(requireActivity().findViewById(com.components.R.id.ll_profile), "Perfil", "Accede a tu perfil y ajustes de la aplicación.")
+                                .outerCircleColor(com.components.R.color.base_blue)
+                                .targetCircleColor(com.components.R.color.background)
+                                .titleTextSize(20)
+                                .descriptionTextSize(18)
+                                .transparentTarget(true)
+                )
+                .listener(new TapTargetSequence.Listener() {
+                    @Override
+                    public void onSequenceFinish() {
+                        // Acciones a realizar cuando la secuencia de tutorial finaliza
+                        verifyAndHandlePermissions();
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                        // Acciones a realizar en cada paso de la secuencia
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+                        // Acciones a realizar si el usuario cancela la secuencia
+                        verifyAndHandlePermissions();
+
+                    }
+                })
+                .start();
+
     }
 
     // On Click ------------------------------------------------------------------------------------
