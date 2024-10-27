@@ -57,7 +57,7 @@ public class RecordButton extends ConstraintLayout implements IButtons {
         timer = findViewById(R.id.timer_text);
         progressBar = findViewById(R.id.progress_bar);
 
-        setTouchListener();
+        setClickListener();
     }
 
     private void declareAttr(Context context, AttributeSet attrs) {
@@ -80,18 +80,24 @@ public class RecordButton extends ConstraintLayout implements IButtons {
         array.recycle();
     }
 
-    private void setTouchListener() {
-        pre_record.setOnTouchListener(new OnTouchListener() {
+    private void setClickListener() {
+        pre_record.setOnClickListener(new OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    startRecording();
-                } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    stopRecording();
-                }
-                return false;
+            public void onClick(View v) {
+                startRecording();
+
             }
         });
+
+        recording.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopRecording();
+
+            }
+        });
+
+
     }
 
     private void startRecording() {
@@ -111,7 +117,6 @@ public class RecordButton extends ConstraintLayout implements IButtons {
         }
     }
 
-    private static final long MINIMUM_RECORD_TIME = 500;
 
     private void stopRecording() {
         if (isRecording) {
