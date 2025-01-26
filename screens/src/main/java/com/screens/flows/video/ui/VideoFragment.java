@@ -121,7 +121,6 @@ public class VideoFragment extends BaseFragment {
         if (getArguments() != null && getArguments().containsKey("video_path")) {
             binding.videoView.getHolder().setFormat(PixelFormat.UNKNOWN); // Resetear la superficie
 
-
             videoPath = getArguments().getString("video_path");
             binding.videoView.setVideoURI(Uri.parse(videoPath));
 

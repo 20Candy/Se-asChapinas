@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,7 +120,11 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
                             "",
                             () -> {
                                 // Cofirmar
-                                HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
+                                if(fromDeeplink){
+                                    NavHostFragment.findNavController(this).popBackStack();
+                                }else{
+                                    HomeViewModel.selectTab(BottomNavMenu.TAB_HOME);
+                                }
 
                             },
                             ContextCompat.getColor(getContext(), com.components.R.color.base_blue)

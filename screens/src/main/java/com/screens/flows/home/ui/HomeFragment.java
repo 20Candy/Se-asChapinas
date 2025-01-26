@@ -106,6 +106,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("fromHome", true);
                 navigateTo(binding.getRoot(), R.id.action_homeFragment_to_challengeFragment2, bundle);
+            }else{
+                verifyAndHandlePermissions();
             }
         }
 
